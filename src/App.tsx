@@ -5,6 +5,7 @@ import MemberApp from './pages/MemberApp';
 import Performance from './pages/Performance';
 import DataArch from './pages/DataArch';
 import Platform from './pages/Platform';
+import CamaProof from './pages/CamaProof';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="performance" element={<Performance />} />
           <Route path="coach" element={<Navigate to="/performance" replace />} />
           <Route path="data" element={<DataArch />} />
+          <Route path="cama" element={<CamaProof />} />
           <Route path="platform" element={<Platform />} />
         </Route>
       </Routes>

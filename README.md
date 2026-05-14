@@ -25,11 +25,13 @@ If you want to evaluate this without poking around blindly, here's the fastest p
 
 3. **Performance tab → AI Inbox** — three reviewable draft messages for James, awaiting analyst approval. Click **Approve & Send** on one to see the state machine. This is the direct prototype of work-stream #3. *(~20 sec)*
 
-4. **Member tab → DEXA Report** — click between Scan #1 → Scan #6 in the picker. The body-scan SVG, segmented region labels, and visceral hotspot all update per scan. *(~15 sec)*
+4. **CAMA Proof tab** — the strongest single artifact. A coach insight, the patterns it was derived from, and the underlying memory records that produced those patterns. Click any pattern chip to see exactly which memories CAMA associated — no claim is opaque. *(~45 sec)*
 
-5. **Theme dropdown** in the header — 7 palettes including Kalos's actual royal blue. Switch to *Galaxy* or *Aurora* to see the design system shift. *(~10 sec)*
+5. **Member tab → DEXA Report** — click between Scan #1 → Scan #6 in the picker. The body-scan SVG, segmented region labels, and visceral hotspot all update per scan. *(~15 sec)*
 
-6. *(Optional, ~5 min)* **[`BUILD_PLAN.md`](./BUILD_PLAN.md)** — 7-phase production roadmap with stack choices, timelines, risks, and the four conversations I'd want in week one before committing to phasing.
+6. **Theme dropdown** in the header — 7 palettes including Kalos's actual royal blue. Switch to *Galaxy* or *Aurora* to see the design system shift. *(~10 sec)*
+
+7. *(Optional, ~5 min)* **[`BUILD_PLAN.md`](./BUILD_PLAN.md)** — 7-phase production roadmap with stack choices, timelines, risks, and the four conversations I'd want in week one before committing to phasing.
 
 ---
 
@@ -47,13 +49,14 @@ Built in Kalos's own stack and design system:
 
 ## What's in it
 
-**5 top-level pages:**
+**6 top-level pages:**
 
 - **Overview** — hero with the Kalos Triangle (Muscle / Fat / Symmetry), real member testimonials (verbatim from livekalos.com), the "Telos amplifies your analyst, never replaces them" positioning that answers Kalos's refund-backed AI promise
 - **Member** — 11 tabs covering the full member experience:
   Today · Schedule · Body · DEXA Report · Nutrition · Movement · Sleep · Telos chat · Apps · Find Your Analyst · Onboarding · Suggestions
 - **Performance** (coach/analyst side) — Today's AI-prepared schedule, AI Inbox of draft messages, Caseload, My Performance dashboard, Kalos Standards protocol library, Suggestions
 - **Privacy** — dual-view "pattern, not text" architecture explainer
+- **CAMA Proof** — end-to-end provenance trace: coach insight → derived patterns → underlying memory records, all with synthetic data
 - **Platform** — stack overview + builder bio
 
 **Notable working interactions:**
@@ -62,6 +65,7 @@ Built in Kalos's own stack and design system:
 - AI Inbox draft-message review with approve / edit / decline state (Performance → AI Inbox)
 - 6-scan DEXA report with click-to-switch scan picker — body scan SVG, segment values, and visceral hotspot all update per scan
 - Coach Match quiz that maps members to one of 14 real Kalos team members
+- **CAMA Proof Layer** — click a pattern chip on the coach insight to highlight the exact memory records it was derived from; click a derived pattern card to dim everything that didn't contribute
 - 7 theme palettes (Kalos · Cyber · Aurora · Galaxy · Mono · Sage · Crimson) with live switching
 - Functional feedback form on both Member and Performance sides
 
@@ -71,6 +75,25 @@ Built in Kalos's own stack and design system:
 - **Sauna / cold plunge / mobility class references removed** — Kalos is a DEXA + coaching clinic, not a wellness spa.
 - **Compensation tracker dollar amounts show "$ —"** — the feature surface is there, synthetic dollars are not.
 - All member and cohort data is synthetic. A `LIVE DEMO` chip is visible in the header at all times.
+
+## CAMA Proof Layer
+
+The hardest claim in this prototype is that AI memory of coaching context can be useful *and* auditable. The `/cama` page is the proof.
+
+**Three layers, fully referenced:**
+
+```
+CoachInsight  →  Pattern[]  →  MemoryRecord[]
+   (output)      (derived)        (source)
+```
+
+A coach-facing insight cites the Patterns it was built from. Each Pattern cites the MemoryRecords it was associated from. Click any layer to trace it down. No insight is opaque — every claim has receipts.
+
+Every MemoryRecord carries: `member_id`, `memory_type`, `timestamp`, `source`, `content`, `tags`, `confidence`, `provenance`, `durability`. Memory types include `dexa_summary`, `coach_note`, `food_log`, `checkin`, `goal`, `setback`, `preference`.
+
+The data is fabricated, modeled after public coaching workflows. No Kalos member data is used anywhere. The same architecture would apply to approved coaching data only after consent, governance, data access, and audit-logging are in place — see [`BUILD_PLAN.md`](./BUILD_PLAN.md) for the production rollout sequence.
+
+The provenance contract is enforced by tests: every `Pattern.derivedFrom` id and every `CoachInsight.patternIds` reference is verified at test time, so the audit chain cannot quietly break.
 
 ## Production readiness
 

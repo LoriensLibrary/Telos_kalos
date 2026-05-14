@@ -6,6 +6,7 @@ const NAV = [
   { to: '/member', label: 'Member' },
   { to: '/performance', label: 'Performance' },
   { to: '/data', label: 'Privacy' },
+  { to: '/cama', label: 'CAMA Proof' },
   { to: '/platform', label: 'Platform' },
 ];
 
