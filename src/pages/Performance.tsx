@@ -346,6 +346,9 @@ function InboxView() {
   const [editing, setEditing] = useState<string | null>(null);
   const [edits, setEdits] = useState<Record<string, string>>({});
   const [liveDrafts, setLiveDrafts] = useState<LiveDraft[]>([]);
+  /** Tracks which LIVE_SCENARIOS index produced each live draft, so the per-card
+   *  Regenerate button can re-call Claude with the *same* scenario. */
+  const [scenarioByDraft, setScenarioByDraft] = useState<Record<string, number>>({});
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -354,10 +357,10 @@ function InboxView() {
   const allDrafts: DraftMsg[] = [...liveDrafts, ...DRAFTS];
   const pending = allDrafts.filter((d) => (states[d.id] ?? 'pending') === 'pending').length;
 
-  const handleGenerate = async () => {
+  const runGenerate = async (scenarioIndex: number) => {
     setGenerating(true);
     setError(null);
-    const scenario = LIVE_SCENARIOS[liveDrafts.length % LIVE_SCENARIOS.length];
+    const scenario = LIVE_SCENARIOS[scenarioIndex];
     const result = await generateDraft({
       memberName: scenario.member,
       memberInit: scenario.init,
@@ -366,6 +369,7 @@ function InboxView() {
     });
     if (result.state === 'success') {
       setLiveDrafts((prev) => [result.draft, ...prev]);
+      setScenarioByDraft((prev) => ({ ...prev, [result.draft.id]: scenarioIndex }));
     } else {
       const friendly =
         result.error.kind === 'config'
@@ -376,6 +380,20 @@ function InboxView() {
       setError(friendly);
     }
     setGenerating(false);
+  };
+
+  const handleGenerate = () => runGenerate(liveDrafts.length % LIVE_SCENARIOS.length);
+
+  const handleRegenerate = (draftId: string) => {
+    const idx = scenarioByDraft[draftId] ?? 0;
+    // Drop the old draft + its scenario mapping, then re-run with the same scenario.
+    setLiveDrafts((prev) => prev.filter((d) => d.id !== draftId));
+    setScenarioByDraft((prev) => {
+      const next = { ...prev };
+      delete next[draftId];
+      return next;
+    });
+    void runGenerate(idx);
   };
 
   return (
@@ -420,29 +438,79 @@ function InboxView() {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {allDrafts.map((d) => (
-          <DraftCard
-            key={d.id}
-            d={d}
-            isLive={'live' in d && (d as LiveDraft).live === true}
-            state={states[d.id] ?? 'pending'}
-            editing={editing === d.id}
-            body={edits[d.id] ?? d.body}
-            onApprove={() => { set(d.id, editing === d.id ? 'edited' : 'approved'); setEditing(null); }}
-            onEdit={() => setEditing(editing === d.id ? null : d.id)}
-            onDecline={() => set(d.id, 'declined')}
-            onBodyChange={(v) => setEdits((p) => ({ ...p, [d.id]: v }))}
-          />
-        ))}
+        {generating && <SkeletonDraftCard />}
+        {allDrafts.map((d) => {
+          const isLive = 'live' in d && (d as LiveDraft).live === true;
+          return (
+            <DraftCard
+              key={d.id}
+              d={d}
+              isLive={isLive}
+              state={states[d.id] ?? 'pending'}
+              editing={editing === d.id}
+              body={edits[d.id] ?? d.body}
+              onApprove={() => { set(d.id, editing === d.id ? 'edited' : 'approved'); setEditing(null); }}
+              onEdit={() => setEditing(editing === d.id ? null : d.id)}
+              onDecline={() => set(d.id, 'declined')}
+              onBodyChange={(v) => setEdits((p) => ({ ...p, [d.id]: v }))}
+              onRegenerate={isLive ? () => handleRegenerate(d.id) : undefined}
+            />
+          );
+        })}
       </div>
     </div>
   );
 }
 
-function DraftCard({ d, state, editing, body, isLive, onApprove, onEdit, onDecline, onBodyChange }: {
+/**
+ * Pulsing placeholder shown in-grid while a live draft is being generated.
+ * Same visual footprint as a real DraftCard so the layout doesn't jump on swap-in.
+ */
+function SkeletonDraftCard() {
+  return (
+    <div
+      className="glass-deep p-6 animate-pulse"
+      data-testid="draft-skeleton"
+      style={{
+        outline: '1px dashed color-mix(in srgb, var(--ac) 30%, transparent)',
+      }}
+    >
+      <div className="flex items-start justify-between mb-4 flex-wrap gap-2">
+        <div className="flex items-center gap-3">
+          <div
+            className="w-10 h-10 rounded-xl"
+            style={{ background: 'color-mix(in srgb, var(--ac) 14%, transparent)' }}
+          />
+          <div>
+            <div className="h-3 w-24 mb-2 rounded" style={{ background: 'rgba(255,255,255,0.10)' }} />
+            <div className="h-2 w-16 rounded" style={{ background: 'rgba(255,255,255,0.06)' }} />
+          </div>
+        </div>
+        <span className="chip chip-ac">
+          <span className="dot dot-ac pulse" /> GENERATING…
+        </span>
+      </div>
+      <div
+        className="h-8 mb-4 rounded-lg"
+        style={{ background: 'color-mix(in srgb, var(--cy) 6%, transparent)' }}
+      />
+      <div className="bub bub-ai mb-4" style={{ maxWidth: '100%' }}>
+        <div className="space-y-2">
+          <div className="h-3 w-full rounded" style={{ background: 'rgba(255,255,255,0.08)' }} />
+          <div className="h-3 w-5/6 rounded" style={{ background: 'rgba(255,255,255,0.08)' }} />
+          <div className="h-3 w-4/6 rounded" style={{ background: 'rgba(255,255,255,0.08)' }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DraftCard({ d, state, editing, body, isLive, onApprove, onEdit, onDecline, onBodyChange, onRegenerate }: {
   d: DraftMsg; state: DraftState; editing: boolean; body: string; isLive?: boolean;
   onApprove: () => void; onEdit: () => void; onDecline: () => void; onBodyChange: (v: string) => void;
+  onRegenerate?: () => void;
 }) {
+  const liveMeta = isLive && 'meta' in d ? (d as LiveDraft).meta : undefined;
   return (
     <div
       className="glass-deep p-6"
@@ -505,10 +573,36 @@ function DraftCard({ d, state, editing, body, isLive, onApprove, onEdit, onDecli
         </div>
       </div>
 
+      {liveMeta && (
+        <div
+          className="mb-4 inline-flex items-center gap-2 px-2 py-1 rounded-md text-[10px] mono"
+          data-testid="live-draft-meta"
+          style={{
+            background: 'color-mix(in srgb, var(--ac) 6%, transparent)',
+            border: '1px solid color-mix(in srgb, var(--ac) 18%, transparent)',
+            color: 'rgba(245,247,250,0.55)',
+            letterSpacing: '0.05em',
+          }}
+          title="Model + token usage from this generation — for analyst-side transparency on AI cost"
+        >
+          {liveMeta.model} · in {liveMeta.inputTokens} · out {liveMeta.outputTokens} tok
+        </div>
+      )}
+
       {state === 'pending' && (
         <div className="flex items-center gap-2 flex-wrap">
           <button className="btn-ac" onClick={onApprove}>{editing ? 'Save & Send' : 'Approve & Send'}</button>
           <button className="btn-gh" onClick={onEdit}>{editing ? 'Cancel Edit' : 'Edit'}</button>
+          {onRegenerate && (
+            <button
+              className="btn-gh"
+              onClick={onRegenerate}
+              data-testid="regenerate-draft"
+              title="Re-run Claude with the same context — useful if the first draft missed the tone"
+            >
+              ↻ Regenerate
+            </button>
+          )}
           <button className="btn-gh" onClick={onDecline} style={{ color: 'var(--ink-s)' }}>Decline</button>
         </div>
       )}
