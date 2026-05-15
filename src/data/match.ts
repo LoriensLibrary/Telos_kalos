@@ -1,4 +1,4 @@
-// Coach matching — mirrors how Kalos actually does it:
+// Analyst matching — mirrors how Kalos actually does it:
 // slot-based assignment by location/time + soft-match by goals/style.
 
 export interface Question {
@@ -142,9 +142,9 @@ export function scoreAnalysts(answers: Record<string, string>): Analyst[] {
     .map(({ a }) => a);
 }
 
-/* ===================== COACH-SIDE EMPLOYEE DASHBOARD ===================== */
+/* ===================== ANALYST-SIDE EMPLOYEE DASHBOARD ===================== */
 
-export interface CoachKpi {
+export interface AnalystKpi {
   label: string;
   value: string;
   delta: string;
@@ -152,7 +152,7 @@ export interface CoachKpi {
   detail: string;
 }
 
-export const JAMES_KPIS: CoachKpi[] = [
+export const JAMES_KPIS: AnalystKpi[] = [
   { label: 'ACTIVE MEMBERS', value: '23', delta: '+2 vs last mo', trend: 'up', detail: 'capacity 28' },
   { label: 'RETENTION (90d)', value: '94%', delta: '+3pt vs cohort', trend: 'up', detail: 'team avg 88%' },
   { label: 'AVG FAT-LOSS', value: '-1.4%', delta: 'per 4 wks', trend: 'up', detail: 'cohort -1.1%' },

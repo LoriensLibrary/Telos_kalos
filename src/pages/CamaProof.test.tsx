@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import CamaProof from './CamaProof';
-import { coachInsight, memoryRecords, patterns } from '../data/cama';
+import { analystInsight, memoryRecords, patterns } from '../data/cama';
 
 /**
  * CAMA Proof Layer — the contract we promise reviewers:
@@ -22,9 +22,9 @@ describe('CAMA Proof Layer', () => {
       }
     });
 
-    it('coachInsight references only real Pattern ids', () => {
+    it('analystInsight references only real Pattern ids', () => {
       const patternIds = new Set(patterns.map((p) => p.id));
-      for (const pid of coachInsight.patternIds) {
+      for (const pid of analystInsight.patternIds) {
         expect(patternIds.has(pid)).toBe(true);
       }
     });
@@ -41,10 +41,10 @@ describe('CAMA Proof Layer', () => {
   });
 
   describe('rendering', () => {
-    it('renders the coach insight headline and synthetic-data disclaimer', () => {
+    it('renders the analyst insight headline and synthetic-data disclaimer', () => {
       render(<CamaProof />);
       expect(screen.getByText(/SYNTHETIC DATA/i)).toBeInTheDocument();
-      expect(screen.getByText(coachInsight.headline)).toBeInTheDocument();
+      expect(screen.getByText(analystInsight.headline)).toBeInTheDocument();
       expect(screen.getByText(/No Kalos data used/i)).toBeInTheDocument();
     });
 
@@ -97,8 +97,8 @@ describe('CAMA Proof Layer', () => {
 
     it('insight panel surfaces clickable provenance chips for every pattern it cites', () => {
       render(<CamaProof />);
-      const insightPanel = screen.getByTestId('coach-insight');
-      for (const pid of coachInsight.patternIds) {
+      const insightPanel = screen.getByTestId('analyst-insight');
+      for (const pid of analystInsight.patternIds) {
         expect(within(insightPanel).getByRole('button', { name: pid })).toBeInTheDocument();
       }
     });

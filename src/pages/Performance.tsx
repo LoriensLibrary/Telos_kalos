@@ -7,7 +7,7 @@ import AdherenceChart from '../components/charts/AdherenceChart';
 import TriangleChart from '../components/charts/TriangleChart';
 import Tabs from '../components/ui/Tabs';
 import Feedback from '../components/ui/Feedback';
-import CoachPerformance from '../components/ui/CoachPerformance';
+import AnalystPerformance from '../components/ui/AnalystPerformance';
 import { generateDraft, type LiveDraft } from '../api/draftClient';
 
 /**
@@ -120,9 +120,9 @@ export default function Performance() {
       {tab === 'day' && <DayView />}
       {tab === 'inbox' && <InboxView />}
       {tab === 'caseload' && <CaseloadView onOpen={setSel} />}
-      {tab === 'me' && <CoachPerformance />}
+      {tab === 'me' && <AnalystPerformance />}
       {tab === 'standards' && <StandardsView />}
-      {tab === 'feedback' && <Feedback audience="coach" />}
+      {tab === 'feedback' && <Feedback audience="analyst" />}
     </div>
   );
 }

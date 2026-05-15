@@ -7,13 +7,13 @@
  *
  * The point of this file is to make one claim auditable end-to-end:
  *
- *   MemoryRecords  →  Patterns  →  CoachInsight
+ *   MemoryRecords  →  Patterns  →  AnalystInsight
  *
  * Each layer references the layer beneath it by id, so a reviewer can
  * click any insight and trace it back to the raw memory that produced it.
  */
 
-import type { CoachInsight, MemoryRecord, Pattern } from '../types/cama';
+import type { AnalystInsight, MemoryRecord, Pattern } from '../types/cama';
 
 const MAYA = 'M-maya';
 
@@ -45,9 +45,9 @@ export const memoryRecords: MemoryRecord[] = [
   {
     id: 'mem-003',
     memberId: MAYA,
-    memoryType: 'coach_note',
+    memoryType: 'analyst_note',
     timestamp: '2026-01-22',
-    source: 'synthetic_coach_note',
+    source: 'synthetic_analyst_note',
     content: 'First strategy session. Leaned strict/structured tone with adherence targets.',
     tags: ['tone:strict', 'session', 'early'],
     confidence: 0.92,
@@ -69,9 +69,9 @@ export const memoryRecords: MemoryRecord[] = [
   {
     id: 'mem-005',
     memberId: MAYA,
-    memoryType: 'coach_note',
+    memoryType: 'analyst_note',
     timestamp: '2026-02-08',
-    source: 'synthetic_coach_note',
+    source: 'synthetic_analyst_note',
     content: 'Switched to supportive accountability — softened tone, single weekly anchor goal. Re-engaged within 3 days.',
     tags: ['tone:supportive', 'recovery', 'session'],
     confidence: 0.93,
@@ -141,9 +141,9 @@ export const memoryRecords: MemoryRecord[] = [
   {
     id: 'mem-011',
     memberId: MAYA,
-    memoryType: 'coach_note',
+    memoryType: 'analyst_note',
     timestamp: '2026-03-24',
-    source: 'synthetic_coach_note',
+    source: 'synthetic_analyst_note',
     content: 'Travel debrief. Co-built a 4-meal "hotel protocol" for next trip. No correction, just preparation.',
     tags: ['tone:supportive', 'travel_protocol', 'preempt'],
     confidence: 0.94,
@@ -156,18 +156,18 @@ export const memoryRecords: MemoryRecord[] = [
     memoryType: 'setback',
     timestamp: '2026-04-01',
     source: 'member_disclosure',
-    content: 'Hard call with mom about her health. Three nights of takeout, no workouts. Member-shared, sealed to coach view.',
+    content: 'Hard call with mom about her health. Three nights of takeout, no workouts. Member-shared, sealed to analyst view.',
     tags: ['family_stress', 'high_cognitive_load', 'private'],
     confidence: 0.87,
-    provenance: 'synthetic private disclosure (pattern-only to coach)',
+    provenance: 'synthetic private disclosure (pattern-only to analyst)',
     durability: 'provisional',
   },
   {
     id: 'mem-013',
     memberId: MAYA,
-    memoryType: 'coach_note',
+    memoryType: 'analyst_note',
     timestamp: '2026-04-04',
-    source: 'synthetic_coach_note',
+    source: 'synthetic_analyst_note',
     content: 'High-load week detected via pattern, source sealed. Recommended simplified structure 2–4 weeks. Do not press.',
     tags: ['tone:supportive', 'simplification', 'preempt'],
     confidence: 0.91,
@@ -204,7 +204,7 @@ export const memoryRecords: MemoryRecord[] = [
     memoryType: 'preference',
     timestamp: '2026-05-05',
     source: 'member_disclosure',
-    content: 'Prefers short Monday check-ins. Asks coach to skip Friday pushes when work is heavy.',
+    content: 'Prefers short Monday check-ins. Asks analyst to skip Friday pushes when work is heavy.',
     tags: ['cadence', 'tone:supportive', 'autonomy'],
     confidence: 0.93,
     provenance: 'synthetic member preference',
@@ -217,7 +217,7 @@ export const patterns: Pattern[] = [
     id: 'pat-stress',
     memberId: MAYA,
     summary:
-      'Consistency drops sharply during high-load weeks (work travel, family stress). Recovery is fast when coach softens tone and simplifies structure rather than pressing.',
+      'Consistency drops sharply during high-load weeks (work travel, family stress). Recovery is fast when the analyst softens tone and simplifies structure rather than pressing.',
     derivedFrom: ['mem-004', 'mem-010', 'mem-012', 'mem-013', 'mem-015'],
     signal: 'cautionary',
   },
@@ -239,7 +239,7 @@ export const patterns: Pattern[] = [
   },
 ];
 
-export const coachInsight: CoachInsight = {
+export const analystInsight: AnalystInsight = {
   id: 'ins-next-session',
   memberId: MAYA,
   headline: 'Open with stress load, not the scan numbers.',

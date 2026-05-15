@@ -99,7 +99,7 @@ export const PROGRAMS = [
   { name: 'Strength-build Phase 2', weeks: 'queued', detail: '4 lifts/wk · 8-week hypertrophy', active: false },
 ];
 
-/* =================== PERFORMANCE / COACH SIDE =================== */
+/* =================== PERFORMANCE / ANALYST SIDE =================== */
 
 export type SessionStatus = 'done' | 'now' | 'next' | 'upcoming' | 'block';
 

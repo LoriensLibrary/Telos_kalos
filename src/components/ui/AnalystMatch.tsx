@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { MATCH_QUESTIONS, scoreAnalysts, type Analyst } from '../../data/match';
 
-export default function CoachMatch() {
+export default function AnalystMatch() {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [matched, setMatched] = useState<Analyst | null>(null);

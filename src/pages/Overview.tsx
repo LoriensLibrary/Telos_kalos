@@ -44,7 +44,7 @@ export default function Overview() {
           </p>
           <div className="flex items-center gap-3 mt-8">
             <Link to="/member" className="btn-ac">View Member App →</Link>
-            <Link to="/coach" className="btn-gh">View Coach Tools</Link>
+            <Link to="/performance" className="btn-gh">View Analyst Tools</Link>
           </div>
           <div className="mt-12 grid grid-cols-3 gap-6 max-w-2xl">
             {[
@@ -129,13 +129,13 @@ export default function Overview() {
           },
           {
             num: '02',
-            title: 'Coach Tools',
+            title: 'Analyst Tools',
             sub: 'AI-prepared briefs',
             body:
-              'Caseload triage. Pre-session briefs with patterns and talking points. AI-drafted member messages awaiting coach approval before send.',
+              'Caseload triage. Pre-session briefs with patterns and talking points. AI-drafted member messages awaiting analyst approval before send.',
             color: '#7DD3FC',
             ring: 'rgba(125,211,252,0.22)',
-            to: '/coach',
+            to: '/performance',
           },
           {
             num: '03',
@@ -280,7 +280,7 @@ export default function Overview() {
               30-day feedback loop
             </div>
             <div className="text-sm" style={{ color: 'rgba(245,247,250,0.66)' }}>
-              Scan → plan → 30 days guessing → next scan. Coach prepares from the last PDF.
+              Scan → plan → 30 days guessing → next scan. Analyst prepares from the last PDF.
               Members lose momentum in the silence.
             </div>
           </div>
@@ -300,7 +300,7 @@ export default function Overview() {
             </div>
             <div className="text-sm" style={{ color: 'rgba(245,247,250,0.66)' }}>
               Scan → daily tracking → pattern detection → mid-cycle adjustments → next scan
-              confirms. Coach walks in already prepared.
+              confirms. Analyst walks in already prepared.
             </div>
           </div>
         </div>

@@ -19,7 +19,7 @@ export default function DataArch() {
           </em>
         </h1>
         <p className="mt-4 text-base max-w-2xl" style={{ color: 'rgba(245,247,250,0.66)' }}>
-          Members confide raw context. Coaches act on operational signal. Telos is the
+          Members confide raw context. Analysts act on operational signal. Telos is the
           interpreter — and the seal between them.
         </p>
       </div>
@@ -44,7 +44,7 @@ export default function DataArch() {
               Three nights of takeout, no workouts."
             </div>
             <div className="text-xs" style={{ color: 'rgba(245,247,250,0.40)' }}>
-              Feeds the pattern engine. Text sealed to member. Coach never reads this.
+              Feeds the pattern engine. Text sealed to member. Analyst never reads this.
             </div>
           </div>
           <div className="p-10">
@@ -101,14 +101,14 @@ export default function DataArch() {
             },
             {
               n: '04',
-              t: 'Coach surface',
-              b: 'Coach sees: pattern, recommendation, confidence. Not source text.',
+              t: 'Analyst surface',
+              b: 'Analyst sees: pattern, recommendation, confidence. Not source text.',
               c: '#A0F0C8',
             },
             {
               n: '05',
               t: 'Member control',
-              b: 'Member can surface any topic to coach explicitly. One tap, one direction.',
+              b: 'Member can surface any topic to the analyst explicitly. One tap, one direction.',
               c: '#A0F0C8',
             },
           ].map((s, i) => (
@@ -145,11 +145,11 @@ export default function DataArch() {
         {[
           {
             t: 'Pattern, not text',
-            b: "Coaches receive interpretations. They never read the member's raw words unless the member explicitly surfaces them.",
+            b: "Analysts receive interpretations. They never read the member's raw words unless the member explicitly surfaces them.",
           },
           {
             t: 'Member-controlled disclosure',
-            b: 'One-way valve. Members can promote any private exchange into the coach view. Coaches cannot pull.',
+            b: 'One-way valve. Members can promote any private exchange into the analyst view. Analysts cannot pull.',
           },
           {
             t: 'Auditable model',

@@ -3,7 +3,7 @@ import { useState } from 'react';
 const CATEGORIES = ['New feature', 'Bug', 'Design', 'Coaching idea', 'Other'];
 
 interface Props {
-  audience: 'member' | 'coach';
+  audience: 'member' | 'analyst';
 }
 
 export default function Feedback({ audience }: Props) {

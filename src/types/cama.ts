@@ -12,7 +12,7 @@
 
 export type MemoryType =
   | 'dexa_summary'
-  | 'coach_note'
+  | 'analyst_note'
   | 'food_log'
   | 'checkin'
   | 'goal'
@@ -26,7 +26,7 @@ export interface MemoryRecord {
   memberId: string;
   memoryType: MemoryType;
   timestamp: string; // ISO date
-  source: string; // e.g. "synthetic_coach_note", "synthetic_dexa", "member_disclosure"
+  source: string; // e.g. "synthetic_analyst_note", "synthetic_dexa", "member_disclosure"
   content: string;
   tags: string[];
   confidence: number; // 0..1
@@ -47,11 +47,11 @@ export interface Pattern {
 }
 
 /**
- * A coach-facing insight surfaced before the next session. Built from
+ * An analyst-facing insight surfaced before the next session. Built from
  * one or more Patterns. The `patternIds` field is the second layer of
  * provenance — insight → patterns → memories.
  */
-export interface CoachInsight {
+export interface AnalystInsight {
   id: string;
   memberId: string;
   headline: string;

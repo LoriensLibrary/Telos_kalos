@@ -2,7 +2,7 @@ export interface ScanPoint { label: string; fat: number; lean: number; }
 export interface AdherencePoint { label: string; val: number; color: string; }
 export interface Client {
   id: string; name: string; init: string; status: 'on-track' | 'plateau' | 'flagged';
-  goals: string[]; coach: string;
+  goals: string[]; analyst: string;
   triangle: [number, number, number]; triProj: [number, number, number];
   scans: ScanPoint[];
   met: { fat: string; fatD: string; lean: string; leanD: string; visc: string; viscD: string };

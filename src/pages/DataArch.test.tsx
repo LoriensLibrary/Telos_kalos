@@ -4,8 +4,8 @@ import DataArch from './DataArch';
 
 /**
  * Privacy architecture invariant:
- * The "What James sees" coach-facing view must NEVER contain the raw
- * disclosure text from "What Maya sees". Coaches only see the pattern,
+ * The "What James sees" analyst-facing view must NEVER contain the raw
+ * disclosure text from "What Maya sees". Analysts only see the pattern,
  * not the source.
  */
 describe('Privacy · pattern-not-text invariant', () => {

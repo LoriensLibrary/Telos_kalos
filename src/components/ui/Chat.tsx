@@ -34,7 +34,7 @@ function pickReply(input: string): string {
 export default function Chat({
   initial,
   title = 'Telos',
-  subtitle = 'BETWEEN-SCAN COACHING',
+  subtitle = 'BETWEEN-SCAN CONTINUITY',
   scope = 'PRIVATE TO YOU',
   placeholder = 'Type a message…',
 }: Props) {
@@ -150,7 +150,7 @@ export default function Chat({
           </button>
         </div>
         <div className="lbl mt-2" style={{ fontSize: 9 }}>
-          E2E ENCRYPTED · COACH SEES PATTERNS, NOT TEXT · MODEL: KALOS-TELOS-v0.6
+          E2E ENCRYPTED · ANALYST SEES PATTERNS, NOT TEXT · MODEL: KALOS-TELOS-v0.6
         </div>
       </div>
     </div>

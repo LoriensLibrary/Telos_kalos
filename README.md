@@ -25,7 +25,7 @@ If you want to evaluate this without poking around blindly, here's the fastest p
 
 3. **Performance tab → AI Inbox** — three reviewable draft messages for James, awaiting analyst approval. Click **Approve & Send** on one to see the state machine. Then click **✨ Generate Live Draft** at the top — that calls Claude Haiku 4.5 via the `/api/draft-message` serverless function and returns a fresh, real-time AI-drafted message in the same shape as the static seeds, ready for the same approve / edit / decline flow. This is work-stream #3 *actually working*, not mocked. *(~30 sec)*
 
-4. **CAMA Proof tab** — the strongest single artifact. A coach insight, the patterns it was derived from, and the underlying memory records that produced those patterns. Click any pattern chip to see exactly which memories CAMA associated — no claim is opaque. *(~45 sec)*
+4. **CAMA Proof tab** — the strongest single artifact. An analyst insight, the patterns it was derived from, and the underlying memory records that produced those patterns. Click any pattern chip to see exactly which memories CAMA associated — no claim is opaque. *(~45 sec)*
 
 5. **Member tab → DEXA Report** — click between Scan #1 → Scan #6 in the picker. The body-scan SVG, segmented region labels, and visceral hotspot all update per scan. *(~15 sec)*
 
@@ -54,9 +54,9 @@ Built in Kalos's own stack and design system:
 - **Overview** — hero with the Kalos Triangle (Muscle / Fat / Symmetry), real member testimonials (verbatim from livekalos.com), the "Telos amplifies your analyst, never replaces them" positioning that answers Kalos's refund-backed AI promise
 - **Member** — 11 tabs covering the full member experience:
   Today · Schedule · Body · DEXA Report · Nutrition · Movement · Sleep · Telos chat · Apps · Find Your Analyst · Onboarding · Suggestions
-- **Performance** (coach/analyst side) — Today's AI-prepared schedule, AI Inbox of draft messages, Caseload, My Performance dashboard, Kalos Standards protocol library, Suggestions
+- **Performance** (analyst side) — Today's AI-prepared schedule, AI Inbox of draft messages, Caseload, My Performance dashboard, Kalos Standards protocol library, Suggestions
 - **Privacy** — dual-view "pattern, not text" architecture explainer
-- **CAMA Proof** — end-to-end provenance trace: coach insight → derived patterns → underlying memory records, all with synthetic data
+- **CAMA Proof** — end-to-end provenance trace: analyst insight → derived patterns → underlying memory records, all with synthetic data
 - **Platform** — stack overview + builder bio
 
 **Notable working interactions:**
@@ -64,8 +64,8 @@ Built in Kalos's own stack and design system:
 - Live chat with contextual responses (Member → Telos tab)
 - AI Inbox draft-message review with approve / edit / decline state (Performance → AI Inbox)
 - 6-scan DEXA report with click-to-switch scan picker — body scan SVG, segment values, and visceral hotspot all update per scan
-- Coach Match quiz that maps members to one of 14 real Kalos team members
-- **CAMA Proof Layer** — click a pattern chip on the coach insight to highlight the exact memory records it was derived from; click a derived pattern card to dim everything that didn't contribute
+- Analyst Match quiz that maps members to one of 14 real Kalos Performance Analysts
+- **CAMA Proof Layer** — click a pattern chip on the analyst insight to highlight the exact memory records it was derived from; click a derived pattern card to dim everything that didn't contribute
 - 7 theme palettes (Kalos · Cyber · Aurora · Galaxy · Mono · Sage · Crimson) with live switching
 - Functional feedback form on both Member and Performance sides
 
@@ -121,13 +121,13 @@ CoachInsight  →  Pattern[]  →  MemoryRecord[]
    (output)      (derived)        (source)
 ```
 
-A coach-facing insight cites the Patterns it was built from. Each Pattern cites the MemoryRecords it was associated from. Click any layer to trace it down. No insight is opaque — every claim has receipts.
+An analyst-facing insight cites the Patterns it was built from. Each Pattern cites the MemoryRecords it was associated from. Click any layer to trace it down. No insight is opaque — every claim has receipts.
 
-Every MemoryRecord carries: `member_id`, `memory_type`, `timestamp`, `source`, `content`, `tags`, `confidence`, `provenance`, `durability`. Memory types include `dexa_summary`, `coach_note`, `food_log`, `checkin`, `goal`, `setback`, `preference`.
+Every MemoryRecord carries: `member_id`, `memory_type`, `timestamp`, `source`, `content`, `tags`, `confidence`, `provenance`, `durability`. Memory types include `dexa_summary`, `analyst_note`, `food_log`, `checkin`, `goal`, `setback`, `preference`.
 
 The data is fabricated, modeled after public coaching workflows. No Kalos member data is used anywhere. The same architecture would apply to approved coaching data only after consent, governance, data access, and audit-logging are in place — see [`BUILD_PLAN.md`](./BUILD_PLAN.md) for the production rollout sequence.
 
-The provenance contract is enforced by tests: every `Pattern.derivedFrom` id and every `CoachInsight.patternIds` reference is verified at test time, so the audit chain cannot quietly break.
+The provenance contract is enforced by tests: every `Pattern.derivedFrom` id and every `AnalystInsight.patternIds` reference is verified at test time, so the audit chain cannot quietly break.
 
 ## Production readiness
 
@@ -221,11 +221,13 @@ On Windows there's also a `Telos.bat` launcher on the Desktop — one click star
 
 ## Test coverage
 
-19 tests across 3 suites verify the parts that have to be right:
+34 tests across 5 suites verify the parts that have to be right:
 
 - **`src/api/telosApi.test.ts`** — API surface: members CRUD, DEXA trajectory invariants, AI Inbox approve / decline state machine, analyst matching algorithm, integrations honesty (live vs roadmap), schedule ordering
+- **`src/api/draftClient.test.ts`** — live AI draft client contract: error mapping (config / network / validation / model), request shape, never-throw guarantee
 - **`src/components/ui/ThemeToggle.test.tsx`** — theme persistence to localStorage, migration from the legacy `companion.theme` key, dropdown interaction
-- **`src/pages/DataArch.test.tsx`** — privacy invariant: coach's view contains pattern + signal but never the member's raw disclosure text
+- **`src/pages/DataArch.test.tsx`** — privacy invariant: analyst's view contains pattern + signal but never the member's raw disclosure text
+- **`src/pages/CamaProof.test.tsx`** — provenance integrity: every Pattern.derivedFrom and AnalystInsight.patternIds reference resolves; UI trace works end-to-end
 
 Run with `npm test`.
 
@@ -252,14 +254,14 @@ src/
 │       ├── Apps.tsx              # Connected apps catalog (Live vs Roadmap)
 │       ├── DEXAReport.tsx        # Scan history + full per-scan report
 │       ├── Onboarding.tsx        # 7-step new-member flow
-│       ├── CoachMatch.tsx        # Member ↔ analyst matching quiz
-│       ├── CoachPerformance.tsx  # Coach KPIs, roster, experiment log, comp
-│       └── Feedback.tsx          # Suggestions form (member + coach variants)
-├── data/                         # Synthetic members, coaches, schedule, match data
+│       ├── AnalystMatch.tsx     # Member ↔ analyst matching quiz
+│       ├── AnalystPerformance.tsx  # Analyst KPIs, roster, experiment log, comp
+│       └── Feedback.tsx          # Suggestions form (member + analyst variants)
+├── data/                         # Synthetic members, analysts, schedule, match data
 └── pages/
     ├── Overview.tsx              # Landing
     ├── MemberApp.tsx             # 11-tab member experience
-    ├── Performance.tsx           # 6-tab coach experience
+    ├── Performance.tsx           # 6-tab analyst experience
     ├── DataArch.tsx              # Privacy architecture
     └── Platform.tsx              # Stack + builder bio
 ```

@@ -14,7 +14,7 @@ const statusColor: Record<string, string> = {
   new: 'var(--cy)',
 };
 
-export default function CoachPerformance() {
+export default function AnalystPerformance() {
   return (
     <div className="space-y-8">
       {/* HEAD */}
@@ -174,7 +174,7 @@ export default function CoachPerformance() {
         </h3>
         <p className="text-sm mb-5 max-w-2xl" style={{ color: 'var(--ink-s)' }}>
           Single-variable tests across your roster. Feeds back into the Standards library when results hit
-          high-confidence. Harsh's framing — "every coach is a data scientist."
+          high-confidence. Harsh's framing — "every analyst is a data scientist."
         </p>
         <div className="grid grid-cols-2 gap-5">
           {EXPERIMENTS.map((e) => (

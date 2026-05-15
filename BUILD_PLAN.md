@@ -59,7 +59,7 @@ This is the build I'd propose on day-one of the role, not a sales doc. Timelines
 
 ---
 
-## Phase 2 · Coach AI Inbox + pre-session briefs (weeks 7–10)
+## Phase 2 · Analyst AI Inbox + pre-session briefs (weeks 7–10)
 
 **This is the core of work-stream #3 in the job posting.**
 
@@ -103,9 +103,9 @@ For each: OAuth flow, background sync job (every 4h), normalization layer to a u
 **Goal:** make the privacy promise in `pages/DataArch.tsx` real, not just illustrated.
 
 - Member chat messages stored encrypted (column-level, AES-256-GCM)
-- Pattern extraction layer: LLM run server-side, classifies each message into a small set of signal categories (load, recovery, motivation, disclosure type, urgency) without persisting the raw text in a coach-visible table
-- Coach view queries the signal table only — no read path to raw member text
-- Member "Surface to coach" action explicitly promotes a chosen message into the coach-visible thread
+- Pattern extraction layer: LLM run server-side, classifies each message into a small set of signal categories (load, recovery, motivation, disclosure type, urgency) without persisting the raw text in an analyst-visible table
+- Analyst view queries the signal table only — no read path to raw member text
+- Member "Surface to analyst" action explicitly promotes a chosen message into the analyst-visible thread
 - Audit log: every read of a member's raw message is logged with reason + actor; alerts trigger on unusual patterns
 - Member can export or delete all data (GDPR-style right-to-erasure even before EU expansion)
 

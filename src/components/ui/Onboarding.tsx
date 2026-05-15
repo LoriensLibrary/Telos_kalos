@@ -21,8 +21,8 @@ export default function Onboarding() {
             Welcome to Kalos.
           </h2>
           <p className="text-base mb-6" style={{ color: 'var(--ink-s)' }}>
-            You're about to get the clearest picture of your body anyone has ever shown you. Then a coach who's
-            obsessed with data is going to help you act on it. Here's how the first three weeks unfold.
+            You're about to get the clearest picture of your body anyone has ever shown you. Then a Performance Analyst
+            who's obsessed with data is going to help you act on it. Here's how the first three weeks unfold.
           </p>
           <div className="grid grid-cols-2 gap-4">
             <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--line)' }}>
@@ -104,10 +104,10 @@ export default function Onboarding() {
             },
             {
               t: 'What Telos does',
-              b: 'Listens to your data, checks in daily, surfaces patterns to your coach as signals (not raw text), and drafts the kind of message your coach would have written anyway — faster.',
+              b: 'Listens to your data, checks in daily, surfaces patterns to your analyst as signals (not raw text), and drafts the kind of message your analyst would have written anyway — faster.',
             },
             {
-              t: 'Your coach',
+              t: 'Your Performance Analyst',
               b: 'A trained athlete + data scientist. They review every Telos suggestion before it reaches you. The plan is human-built, data-informed.',
             },
           ].map((e) => (
@@ -121,7 +121,7 @@ export default function Onboarding() {
 
       <div className="col-span-4 space-y-6">
         <div className="glass p-6">
-          <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>YOUR ONBOARDING COACH</div>
+          <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>YOUR ONBOARDING ANALYST</div>
           <div className="flex items-center gap-3 mb-4">
             <div
               className="w-12 h-12 rounded-xl flex items-center justify-center serif text-lg"
@@ -148,7 +148,7 @@ export default function Onboarding() {
           <div className="lbl mb-3" style={{ color: 'var(--cy)' }}>WHAT YOU'LL GET IN 90 DAYS</div>
           <ul className="space-y-2 text-sm" style={{ color: 'var(--ink-s)' }}>
             {[
-              '3 DEXA scans with a coach-led readout each',
+              '3 DEXA scans with an analyst-led readout each',
               'A Triangle baseline + first projection',
               'Wearable streams integrated into one view',
               'A program tuned to YOUR data, not a template',
@@ -165,7 +165,7 @@ export default function Onboarding() {
         <div className="glass p-6">
           <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>QUESTIONS</div>
           <p className="text-sm mb-3" style={{ color: 'var(--ink-s)' }}>
-            Anything unclear? Telos answers 24/7. Your coach answers same-day on weekdays.
+            Anything unclear? Telos answers 24/7. Your analyst answers same-day on weekdays.
           </p>
           <div className="flex items-center gap-2">
             <button className="btn-ac">Ask Telos</button>

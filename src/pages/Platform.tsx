@@ -37,7 +37,7 @@ export default function Platform() {
             items: [
               'React 19 + TypeScript',
               'Responsive desktop + tablet',
-              'Coach dashboard optimized',
+              'Analyst dashboard optimized',
               'Real-time API · PostgreSQL',
             ],
             color: '#A0F0C8',

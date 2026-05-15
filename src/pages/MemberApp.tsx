@@ -25,7 +25,7 @@ import Schedule from '../components/ui/Schedule';
 import Apps from '../components/ui/Apps';
 import DEXAReport from '../components/ui/DEXAReport';
 import Onboarding from '../components/ui/Onboarding';
-import CoachMatch from '../components/ui/CoachMatch';
+import AnalystMatch from '../components/ui/AnalystMatch';
 
 const m = CLIENTS[0];
 
@@ -108,7 +108,7 @@ export default function MemberApp() {
       {tab === 'sleep' && <Sleep />}
       {tab === 'telos' && <Telos />}
       {tab === 'apps' && <Apps />}
-      {tab === 'match' && <CoachMatch />}
+      {tab === 'match' && <AnalystMatch />}
       {tab === 'onboarding' && <Onboarding />}
       {tab === 'feedback' && <Feedback audience="member" />}
     </div>
@@ -237,9 +237,9 @@ export default function MemberApp() {
             <div className="space-y-2 text-xs" style={{ color: 'var(--ink-s)' }}>
               {[
                 { v: 'Next DEXA scan', t: 'Reserved · May 13 · 11:30' },
-                { v: 'Coach check-in', t: 'James Wei · 09:00' },
+                { v: 'Analyst check-in', t: 'James Wei · 09:00' },
                 { v: 'Active program', t: 'Min-effective · wk 2 of 4' },
-                { v: 'App + coach access', t: '24/7' },
+                { v: 'App + analyst access', t: '24/7' },
               ].map((a, i) => (
                 <div key={i} className="flex justify-between gap-3 pb-2" style={{ borderBottom: i < 3 ? '1px dashed var(--line)' : 'none' }}>
                   <span style={{ color: 'var(--ink)' }}>{a.v}</span>
@@ -717,7 +717,7 @@ export default function MemberApp() {
 
           <div className="glass p-6">
             <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>MIND CHECK-IN</div>
-            <div className="text-sm mb-4" style={{ color: 'var(--ink-s)' }}>Telos asks once a day. Anonymized to coach.</div>
+            <div className="text-sm mb-4" style={{ color: 'var(--ink-s)' }}>Telos asks once a day. Anonymized to your analyst.</div>
             <div className="grid grid-cols-5 gap-2">
               {['😞', '😕', '🙂', '😊', '😄'].map((e, i) => (
                 <button key={i} className="text-2xl p-2 rounded-lg" style={{ background: i === 1 ? 'color-mix(in srgb, var(--ac) 12%, transparent)' : 'rgba(255,255,255,0.02)', border: '1px solid var(--line)' }}>{e}</button>
@@ -737,7 +737,7 @@ export default function MemberApp() {
           <Chat
             initial={MAYA_CHAT}
             title="Telos"
-            subtitle="BETWEEN-SCAN COACHING · MAYA"
+            subtitle="BETWEEN-SCAN CONTINUITY · MAYA"
             scope="PRIVATE TO YOU"
             placeholder="Tell Telos how you're doing…"
           />

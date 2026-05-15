@@ -4,7 +4,7 @@ export interface MemberSession {
   time: string;
   title: string;
   detail: string;
-  type: 'scan' | 'coach' | 'recovery' | 'class' | 'intake';
+  type: 'scan' | 'analyst' | 'recovery' | 'class' | 'intake';
   duration: string;
   location: string;
   prepUrl?: string;
@@ -15,9 +15,9 @@ export const MEMBER_SCHEDULE: MemberSession[] = [
     id: 'm1',
     date: 'TUE · MAY 12',
     time: '09:00',
-    title: 'Coach check-in · James Wei',
+    title: 'Analyst check-in · James Wei',
     detail: 'Async video review · adherence + recovery signals · plan refresh',
-    type: 'coach',
+    type: 'analyst',
     duration: '20m',
     location: 'Telos app',
     prepUrl: '#prep',
@@ -67,9 +67,9 @@ export const MEMBER_SCHEDULE: MemberSession[] = [
     id: 'm6',
     date: 'TUE · MAY 19',
     time: '09:00',
-    title: 'Coach session · James Wei',
+    title: 'Analyst session · James Wei',
     detail: 'Scan #7 follow-up · cycle 7 program design',
-    type: 'coach',
+    type: 'analyst',
     duration: '20m',
     location: 'Telos app',
   },
@@ -171,14 +171,14 @@ export const ONBOARDING_FLOW: OnboardingStep[] = [
   {
     num: '01',
     title: 'Welcome call',
-    detail: 'A coach calls to set expectations, learn your goals, and book your first DEXA.',
+    detail: 'A Performance Analyst calls to set expectations, learn your goals, and book your first DEXA.',
     duration: '20 min',
     status: 'done',
   },
   {
     num: '02',
     title: 'First DEXA scan',
-    detail: 'Body composition baseline. 6-min scan + 30-min results review with your coach.',
+    detail: 'Body composition baseline. 6-min scan + 30-min results review with your analyst.',
     duration: '45 min',
     status: 'done',
   },
@@ -206,7 +206,7 @@ export const ONBOARDING_FLOW: OnboardingStep[] = [
   {
     num: '06',
     title: 'Week-1 check-in',
-    detail: 'Coach reviews wearable + adherence data, fine-tunes the program for week 2-4.',
+    detail: 'Analyst reviews wearable + adherence data, fine-tunes the program for week 2-4.',
     duration: '30 min',
     status: 'queued',
   },

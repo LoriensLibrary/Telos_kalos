@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
-import { coachInsight, memoryRecords, patterns, syntheticMember } from '../data/cama';
+import { analystInsight, memoryRecords, patterns, syntheticMember } from '../data/cama';
 import type { MemoryType, Pattern } from '../types/cama';
 
 const TYPE_COLOR: Record<MemoryType, string> = {
   dexa_summary: '#7DD3FC',
-  coach_note: '#A0F0C8',
+  analyst_note: '#A0F0C8',
   food_log: '#FFD08A',
   checkin: '#B49AFF',
   goal: '#FF9988',
@@ -37,7 +37,7 @@ export default function CamaProof() {
     [],
   );
 
-  const insightPatterns = patterns.filter((p) => coachInsight.patternIds.includes(p.id));
+  const insightPatterns = patterns.filter((p) => analystInsight.patternIds.includes(p.id));
 
   return (
     <div className="max-w-[1400px] mx-auto px-8 py-16">
@@ -60,7 +60,7 @@ export default function CamaProof() {
           </em>
         </h1>
         <p className="mt-4 text-base max-w-2xl" style={{ color: 'rgba(245,247,250,0.66)' }}>
-          Every coach-facing insight traces to the patterns that produced it, and every pattern
+          Every analyst-facing insight traces to the patterns that produced it, and every pattern
           traces to the underlying memory records. No claim is opaque. Click any pattern to see
           exactly which memories CAMA associated to derive it.
         </p>
@@ -73,11 +73,11 @@ export default function CamaProof() {
         </div>
       </div>
 
-      {/* COACH INSIGHT */}
-      <div className="glass p-10 mb-12" data-testid="coach-insight">
+      {/* ANALYST INSIGHT */}
+      <div className="glass p-10 mb-12" data-testid="analyst-insight">
         <div className="flex items-center justify-between mb-5">
           <div className="lbl" style={{ color: '#B49AFF' }}>
-            COACH INSIGHT · BEFORE NEXT SESSION
+            ANALYST INSIGHT · BEFORE NEXT SESSION
           </div>
           <span className="chip chip-ac">DERIVED FROM {insightPatterns.length} PATTERNS</span>
         </div>
@@ -85,13 +85,13 @@ export default function CamaProof() {
           className="serif text-3xl mb-4"
           style={{ fontWeight: 400, lineHeight: 1.15, color: 'var(--ink)' }}
         >
-          {coachInsight.headline}
+          {analystInsight.headline}
         </div>
         <p
           className="text-base mb-5"
           style={{ color: 'rgba(245,247,250,0.78)', lineHeight: 1.55 }}
         >
-          {coachInsight.body}
+          {analystInsight.body}
         </p>
         <div
           className="rounded-xl p-5"
@@ -104,7 +104,7 @@ export default function CamaProof() {
             SUGGESTED FOLLOWUP
           </div>
           <p className="text-sm" style={{ color: 'rgba(245,247,250,0.84)', lineHeight: 1.55 }}>
-            {coachInsight.suggestedFollowup}
+            {analystInsight.suggestedFollowup}
           </p>
         </div>
         <div className="mt-5 flex items-center gap-2 flex-wrap">
@@ -315,7 +315,7 @@ export default function CamaProof() {
         <p className="text-sm mb-3" style={{ color: 'rgba(245,247,250,0.84)', lineHeight: 1.6 }}>
           This proof layer demonstrates how approved coaching and body-composition data could be
           converted into persistent memory records, retrieved across time, and surfaced as
-          coach-support insights — with every claim auditable down to the source memory.
+          analyst-support insights — with every claim auditable down to the source memory.
         </p>
         <p className="text-sm" style={{ color: 'rgba(245,247,250,0.66)', lineHeight: 1.6 }}>
           No Kalos private data was used. Data ingestion, consent, governance, and security review

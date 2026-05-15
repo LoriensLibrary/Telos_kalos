@@ -2,7 +2,7 @@ import { MEMBER_SCHEDULE } from '../../data/schedule';
 
 const typeMeta: Record<string, { color: string; chip: string; lbl: string }> = {
   scan: { color: 'var(--ac)', chip: 'chip-ac', lbl: 'DEXA SCAN' },
-  coach: { color: 'var(--cy)', chip: 'chip-cy', lbl: 'COACH SESSION' },
+  analyst: { color: 'var(--cy)', chip: 'chip-cy', lbl: 'ANALYST SESSION' },
   recovery: { color: 'var(--purple)', chip: 'chip-pur', lbl: 'RECOVERY' },
   class: { color: 'var(--ac-b)', chip: 'chip-ac', lbl: 'TRAINING' },
   intake: { color: 'var(--warn)', chip: 'chip-warn', lbl: 'INTAKE' },
@@ -30,7 +30,7 @@ export default function Schedule() {
             Everything Maya has on the calendar.
           </h2>
           <p className="text-sm mb-6" style={{ color: 'var(--ink-s)' }}>
-            Coach sessions, the next DEXA, recovery suite, and training sit in one place. Add or move anything from
+            Analyst sessions, the next DEXA, recovery suite, and training sit in one place. Add or move anything from
             here.
           </p>
 
@@ -85,7 +85,7 @@ export default function Schedule() {
           <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>NEXT UP</div>
           <div className="mono num text-3xl mb-1">21h</div>
           <div className="text-sm mb-2" style={{ color: 'var(--ink-s)' }}>Tue · May 12 · 09:00</div>
-          <div className="text-base mb-4" style={{ fontWeight: 500 }}>Coach session · James Wei</div>
+          <div className="text-base mb-4" style={{ fontWeight: 500 }}>Analyst session · James Wei</div>
           <p className="text-xs mb-4" style={{ color: 'var(--ink-s)' }}>
             DEXA #6 review · scan #7 prep · adjustment to the minimum-effective block through 5/13.
           </p>
@@ -100,7 +100,7 @@ export default function Schedule() {
           <p className="text-xs mb-4" style={{ color: 'var(--ink-s)' }}>Add to your week.</p>
           <div className="space-y-2">
             {[
-              { d: 'Thu · May 14', t: '10:00', n: 'Async coach check-in', loc: 'Telos app' },
+              { d: 'Thu · May 14', t: '10:00', n: 'Async analyst check-in', loc: 'Telos app' },
               { d: 'Fri · May 15', t: '15:30', n: 'DEXA add-on scan', loc: 'SF studio' },
               { d: 'Sat · May 16', t: '11:00', n: 'Nutrition deep-dive', loc: 'Telos app' },
               { d: 'Mon · May 18', t: '09:00', n: 'Program review · 30m', loc: 'Telos app' },
@@ -124,7 +124,7 @@ export default function Schedule() {
         <div className="glass p-6">
           <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>YOUR ACCESS</div>
           <p className="text-sm" style={{ color: 'var(--ink-s)' }}>
-            24/7 app + coach access. In-person DEXA scans by appointment at SF, Palo Alto, or Campbell.
+            24/7 app + analyst access. In-person DEXA scans by appointment at SF, Palo Alto, or Campbell.
           </p>
           <div className="lbl mt-4 mb-2">PRIMARY STUDIO</div>
           <div className="text-sm">San Francisco · 98a Battery St</div>
