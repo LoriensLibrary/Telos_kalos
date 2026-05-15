@@ -1,7 +1,7 @@
 export interface ScanPoint { label: string; fat: number; lean: number; }
 export interface AdherencePoint { label: string; val: number; color: string; }
 export interface Client {
-  id: string; name: string; init: string; status: 'on-track' | 'plateau' | 'flagged';
+  id: string; name: string; init: string; status: 'on-track' | 'plateau' | 'flagged' | 'new';
   goals: string[]; analyst: string;
   triangle: [number, number, number]; triProj: [number, number, number];
   scans: ScanPoint[];

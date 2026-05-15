@@ -640,7 +640,20 @@ function CaseloadView({ onOpen }: { onOpen: (id: string) => void }) {
                 </div>
                 <div>
                   <div className="text-sm" style={{ fontWeight: 500 }}>{x.name}</div>
-                  <span className={`chip ${x.status === 'flagged' ? 'chip-warn' : x.status === 'plateau' ? '' : 'chip-ac'}`} style={{ marginTop: 4 }}>{x.status}</span>
+                  <span
+                    className={`chip ${
+                      x.status === 'flagged'
+                        ? 'chip-warn'
+                        : x.status === 'plateau'
+                        ? ''
+                        : x.status === 'new'
+                        ? 'chip-cy'
+                        : 'chip-ac'
+                    }`}
+                    style={{ marginTop: 4 }}
+                  >
+                    {x.status}
+                  </span>
                 </div>
               </div>
               <div className="mb-3"><DEXAChart data={x.scans} height={80} /></div>
@@ -715,7 +728,19 @@ function MemberDetail({ client: c, onBack }: { client: typeof CLIENTS[number]; o
         <div>
           <div className="text-xl" style={{ fontWeight: 600 }}>{c.name}</div>
           <div className="flex items-center gap-2 mt-1">
-            <span className={`chip ${c.status === 'flagged' ? 'chip-warn' : c.status === 'plateau' ? '' : 'chip-ac'}`}>{c.status}</span>
+            <span
+              className={`chip ${
+                c.status === 'flagged'
+                  ? 'chip-warn'
+                  : c.status === 'plateau'
+                  ? ''
+                  : c.status === 'new'
+                  ? 'chip-cy'
+                  : 'chip-ac'
+              }`}
+            >
+              {c.status}
+            </span>
             <span className="lbl">NEXT: {c.next}</span>
           </div>
         </div>
