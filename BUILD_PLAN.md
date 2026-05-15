@@ -44,9 +44,122 @@ This is the build I'd propose on day-one of the role, not a sales doc. Timelines
 
 ---
 
+## Phase 0.5 · Existing-app integration & cutover plan (runs in parallel with Phase 0)
+
+**Goal:** Telos doesn't double Kalos's source of truth. Members and analysts experience one system, not two.
+
+Kalos has a member area on livekalos.com today. Telos has to integrate with what exists, not replace it overnight. The right shape is a **gradual cutover** with a dual-read / single-write period, not a flag day.
+
+**Sequence**
+
+1. **Week 1 — discovery** (no code yet). Read access to staging DB, schema doc, existing API contracts. Identify which entities Telos owns vs. mirrors:
+   - **Telos owns:** `dexa_scans`, `message_drafts`, `session_briefs`, `physiological_signal`, `audit_log` (Phase 4)
+   - **Kalos already owns:** `members` (auth + profile + payment), `analysts` (employment + scheduling), `appointments`
+   - **Shared:** `sessions` (Kalos's calendar = source of truth; Telos reads it, writes brief metadata to its own table)
+2. **Week 2-3 — read-only mirror.** Telos reads from Kalos's existing DB via a thin adapter (`packages/kalos-adapter`). Member + analyst tables are read-only from Telos's POV. No Telos UI surfaces are member-facing yet.
+3. **Week 4-6 — Telos-owned tables go live.** Members can see DEXA scans + log meals/weight in Telos. Kalos's existing member area continues to work; both surfaces show the same scan data because Telos is the new source of truth for `dexa_scans`.
+4. **Week 7+ — analyst-side surfaces ship to internal team only first** (5-10 analysts). 2-week soak before opening to all.
+5. **Week 12 — sunset Kalos's old DEXA/scan UI** if Telos has full coverage. Members redirect to Telos.
+
+**Rollback plan**
+
+Every Telos feature ships behind a per-member feature flag (LaunchDarkly or simpler home-grown). If Telos's DEXA view breaks, the member silently falls back to Kalos's existing view. The flag is per-feature, per-cohort — we never have to choose between "all in" and "all out."
+
+**What I'd need from the existing-app team in week 1**
+
+- Read access to staging Postgres (or SQL Server — TBD which Kalos uses for member data)
+- Current member auth flow walkthrough (Telos must integrate with the same session, not double-prompt for login)
+- Schema doc for `members`, `analysts`, `appointments` — even if it's just a screenshot of the ERD
+- The contact who owns the existing app's deploy process so changes coordinate
+
+**Risk**
+
+The single biggest integration risk is **doubling the source of truth on member identity.** If Telos creates its own `members` table that drifts from Kalos's, audit becomes impossible. Mitigation: Telos's `members` table is a **denormalized read cache** with FK to Kalos's canonical member ID. Writes go to Kalos's app; Telos receives change events via webhook or scheduled sync.
+
+**Deliverable:** an explicit RACI document (or whatever Kalos uses) for who owns what during the dual-write period, plus the per-feature flag dashboard so Harsh/Callum can see what's live to which cohort at any time.
+
+---
+
 ## Phase 1 · Member-side MVP, real data (weeks 3–6)
 
 **Goal:** members can log in, see their DEXA history, log meals + weight, see their analyst.
+
+### Data model (Phase 1–2 production target)
+
+```mermaid
+erDiagram
+    members ||--o{ dexa_scans : has
+    members ||--o{ message_drafts : receives
+    members ||--o{ weight_logs : tracks
+    members ||--o{ food_log_entries : logs
+    members ||--o{ programs : assigned
+    members ||--o{ goals : sets
+    members ||--o{ sessions : attends
+    analysts ||--o{ members : manages
+    analysts ||--o{ message_drafts : reviews
+    analysts ||--o{ session_briefs : reads
+    sessions ||--|| session_briefs : "AI-generated 24h before"
+    message_drafts ||--o{ audit_log : "approve/edit/decline"
+    dexa_scans ||--|| scan_results : "expanded body comp"
+    programs ||--o{ protocol_citations : "cites Kalos Standards"
+
+    members {
+        uuid id PK
+        text name
+        text email "FK to Kalos auth"
+        uuid analyst_id FK
+        text status "on-track|plateau|flagged|new"
+        jsonb goals
+    }
+    dexa_scans {
+        uuid id PK
+        uuid member_id FK
+        int scan_number
+        date scan_date
+        real body_fat_pct
+        real lean_mass_lb
+        real visceral_fat_lb
+        jsonb segments "head/arms/trunk/legs"
+        text analyst_note
+    }
+    message_drafts {
+        uuid id PK
+        uuid member_id FK
+        uuid analyst_id FK
+        text trigger
+        text body
+        text state "pending|approved|edited|declined"
+        bool is_live "static seed vs Claude-generated"
+        text model
+        int input_tokens
+        int output_tokens
+        text edited_body
+        timestamptz decision_at
+    }
+    sessions {
+        uuid id PK
+        uuid member_id FK
+        uuid analyst_id FK
+        timestamptz starts_at
+        text type "DEXA|check-in|intake"
+        text status "scheduled|done|cancelled"
+    }
+    audit_log {
+        uuid id PK
+        uuid actor_id "analyst or system"
+        text action
+        text entity_type
+        uuid entity_id
+        jsonb diff
+        timestamptz at
+    }
+```
+
+**What's already shipped in this prototype:** `members`, `dexa_scans`, `message_drafts` (with the live-vs-seed + token-meta + audit columns shown above) all live in Neon Postgres, queried via Drizzle through the Hono REST API at `/api/*`. Schema files: [`db/schema.ts`](./db/schema.ts).
+
+**What this Phase 1 plan adds:** `analysts`, `sessions`, `session_briefs`, `weight_logs`, `food_log_entries`, `programs`, `goals`, `protocol_citations`, `audit_log` — and proper auth-mapped FKs to Kalos's existing member identity (see Phase 0.5 above).
+
+### Endpoints + delivery
 
 - Database schema: `members`, `analysts`, `dexa_scans`, `scan_results`, `programs`, `weight_logs`, `food_log_entries`, `goals`
 - DEXA scan ingestion via CSV upload (analyst uploads after scan). Machine-direct integration deferred to Phase 5.
@@ -225,6 +338,24 @@ Before writing code, four conversations:
 4. **With whoever owns Kalos's current data infrastructure** — what schema does the existing app use, what's the migration path, what's the risk of doubling the source of truth
 
 That research changes Phase 1 and 2 ordering, possibly significantly. The plan above is my prior; the first week's job is updating that prior.
+
+---
+
+## What this plan does NOT solve
+
+Explicit scope boundaries so reviewers know what's intentionally out vs. accidentally missing:
+
+- **Compensation, billing, payment** — Kalos already has these systems. Telos doesn't replace them; member payment status is read from Kalos's app via the integration adapter (Phase 0.5).
+- **Marketing site** — livekalos.com stays separate. Telos is the in-product experience (member app + analyst Performance Studio), not the public-facing site.
+- **Analyst hiring funnel** — Kalos's existing recruiting process. Out of scope.
+- **Member acquisition / referrals** — handled by Kalos marketing. Telos can surface referral attribution as a metric in the analyst dashboard, but doesn't drive acquisition.
+- **Lab integrations beyond DEXA** — bloodwork, sleep studies, gut microbiome panels are roadmap conversations. Not in this plan because they each need their own data-model + consent thinking.
+- **Telehealth video sessions** — would be a separate Phase 8 if Kalos wants it. Telos is async-first by design (the AI continuity layer between scans, not the live-session tool).
+- **EHR / clinical export** — if Kalos partners with a primary-care provider or insurance plan in the future, exporting member data to a clinical EHR is a distinct compliance project. Not scoped here because it changes the privacy posture significantly (Phase 4 → Phase 7 work compounds).
+- **Member-to-member social features** — cohort comparisons, peer challenges, leaderboards. Could fit later but actively avoided in this plan because they conflict with Kalos's "every member's plan is individual" positioning.
+- **Hardware** — no plans for Kalos-branded scales, BLE-tagged equipment, in-clinic kiosks, etc. Phase 6 mobile reads from existing wearables; that's the hardware story.
+
+If Kalos decides any of the above belongs in Telos, each is a scoping conversation that bumps timelines proportionally — none are "small additions."
 
 ---
 
