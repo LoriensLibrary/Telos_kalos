@@ -1,5 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { db } from '../db/client';
+import { messageDrafts } from '../db/schema';
 
 /**
  * /api/draft-message — live AI draft generation for the Performance AI Inbox.
@@ -167,6 +169,32 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         outputTokens: completion.usage.output_tokens,
       },
     };
+
+    // Persist the live draft to Postgres so it survives reloads + can be
+    // approved/edited/declined through the same /api/drafts/:id/* endpoints
+    // that the static seeds use. DB write must not break the response if it
+    // fails — the analyst still sees the draft, we just don't persist it.
+    try {
+      await db.insert(messageDrafts).values({
+        id: response.id,
+        memberId: null,
+        memberName: response.member,
+        init: response.init,
+        draftedAt: response.draftedAt,
+        trigger: response.trigger,
+        body: response.body,
+        conf: response.conf,
+        source: response.source,
+        state: 'pending',
+        isLive: 1,
+        model: response.meta.model,
+        inputTokens: response.meta.inputTokens,
+        outputTokens: response.meta.outputTokens,
+      });
+    } catch (dbErr) {
+      // Non-fatal — log to function output, ship the draft anyway
+      console.error('Failed to persist live draft to Postgres:', dbErr);
+    }
 
     return res.status(200).json(response);
   } catch (err) {

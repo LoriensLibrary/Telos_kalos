@@ -203,3 +203,73 @@ export async function getBriefForSession(sessionId: string): Promise<AnalystBrie
     confidence: 'high',
   };
 }
+
+/* ============================ LIVE BACKEND (Phase 2) ============================
+ *
+ * These helpers call the real Hono REST API at /api/* (Postgres-backed via
+ * Neon + Drizzle). Used by AI Inbox today; other surfaces will migrate in
+ * subsequent passes. Mock helpers above remain so existing tests + unmigrated
+ * callers keep working — this is how production migrations actually happen,
+ * progressively, not in one bang.
+ */
+
+/** Shape returned by GET /api/drafts — mirrors the Postgres `message_drafts` row. */
+export interface BackendDraft {
+  id: string;
+  memberId: string | null;
+  memberName: string;
+  init: string;
+  draftedAt: string;
+  trigger: string;
+  body: string;
+  conf: 'high' | 'med' | 'low';
+  source: string;
+  state: 'pending' | 'approved' | 'edited' | 'declined';
+  isLive: number;
+  model: string | null;
+  inputTokens: number | null;
+  outputTokens: number | null;
+  editedBody: string | null;
+  decisionAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export async function liveListDrafts(stateFilter?: BackendDraft['state']): Promise<BackendDraft[]> {
+  const url = stateFilter ? `/api/drafts?state=${stateFilter}` : '/api/drafts';
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`liveListDrafts failed: ${res.status}`);
+  return res.json();
+}
+
+export async function liveApproveDraft(id: string): Promise<BackendDraft> {
+  const res = await fetch(`/api/drafts/${encodeURIComponent(id)}/approve`, { method: 'POST' });
+  if (!res.ok) throw new Error(`liveApproveDraft failed: ${res.status}`);
+  return res.json();
+}
+
+export async function liveEditDraft(id: string, body: string): Promise<BackendDraft> {
+  const res = await fetch(`/api/drafts/${encodeURIComponent(id)}/edit`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ body }),
+  });
+  if (!res.ok) throw new Error(`liveEditDraft failed: ${res.status}`);
+  return res.json();
+}
+
+export async function liveDeclineDraft(id: string): Promise<BackendDraft> {
+  const res = await fetch(`/api/drafts/${encodeURIComponent(id)}/decline`, { method: 'POST' });
+  if (!res.ok) throw new Error(`liveDeclineDraft failed: ${res.status}`);
+  return res.json();
+}
+
+/** Health check — used by `GET /api/health` to verify DB connectivity. */
+export async function liveHealth(): Promise<{ ok: boolean; members?: number; timestamp?: string; error?: string }> {
+  try {
+    const res = await fetch('/api/health');
+    return res.json();
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : 'unknown' };
+  }
+}

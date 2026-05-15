@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CLIENTS, CASELOAD } from '../data/clients';
 import { DRAFTS, type DraftMsg } from '../data/chat';
 import { TODAY_SCHEDULE, PROTOCOLS, DAY_BRIEF, type Session } from '../data/day';
@@ -8,7 +8,14 @@ import TriangleChart from '../components/charts/TriangleChart';
 import Tabs from '../components/ui/Tabs';
 import Feedback from '../components/ui/Feedback';
 import AnalystPerformance from '../components/ui/AnalystPerformance';
-import { generateDraft, type LiveDraft } from '../api/draftClient';
+import { generateDraft } from '../api/draftClient';
+import {
+  liveListDrafts,
+  liveApproveDraft,
+  liveEditDraft,
+  liveDeclineDraft,
+  type BackendDraft,
+} from '../api/telosApi';
 
 /**
  * Pre-set scenarios for live AI draft generation. Each represents a different
@@ -341,21 +348,75 @@ function useNotes(id: string, init?: string): [string, (v: string) => void] {
 
 /* ============================ INBOX VIEW ============================ */
 
+/**
+ * Convert a static DraftMsg into BackendDraft shape. Used as the dev-mode
+ * fallback when /api/drafts isn't reachable (vite dev doesn't run /api).
+ */
+function staticToBackend(d: DraftMsg): BackendDraft {
+  return {
+    id: d.id,
+    memberId: d.member.toLowerCase().split(' ')[0],
+    memberName: d.member,
+    init: d.init,
+    draftedAt: d.draftedAt,
+    trigger: d.trigger,
+    body: d.body,
+    conf: d.conf,
+    source: d.source,
+    state: 'pending',
+    isLive: 0,
+    model: null,
+    inputTokens: null,
+    outputTokens: null,
+    editedBody: null,
+    decisionAt: null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+}
+
 function InboxView() {
-  const [states, setStates] = useState<Record<string, DraftState>>({});
+  // Drafts come from /api/drafts (Phase 2: Postgres-backed via Hono +
+  // Drizzle). Initial value `null` = "still loading"; empty array = "loaded,
+  // no drafts"; populated = ready. Fallback path on fetch failure uses the
+  // static seeds so the demo doesn't break in pure-vite dev mode.
+  const [drafts, setDrafts] = useState<BackendDraft[] | null>(null);
+  const [usingFallback, setUsingFallback] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
   const [edits, setEdits] = useState<Record<string, string>>({});
-  const [liveDrafts, setLiveDrafts] = useState<LiveDraft[]>([]);
   /** Tracks which LIVE_SCENARIOS index produced each live draft, so the per-card
    *  Regenerate button can re-call Claude with the *same* scenario. */
   const [scenarioByDraft, setScenarioByDraft] = useState<Record<string, number>>({});
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const set = (id: string, s: DraftState) => setStates((p) => ({ ...p, [id]: s }));
+  // Initial load from backend
+  useEffect(() => {
+    liveListDrafts()
+      .then((data) => {
+        setDrafts(data);
+        setUsingFallback(false);
+      })
+      .catch(() => {
+        // Backend unreachable (e.g., vite dev). Fall back to static seeds so
+        // the UI still works for local development and code review.
+        setDrafts(DRAFTS.map(staticToBackend));
+        setUsingFallback(true);
+      });
+  }, []);
 
-  const allDrafts: DraftMsg[] = [...liveDrafts, ...DRAFTS];
-  const pending = allDrafts.filter((d) => (states[d.id] ?? 'pending') === 'pending').length;
+  const refetchDrafts = async () => {
+    try {
+      const data = await liveListDrafts();
+      setDrafts(data);
+      setUsingFallback(false);
+    } catch {
+      // Silent — keep current state if refetch fails
+    }
+  };
+
+  const liveDraftCount = drafts ? drafts.filter((d) => d.isLive === 1).length : 0;
+  const pending = drafts ? drafts.filter((d) => d.state === 'pending').length : 0;
 
   const runGenerate = async (scenarioIndex: number) => {
     setGenerating(true);
@@ -368,7 +429,9 @@ function InboxView() {
       metrics: scenario.metrics,
     });
     if (result.state === 'success') {
-      setLiveDrafts((prev) => [result.draft, ...prev]);
+      // Server already persisted the draft — refetch to pull it in with
+      // canonical shape (includes Postgres timestamps + persisted state).
+      await refetchDrafts();
       setScenarioByDraft((prev) => ({ ...prev, [result.draft.id]: scenarioIndex }));
     } else {
       const friendly =
@@ -382,18 +445,60 @@ function InboxView() {
     setGenerating(false);
   };
 
-  const handleGenerate = () => runGenerate(liveDrafts.length % LIVE_SCENARIOS.length);
+  const handleGenerate = () => runGenerate(liveDraftCount % LIVE_SCENARIOS.length);
 
   const handleRegenerate = (draftId: string) => {
     const idx = scenarioByDraft[draftId] ?? 0;
-    // Drop the old draft + its scenario mapping, then re-run with the same scenario.
-    setLiveDrafts((prev) => prev.filter((d) => d.id !== draftId));
+    // Optimistically drop locally, then re-run. The server still has the old
+    // row but the analyst won't see it after refetch (decline via the same
+    // endpoint flow would be more correct for a real product; this is a demo
+    // affordance).
+    setDrafts((prev) => prev?.filter((d) => d.id !== draftId) ?? null);
     setScenarioByDraft((prev) => {
       const next = { ...prev };
       delete next[draftId];
       return next;
     });
     void runGenerate(idx);
+  };
+
+  const handleApprove = async (id: string, isEdit: boolean) => {
+    if (usingFallback) {
+      // Dev/no-backend mode: mutate local state directly
+      setDrafts((prev) =>
+        prev?.map((d) =>
+          d.id === id
+            ? { ...d, state: isEdit ? 'edited' : 'approved', editedBody: isEdit ? edits[id] ?? null : d.editedBody }
+            : d,
+        ) ?? null,
+      );
+      setEditing(null);
+      return;
+    }
+    try {
+      const updated = isEdit
+        ? await liveEditDraft(id, edits[id] ?? '')
+        : await liveApproveDraft(id);
+      setDrafts((prev) => prev?.map((d) => (d.id === id ? updated : d)) ?? null);
+      setEditing(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to approve');
+    }
+  };
+
+  const handleDecline = async (id: string) => {
+    if (usingFallback) {
+      setDrafts((prev) =>
+        prev?.map((d) => (d.id === id ? { ...d, state: 'declined' } : d)) ?? null,
+      );
+      return;
+    }
+    try {
+      const updated = await liveDeclineDraft(id);
+      setDrafts((prev) => prev?.map((d) => (d.id === id ? updated : d)) ?? null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to decline');
+    }
   };
 
   return (
@@ -422,6 +527,21 @@ function InboxView() {
         </div>
       </div>
 
+      {usingFallback && (
+        <div
+          className="mb-5 p-4 rounded-xl text-sm"
+          role="status"
+          style={{
+            background: 'color-mix(in srgb, var(--cy) 6%, transparent)',
+            border: '1px solid color-mix(in srgb, var(--cy) 24%, transparent)',
+            color: 'rgba(245,247,250,0.78)',
+          }}
+        >
+          <span className="lbl mr-2" style={{ color: 'var(--cy)' }}>DEV MODE</span>
+          Backend unreachable — showing static seed drafts. State changes won't persist. Live deployment uses Postgres (Neon) via the Hono REST API.
+        </div>
+      )}
+
       {error && (
         <div
           className="mb-5 p-4 rounded-xl text-sm"
@@ -439,24 +559,47 @@ function InboxView() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {generating && <SkeletonDraftCard />}
-        {allDrafts.map((d) => {
-          const isLive = 'live' in d && (d as LiveDraft).live === true;
-          return (
-            <DraftCard
-              key={d.id}
-              d={d}
-              isLive={isLive}
-              state={states[d.id] ?? 'pending'}
-              editing={editing === d.id}
-              body={edits[d.id] ?? d.body}
-              onApprove={() => { set(d.id, editing === d.id ? 'edited' : 'approved'); setEditing(null); }}
-              onEdit={() => setEditing(editing === d.id ? null : d.id)}
-              onDecline={() => set(d.id, 'declined')}
-              onBodyChange={(v) => setEdits((p) => ({ ...p, [d.id]: v }))}
-              onRegenerate={isLive ? () => handleRegenerate(d.id) : undefined}
-            />
-          );
-        })}
+        {drafts === null ? (
+          // Initial load
+          <>
+            <SkeletonDraftCard />
+            <SkeletonDraftCard />
+            <SkeletonDraftCard />
+          </>
+        ) : (
+          drafts.map((d) => {
+            const isLive = d.isLive === 1;
+            const draftMsg: DraftMsg = {
+              id: d.id,
+              member: d.memberName,
+              init: d.init,
+              draftedAt: d.draftedAt,
+              trigger: d.trigger,
+              body: d.editedBody ?? d.body,
+              conf: d.conf,
+              source: d.source,
+            };
+            const meta = isLive && d.model && d.inputTokens !== null && d.outputTokens !== null
+              ? { model: d.model, inputTokens: d.inputTokens, outputTokens: d.outputTokens }
+              : undefined;
+            return (
+              <DraftCard
+                key={d.id}
+                d={draftMsg}
+                isLive={isLive}
+                liveMeta={meta}
+                state={d.state}
+                editing={editing === d.id}
+                body={edits[d.id] ?? draftMsg.body}
+                onApprove={() => handleApprove(d.id, editing === d.id)}
+                onEdit={() => setEditing(editing === d.id ? null : d.id)}
+                onDecline={() => handleDecline(d.id)}
+                onBodyChange={(v) => setEdits((p) => ({ ...p, [d.id]: v }))}
+                onRegenerate={isLive && d.state === 'pending' ? () => handleRegenerate(d.id) : undefined}
+              />
+            );
+          })
+        )}
       </div>
     </div>
   );
@@ -505,12 +648,12 @@ function SkeletonDraftCard() {
   );
 }
 
-function DraftCard({ d, state, editing, body, isLive, onApprove, onEdit, onDecline, onBodyChange, onRegenerate }: {
+function DraftCard({ d, state, editing, body, isLive, liveMeta, onApprove, onEdit, onDecline, onBodyChange, onRegenerate }: {
   d: DraftMsg; state: DraftState; editing: boolean; body: string; isLive?: boolean;
+  liveMeta?: { model: string; inputTokens: number; outputTokens: number };
   onApprove: () => void; onEdit: () => void; onDecline: () => void; onBodyChange: (v: string) => void;
   onRegenerate?: () => void;
 }) {
-  const liveMeta = isLive && 'meta' in d ? (d as LiveDraft).meta : undefined;
   return (
     <div
       className="glass-deep p-6"

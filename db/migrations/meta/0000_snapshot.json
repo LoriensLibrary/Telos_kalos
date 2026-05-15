@@ -1,0 +1,403 @@
+{
+  "id": "e7c0eee0-b2da-4b5a-a49f-22da217df09f",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.dexa_scans": {
+      "name": "dexa_scans",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "member_id": {
+          "name": "member_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "scan_number": {
+          "name": "scan_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "label": {
+          "name": "label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fat": {
+          "name": "fat",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lean": {
+          "name": "lean",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "dexa_scans_member_id_members_id_fk": {
+          "name": "dexa_scans_member_id_members_id_fk",
+          "tableFrom": "dexa_scans",
+          "tableTo": "members",
+          "columnsFrom": [
+            "member_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.members": {
+      "name": "members",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "init": {
+          "name": "init",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "goals": {
+          "name": "goals",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "analyst": {
+          "name": "analyst",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "triangle": {
+          "name": "triangle",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "triangle_proj": {
+          "name": "triangle_proj",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "met_fat": {
+          "name": "met_fat",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "met_fat_d": {
+          "name": "met_fat_d",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "met_lean": {
+          "name": "met_lean",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "met_lean_d": {
+          "name": "met_lean_d",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "met_visc": {
+          "name": "met_visc",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "met_visc_d": {
+          "name": "met_visc_d",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wear_hrv": {
+          "name": "wear_hrv",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wear_sleep": {
+          "name": "wear_sleep",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wear_recov": {
+          "name": "wear_recov",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "wear_glu": {
+          "name": "wear_glu",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "adherence": {
+          "name": "adherence",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "next_label": {
+          "name": "next_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sug_change": {
+          "name": "sug_change",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sug_reason": {
+          "name": "sug_reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sug_conf": {
+          "name": "sug_conf",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "flag": {
+          "name": "flag",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "brief_when": {
+          "name": "brief_when",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "brief_rows": {
+          "name": "brief_rows",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "brief_pts": {
+          "name": "brief_pts",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.message_drafts": {
+      "name": "message_drafts",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "member_id": {
+          "name": "member_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "member_name": {
+          "name": "member_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "init": {
+          "name": "init",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "drafted_at": {
+          "name": "drafted_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trigger": {
+          "name": "trigger",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "body": {
+          "name": "body",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "conf": {
+          "name": "conf",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source": {
+          "name": "source",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "state": {
+          "name": "state",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending'"
+        },
+        "is_live": {
+          "name": "is_live",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "model": {
+          "name": "model",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "input_tokens": {
+          "name": "input_tokens",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "output_tokens": {
+          "name": "output_tokens",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "edited_body": {
+          "name": "edited_body",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "decision_at": {
+          "name": "decision_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

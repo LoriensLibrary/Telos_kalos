@@ -31,3 +31,7 @@ Kalos.zip
 .env
 .env.local
 .env.*.local
+
+# Tool-vendor metadata
+.agents/
+skills-lock.json
