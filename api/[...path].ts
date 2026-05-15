@@ -22,10 +22,34 @@
 import { Hono } from 'hono';
 import { handle } from 'hono/vercel';
 import { eq } from 'drizzle-orm';
-import { db } from '../db/client';
+import { db, DatabaseConfigError } from '../db/client';
 import { dexaScans, members, messageDrafts } from '../db/schema';
 
+/** Vercel Edge runtime — required for hono/vercel's `handle()` and works
+ *  with @neondatabase/serverless's HTTP-based driver. */
+export const config = { runtime: 'edge' };
+
 const app = new Hono().basePath('/api');
+
+// Global error handler — catches DatabaseConfigError + any other thrown
+// errors and returns a structured JSON 5xx response instead of letting
+// Vercel surface a FUNCTION_INVOCATION_FAILED page.
+app.onError((err, c) => {
+  if (err instanceof DatabaseConfigError) {
+    return c.json(
+      {
+        error: 'Database not configured',
+        detail: err.message,
+        hint: 'Add DATABASE_URL to Vercel project Environment Variables, then redeploy.',
+      },
+      503,
+    );
+  }
+  return c.json(
+    { error: err.message ?? 'Internal server error' },
+    500,
+  );
+});
 
 // ─── members ────────────────────────────────────────────────────────────────
 
