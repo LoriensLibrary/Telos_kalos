@@ -341,7 +341,7 @@ function SessionDetail({ s }: { s: Session }) {
   );
 }
 
-function useNotes(id: string, init?: string): [string, (v: string) => void] {
+function useNotes(_id: string, init?: string): [string, (v: string) => void] {
   const [val, setVal] = useState(init ?? '');
   return [val, setVal];
 }
