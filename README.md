@@ -23,7 +23,7 @@ If you want to evaluate this without poking around blindly, here's the fastest p
 
 2. **Member tab → Telos** — read Maya's between-scan chat. Type a reply mentioning *"protein"* or *"sleep"* and watch it respond contextually. *(~30 sec)*
 
-3. **Performance tab → AI Inbox** — three reviewable draft messages for James, awaiting analyst approval. Click **Approve & Send** on one to see the state machine. This is the direct prototype of work-stream #3. *(~20 sec)*
+3. **Performance tab → AI Inbox** — three reviewable draft messages for James, awaiting analyst approval. Click **Approve & Send** on one to see the state machine. Then click **✨ Generate Live Draft** at the top — that calls Claude Haiku 4.5 via the `/api/draft-message` serverless function and returns a fresh, real-time AI-drafted message in the same shape as the static seeds, ready for the same approve / edit / decline flow. This is work-stream #3 *actually working*, not mocked. *(~30 sec)*
 
 4. **CAMA Proof tab** — the strongest single artifact. A coach insight, the patterns it was derived from, and the underlying memory records that produced those patterns. Click any pattern chip to see exactly which memories CAMA associated — no claim is opaque. *(~45 sec)*
 
@@ -76,6 +76,40 @@ Built in Kalos's own stack and design system:
 - **Compensation tracker dollar amounts show "$ —"** — the feature surface is there, synthetic dollars are not.
 - All member and cohort data is synthetic. A `LIVE DEMO` chip is visible in the header at all times.
 
+## Live AI draft generation
+
+The static AI Inbox seeds (Maya, Daniel, Priya) demonstrate the analyst-review state machine. The **✨ Generate Live Draft** button at the top of the AI Inbox does the live version: it calls the Anthropic Claude API server-side and returns a fresh draft in real time, in the same shape as the static seeds, ready for the same approve / edit / decline flow.
+
+**Architecture:**
+
+```
+React UI (InboxView)
+    ↓  POST /api/draft-message  { memberName, trigger, metrics, recentMessages? }
+Vercel serverless function (api/draft-message.ts)
+    ↓  Anthropic SDK · claude-haiku-4-5
+Claude API
+    ↓  structured JSON { body, conf, reasoning }
+Server response { id, member, init, draftedAt, body, conf, source, live: true, meta: {model, tokens} }
+    ↓
+UI prepends to drafts grid · LIVE · CLAUDE chip · same approve/edit/decline buttons
+```
+
+**Three pre-set scenarios** rotate per click — distinct from the static seeds so live drafts are visibly *new* alongside them:
+- *Sam K.* — first-week slip, tests "supportive accountability not strict correction"
+- *Jordan T.* — plateau despite 100% adherence, tests technical recommendation depth
+- *Alex M.* — disclosed work + family stress, tests tone-softening + minimum-effective protocol
+
+**System prompt** (excerpt) embeds the Kalos coaching principles: supportive accountability, pattern-not-text disclosure, no medical claims, defer to analyst judgment. Full prompt in [`api/draft-message.ts`](./api/draft-message.ts).
+
+**Setup for the live API:**
+
+1. `cp .env.example .env.local`
+2. Add an Anthropic API key from [console.anthropic.com](https://console.anthropic.com) to `.env.local`
+3. For local testing: `vercel dev` (the `/api` routes do not run under plain `vite`)
+4. For production: set `ANTHROPIC_API_KEY` in Vercel project → Settings → Environment Variables
+
+The frontend client (`src/api/draftClient.ts`) returns a discriminated union (never throws) and maps server errors to user-readable messaging — when the API key isn't configured, the analyst sees a clear "not configured on this deployment" notice instead of a crash.
+
 ## CAMA Proof Layer
 
 The hardest claim in this prototype is that AI memory of coaching context can be useful *and* auditable. The `/cama` page is the proof.
@@ -103,14 +137,15 @@ Telos is a **front-end product prototype** built with React 19, TypeScript, Vite
 - Typed React/Vite app structure with strict TypeScript (`tsc -b` clean, `eslint .` clean, `vite build` clean)
 - Domain types in [`src/types/`](./src/types) — `Member`, `DexaScan`, `AnalystBrief`, `MessageDraft`, `Session`, etc.
 - Mock API layer in [`src/api/`](./src/api) — async-typed boundaries so the UI never reaches into raw data files
-- Componentized member + analyst workflows (~25 components, 5 pages, 11 member tabs, 6 analyst tabs)
+- **Live AI draft generation** via Vercel serverless function ([`api/draft-message.ts`](./api/draft-message.ts)) calling Anthropic Claude Haiku 4.5 — real-time drafts in the same shape as the static seeds
+- Componentized member + analyst workflows (~25 components, 6 pages, 11 member tabs, 6 analyst tabs)
 - Synthetic DEXA, wearable, nutrition, and coaching data behind the API layer
-- Analyst review/approve/decline state machine for AI-assisted drafts
+- Analyst review/approve/decline state machine for AI-assisted drafts (works for both static seeds and live-generated)
 - Privacy-aware member disclosure pattern (`pages/DataArch.tsx`)
 - Theme system with 7 palettes + localStorage persistence + legacy-key migration
 - Mobile-responsive (375px through desktop)
 - Public GitHub repo + auto-deploy via Vercel on push to `main`
-- Vitest + React Testing Library set up with smoke + behavior tests
+- Vitest + React Testing Library set up with smoke + behavior tests (34 tests, 5 suites)
 
 **Production path (what shipping this for real would require):**
 

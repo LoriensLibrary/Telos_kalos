@@ -8,7 +8,7 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 export default defineConfig([
   globalIgnores(['dist']),
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ['src/**/*.{ts,tsx}'],
     extends: [
       js.configs.recommended,
       tseslint.configs.recommended,
@@ -17,6 +17,17 @@ export default defineConfig([
     ],
     languageOptions: {
       globals: globals.browser,
+    },
+  },
+  {
+    // Vercel serverless functions run in Node, not the browser.
+    files: ['api/**/*.ts'],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+    ],
+    languageOptions: {
+      globals: globals.node,
     },
   },
 ])

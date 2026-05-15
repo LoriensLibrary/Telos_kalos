@@ -26,3 +26,8 @@ Kalos.zip
 
 # Editor / agent local config
 .claude/
+
+# Local environment (never commit secrets)
+.env
+.env.local
+.env.*.local

@@ -8,6 +8,55 @@ import TriangleChart from '../components/charts/TriangleChart';
 import Tabs from '../components/ui/Tabs';
 import Feedback from '../components/ui/Feedback';
 import CoachPerformance from '../components/ui/CoachPerformance';
+import { generateDraft, type LiveDraft } from '../api/draftClient';
+
+/**
+ * Pre-set scenarios for live AI draft generation. Each represents a different
+ * coaching context (slip, plateau, stress disclosure) — distinct from the
+ * static seed drafts so live drafts are clearly *new* alongside them.
+ */
+interface LiveScenario {
+  member: string;
+  init: string;
+  trigger: string;
+  metrics: Record<string, string>;
+}
+
+const LIVE_SCENARIOS: LiveScenario[] = [
+  {
+    member: 'Sam K.',
+    init: 'S',
+    trigger: 'First 7 days: 2/5 lifts logged, no food entries, two missed check-ins',
+    metrics: {
+      adherence: '40%',
+      hrv: '52ms (baseline)',
+      lifts_logged: '2/5',
+      food_entries: '0',
+    },
+  },
+  {
+    member: 'Jordan T.',
+    init: 'J',
+    trigger: 'Scan #3: lean mass plateau despite 100% adherence and clean recovery. Member asked about advanced programming.',
+    metrics: {
+      adherence: '100% · 6 weeks',
+      lean_mass: '+0.4 lb (plateau)',
+      hrv: '68ms (clean)',
+      recovery: '88%',
+    },
+  },
+  {
+    member: 'Alex M.',
+    init: 'A',
+    trigger: 'Member disclosed work stress and family caregiving. HRV dropped 20%. Sleep averaging 5h. Wants to keep training schedule unchanged.',
+    metrics: {
+      adherence: '78%',
+      hrv: '38ms (↓ 20%)',
+      sleep: '5h 02m',
+      disclosed: 'high cognitive load, caregiving',
+    },
+  },
+];
 
 type DraftState = 'pending' | 'approved' | 'edited' | 'declined';
 
@@ -296,13 +345,42 @@ function InboxView() {
   const [states, setStates] = useState<Record<string, DraftState>>({});
   const [editing, setEditing] = useState<string | null>(null);
   const [edits, setEdits] = useState<Record<string, string>>({});
+  const [liveDrafts, setLiveDrafts] = useState<LiveDraft[]>([]);
+  const [generating, setGenerating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const set = (id: string, s: DraftState) => setStates((p) => ({ ...p, [id]: s }));
-  const pending = DRAFTS.filter((d) => (states[d.id] ?? 'pending') === 'pending').length;
+
+  const allDrafts: DraftMsg[] = [...liveDrafts, ...DRAFTS];
+  const pending = allDrafts.filter((d) => (states[d.id] ?? 'pending') === 'pending').length;
+
+  const handleGenerate = async () => {
+    setGenerating(true);
+    setError(null);
+    const scenario = LIVE_SCENARIOS[liveDrafts.length % LIVE_SCENARIOS.length];
+    const result = await generateDraft({
+      memberName: scenario.member,
+      memberInit: scenario.init,
+      trigger: scenario.trigger,
+      metrics: scenario.metrics,
+    });
+    if (result.state === 'success') {
+      setLiveDrafts((prev) => [result.draft, ...prev]);
+    } else {
+      const friendly =
+        result.error.kind === 'config'
+          ? 'Live drafting is not configured on this deployment yet (server-side API key missing).'
+          : result.error.kind === 'network'
+          ? 'Could not reach the drafting service. (Live drafts run only on the deployed Vercel build, not in local dev.)'
+          : result.error.message;
+      setError(friendly);
+    }
+    setGenerating(false);
+  };
 
   return (
     <div>
-      <div className="mb-6 flex items-end justify-between">
+      <div className="mb-6 flex items-end justify-between flex-wrap gap-4">
         <div>
           <div className="lbl mb-3" style={{ color: 'var(--cy)' }}>AI INBOX · DRAFTED MESSAGES</div>
           <h2 style={{ fontSize: 'clamp(1.6rem,2.5vw,2rem)', fontWeight: 300, lineHeight: 1.05 }}>
@@ -312,14 +390,41 @@ function InboxView() {
             Pattern-matched against 2,840+ coaching arcs (synthetic in this demo). Nothing sends without your approval.
           </p>
         </div>
-        <span className="chip chip-cy"><span className="dot dot-cy pulse" /> {pending} PENDING</span>
+        <div className="flex items-center gap-2 flex-wrap">
+          <button
+            onClick={handleGenerate}
+            disabled={generating}
+            className="btn-ac"
+            data-testid="generate-live-draft"
+            style={{ opacity: generating ? 0.6 : 1, cursor: generating ? 'wait' : 'pointer' }}
+          >
+            {generating ? 'Generating…' : '✨ Generate Live Draft'}
+          </button>
+          <span className="chip chip-cy"><span className="dot dot-cy pulse" /> {pending} PENDING</span>
+        </div>
       </div>
 
+      {error && (
+        <div
+          className="mb-5 p-4 rounded-xl text-sm"
+          role="alert"
+          style={{
+            background: 'color-mix(in srgb, var(--warn) 6%, transparent)',
+            border: '1px solid color-mix(in srgb, var(--warn) 24%, transparent)',
+            color: '#FFD9A0',
+          }}
+        >
+          <span className="lbl mr-2" style={{ color: 'var(--warn)' }}>HEADS UP</span>
+          {error}
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {DRAFTS.map((d) => (
+        {allDrafts.map((d) => (
           <DraftCard
             key={d.id}
             d={d}
+            isLive={'live' in d && (d as LiveDraft).live === true}
             state={states[d.id] ?? 'pending'}
             editing={editing === d.id}
             body={edits[d.id] ?? d.body}
@@ -334,13 +439,24 @@ function InboxView() {
   );
 }
 
-function DraftCard({ d, state, editing, body, onApprove, onEdit, onDecline, onBodyChange }: {
-  d: DraftMsg; state: DraftState; editing: boolean; body: string;
+function DraftCard({ d, state, editing, body, isLive, onApprove, onEdit, onDecline, onBodyChange }: {
+  d: DraftMsg; state: DraftState; editing: boolean; body: string; isLive?: boolean;
   onApprove: () => void; onEdit: () => void; onDecline: () => void; onBodyChange: (v: string) => void;
 }) {
   return (
-    <div className="glass-deep p-6">
-      <div className="flex items-start justify-between mb-4">
+    <div
+      className="glass-deep p-6"
+      style={
+        isLive
+          ? {
+              outline: '1px solid color-mix(in srgb, var(--ac) 40%, transparent)',
+              boxShadow: '0 0 32px color-mix(in srgb, var(--ac) 14%, transparent)',
+            }
+          : undefined
+      }
+      data-live={isLive ? 'true' : 'false'}
+    >
+      <div className="flex items-start justify-between mb-4 flex-wrap gap-2">
         <div className="flex items-center gap-3">
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center serif text-base"
@@ -357,10 +473,17 @@ function DraftCard({ d, state, editing, body, onApprove, onEdit, onDecline, onBo
             <div className="lbl mt-1" style={{ fontSize: 9 }}>DRAFTED {d.draftedAt}</div>
           </div>
         </div>
-        {state === 'pending' && <span className="chip chip-cy"><span className="dot dot-cy" /> PENDING</span>}
-        {state === 'approved' && <span className="chip chip-ac"><span className="dot dot-ac" /> SENT</span>}
-        {state === 'edited' && <span className="chip chip-ac"><span className="dot dot-ac" /> SENT · EDITED</span>}
-        {state === 'declined' && <span className="chip">DECLINED</span>}
+        <div className="flex items-center gap-2 flex-wrap">
+          {isLive && (
+            <span className="chip chip-ac" title="Generated live by Claude on demand">
+              <span className="dot dot-ac pulse" /> LIVE · CLAUDE
+            </span>
+          )}
+          {state === 'pending' && <span className="chip chip-cy"><span className="dot dot-cy" /> PENDING</span>}
+          {state === 'approved' && <span className="chip chip-ac"><span className="dot dot-ac" /> SENT</span>}
+          {state === 'edited' && <span className="chip chip-ac"><span className="dot dot-ac" /> SENT · EDITED</span>}
+          {state === 'declined' && <span className="chip">DECLINED</span>}
+        </div>
       </div>
 
       <div className="text-xs mb-4 px-3 py-2 rounded-lg" style={{ background: 'color-mix(in srgb, var(--cy) 6%, transparent)', border: '1px solid color-mix(in srgb, var(--cy) 18%, transparent)', color: 'var(--ink-s)' }}>
