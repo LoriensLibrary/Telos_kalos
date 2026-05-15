@@ -614,11 +614,18 @@ function CaseloadView({ onOpen }: { onOpen: (id: string) => void }) {
       ) : (
         <div className="grid grid-cols-3 gap-5">
           {visibleClients.map((x) => (
-            <div
+            <button
               key={x.id}
+              type="button"
               onClick={() => onOpen(x.id)}
-              className="glass p-6 cursor-pointer transition-colors"
-              style={{ borderColor: 'var(--line-s)' }}
+              className="glass p-6 text-left transition-all client-card"
+              data-testid={`caseload-client-${x.id}`}
+              aria-label={`Open ${x.name} profile`}
+              style={{
+                borderColor: 'var(--line-s)',
+                cursor: 'pointer',
+                width: '100%',
+              }}
             >
               <div className="flex items-center gap-3 mb-4">
                 <div
@@ -642,8 +649,18 @@ function CaseloadView({ onOpen }: { onOpen: (id: string) => void }) {
                 <div>LEAN {x.met.lean}</div>
                 <div>VISC {x.met.visc}</div>
               </div>
-              <div className="mt-3 text-xs" style={{ color: 'var(--ac-b)' }}>View full profile →</div>
-            </div>
+              <div
+                className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs"
+                style={{
+                  background: 'color-mix(in srgb, var(--ac) 12%, transparent)',
+                  border: '1px solid color-mix(in srgb, var(--ac) 28%, transparent)',
+                  color: 'var(--ac-b)',
+                  fontWeight: 500,
+                }}
+              >
+                Open full profile <span style={{ fontSize: 14, lineHeight: 1 }}>→</span>
+              </div>
+            </button>
           ))}
         </div>
       )}
