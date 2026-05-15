@@ -405,16 +405,6 @@ function InboxView() {
       });
   }, []);
 
-  const refetchDrafts = async () => {
-    try {
-      const data = await liveListDrafts();
-      setDrafts(data);
-      setUsingFallback(false);
-    } catch {
-      // Silent — keep current state if refetch fails
-    }
-  };
-
   const liveDraftCount = drafts ? drafts.filter((d) => d.isLive === 1).length : 0;
   const pending = drafts ? drafts.filter((d) => d.state === 'pending').length : 0;
 
@@ -429,10 +419,49 @@ function InboxView() {
       metrics: scenario.metrics,
     });
     if (result.state === 'success') {
-      // Server already persisted the draft — refetch to pull it in with
-      // canonical shape (includes Postgres timestamps + persisted state).
-      await refetchDrafts();
+      // Optimistically add the live draft to local state. The server may or
+      // may not have persisted it to Postgres — if DATABASE_URL isn't set on
+      // this deployment, the server's DB write silently fails (non-fatal by
+      // design) and the row won't appear in a refetch. Adding locally first
+      // means the analyst sees the draft regardless of DB state.
+      const nowIso = new Date().toISOString();
+      const optimistic: BackendDraft = {
+        id: result.draft.id,
+        memberId: null,
+        memberName: result.draft.member,
+        init: result.draft.init,
+        draftedAt: result.draft.draftedAt,
+        trigger: result.draft.trigger,
+        body: result.draft.body,
+        conf: result.draft.conf,
+        source: result.draft.source,
+        state: 'pending',
+        isLive: 1,
+        model: result.draft.meta?.model ?? null,
+        inputTokens: result.draft.meta?.inputTokens ?? null,
+        outputTokens: result.draft.meta?.outputTokens ?? null,
+        editedBody: null,
+        decisionAt: null,
+        createdAt: nowIso,
+        updatedAt: nowIso,
+      };
+      setDrafts((prev) => (prev ? [optimistic, ...prev] : [optimistic]));
       setScenarioByDraft((prev) => ({ ...prev, [result.draft.id]: scenarioIndex }));
+      // Try to pull canonical server state. If refetch succeeds AND contains
+      // the new draft (DB write worked), prefer server shape. If refetch
+      // succeeds but doesn't contain it (DB write failed silently), keep our
+      // optimistic row prepended. If refetch fails entirely (e.g. /api/drafts
+      // 503s because DATABASE_URL is unset), leave optimistic state in place.
+      try {
+        const data = await liveListDrafts();
+        setDrafts(() => {
+          const serverHasIt = data.some((d) => d.id === optimistic.id);
+          return serverHasIt ? data : [optimistic, ...data];
+        });
+        setUsingFallback(false);
+      } catch {
+        // Silent — optimistic state remains.
+      }
     } else {
       const friendly =
         result.error.kind === 'config'
