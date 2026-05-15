@@ -1,6 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { db, DatabaseConfigError } from '../db/client';
-import { messageDrafts } from '../db/schema';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { db, DatabaseConfigError } from '../db/client.js';
+import { messageDrafts } from '../db/schema.js';
 
 /**
  * /api/draft-message — live AI draft generation for the Performance AI Inbox.
@@ -16,12 +17,11 @@ import { messageDrafts } from '../db/schema';
  * Auth: requires ANTHROPIC_API_KEY in the environment (Vercel env var in prod,
  * .env.local in dev).
  *
- * Runtime: Edge. Matches api/[...path].ts so both endpoints share the same
- * runtime + lazy-DB-Proxy import chain. Node serverless cold-starts were
- * crashing on @neondatabase/serverless v1.x — Edge does not.
+ * Runtime: Node (default). @anthropic-ai/sdk pulls in node:fs / node:path
+ * which makes it incompatible with Edge runtime. The Hono catch-all in
+ * [...path].ts is on Edge for hono/vercel; this one stays Node so the
+ * Anthropic SDK bundles cleanly.
  */
-
-export const config = { runtime: 'edge' };
 
 interface DraftRequest {
   memberName: string;
@@ -80,32 +80,29 @@ function initials(name: string): string {
   return name.trim().charAt(0).toUpperCase() || '?';
 }
 
-function json(data: unknown, status = 200): Response {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: { 'Content-Type': 'application/json' },
-  });
-}
-
-export default async function handler(req: Request): Promise<Response> {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
-    return json({ error: 'Method not allowed' }, 405);
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    return json({ error: 'ANTHROPIC_API_KEY not configured on server' }, 500);
+    return res.status(500).json({
+      error: 'ANTHROPIC_API_KEY not configured on server',
+    });
   }
 
   let body: DraftRequest;
   try {
-    body = (await req.json()) as DraftRequest;
+    body = (typeof req.body === 'string' ? JSON.parse(req.body) : req.body) as DraftRequest;
   } catch {
-    return json({ error: 'Invalid JSON body' }, 400);
+    return res.status(400).json({ error: 'Invalid JSON body' });
   }
 
   if (!body?.memberName || !body?.trigger) {
-    return json({ error: 'memberName and trigger are required' }, 400);
+    return res.status(400).json({
+      error: 'memberName and trigger are required',
+    });
   }
 
   const userPrompt = [
@@ -139,7 +136,7 @@ export default async function handler(req: Request): Promise<Response> {
     // Anthropic returns content as an array of blocks; we expect a single text block.
     const textBlock = completion.content.find((b) => b.type === 'text');
     if (!textBlock || textBlock.type !== 'text') {
-      return json({ error: 'No text content returned from model' }, 502);
+      return res.status(502).json({ error: 'No text content returned from model' });
     }
 
     // Strip any accidental code fences before parsing.
@@ -148,11 +145,17 @@ export default async function handler(req: Request): Promise<Response> {
     try {
       parsed = JSON.parse(raw);
     } catch {
-      return json({ error: 'Model returned non-JSON content', raw: raw.slice(0, 200) }, 502);
+      return res.status(502).json({
+        error: 'Model returned non-JSON content',
+        raw: raw.slice(0, 200),
+      });
     }
 
     if (!parsed.body || !parsed.conf || !parsed.reasoning) {
-      return json({ error: 'Model output missing required fields', got: parsed }, 502);
+      return res.status(502).json({
+        error: 'Model output missing required fields',
+        got: parsed,
+      });
     }
 
     const response: DraftResponse = {
@@ -195,8 +198,6 @@ export default async function handler(req: Request): Promise<Response> {
       });
     } catch (dbErr) {
       // Non-fatal — log to function output, ship the draft anyway.
-      // DatabaseConfigError (no DATABASE_URL) and any other DB error are both
-      // swallowed here on purpose: the analyst still sees the live draft.
       if (dbErr instanceof DatabaseConfigError) {
         console.warn('DATABASE_URL not configured — live draft not persisted');
       } else {
@@ -204,9 +205,9 @@ export default async function handler(req: Request): Promise<Response> {
       }
     }
 
-    return json(response, 200);
+    return res.status(200).json(response);
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
-    return json({ error: `Claude API error: ${message}` }, 502);
+    return res.status(502).json({ error: `Claude API error: ${message}` });
   }
 }

@@ -22,8 +22,8 @@
 import { Hono } from 'hono';
 import { handle } from 'hono/vercel';
 import { eq } from 'drizzle-orm';
-import { db, DatabaseConfigError } from '../db/client';
-import { dexaScans, members, messageDrafts } from '../db/schema';
+import { db, DatabaseConfigError } from '../db/client.js';
+import { dexaScans, members, messageDrafts } from '../db/schema.js';
 
 /** Vercel Edge runtime — required for hono/vercel's `handle()` and works
  *  with @neondatabase/serverless's HTTP-based driver. */
