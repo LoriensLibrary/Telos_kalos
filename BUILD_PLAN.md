@@ -164,6 +164,45 @@ For each: OAuth flow, background sync job (every 4h), normalization layer to a u
 
 ---
 
+## Infrastructure cost projections
+
+Real numbers people privately wonder about. All ranges; actuals depend on member volume, draft frequency, and team size. Vendor pricing as of 2026; check at deploy time.
+
+| Phase | Monthly recurring | One-time |
+|---|---|---|
+| **0 · Foundation** | $0–50 | — |
+| **1 · Member MVP** | $70–180 | — |
+| **2 · AI Inbox** | $100–400 | — |
+| **3 · Wearables** | $100–450 | — |
+| **4 · Privacy** | $110–500 | — |
+| **5 · Fine-tune** | $300–1,000 | $5–15K (training run) |
+| **6 · Native mobile** | $130–550 | $99/yr Apple Dev, $25 Google Play |
+| **7 · Compliance + scale** | $1,500–4,000 | $35–90K (SOC 2 + pen test + cyber insurance setup) |
+
+**What sits inside the recurring buckets**
+
+- **Phases 0–4** — Vercel Pro ($20), Railway/Fly compute ($5–80 depending on traffic), Neon Postgres Pro ($19+ scaling), Clerk free tier (under 10K MAU), S3 for photo food-log uploads, Honeycomb free tier, KMS for encrypted columns at Phase 4 (~$10–30/mo).
+- **Phase 5** — base inference is the variable. Claude Haiku 4.5 at our prompt size: ~$0.001–0.002 per drafted message. At 50 drafts/day per analyst × 10 analysts = ~$15–30/mo just for drafts. Volume grows linearly with caseload.
+- **Phase 7** — moves DB + API to AWS with HIPAA BAA (~$1.5–3K/mo for an HA setup with read replica + multi-region), adds Vanta/Drata for SOC 2 evidence collection (~$300–800/mo), cyber insurance with a healthcare-data rider ($5–20K/year amortized).
+
+**Unit economics worth committing to memory**
+
+- ~**$0.001–0.002 per drafted message** at Haiku-tier prompt sizes
+- ~**$0.50–2 per scan** for Claude vision food-log analysis (Phase 1) at typical photo size
+- **Free → ~$0.05/MAU** for Clerk above 10K, then migrate to self-hosted at Phase 7
+- **~$1/encrypted column key/mo** on AWS KMS
+
+**Variables that would meaningfully shift these**
+
+- Going Opus instead of Haiku for drafts → ~5–10× the AI line item
+- Going SQL Server instead of Postgres (matches Kalos's existing stack) → similar baseline cost but different vendor mix; switch happens in Phase 0 if Harsh wants
+- Going self-hosted earlier than Phase 7 → reduces Clerk + Vercel monthly but adds eng-time + on-call overhead
+- Skipping mobile (Phase 6) → no app-store fees, but caps Apple Health depth
+
+The numbers above assume reasonable cost discipline. **Aggressive optimization can cut Phase 5 inference by 30–50%** via prompt caching (Claude's prompt-cache feature is ~10× cheaper for repeated system prompts) and batching where latency tolerates. That work is worth doing once the AI Inbox has real volume, not before.
+
+---
+
 ## Compressed timelines
 
 | Team | Total to Phase 5 ship | Total to Phase 7 ship |
