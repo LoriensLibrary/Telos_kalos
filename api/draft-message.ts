@@ -1,6 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { db } from '../db/client';
+import { db, DatabaseConfigError } from '../db/client';
 import { messageDrafts } from '../db/schema';
 
 /**
@@ -16,7 +15,13 @@ import { messageDrafts } from '../db/schema';
  * Model: claude-haiku-4-5 (fast, cheap, sufficient for structured short-form).
  * Auth: requires ANTHROPIC_API_KEY in the environment (Vercel env var in prod,
  * .env.local in dev).
+ *
+ * Runtime: Edge. Matches api/[...path].ts so both endpoints share the same
+ * runtime + lazy-DB-Proxy import chain. Node serverless cold-starts were
+ * crashing on @neondatabase/serverless v1.x — Edge does not.
  */
+
+export const config = { runtime: 'edge' };
 
 interface DraftRequest {
   memberName: string;
@@ -75,29 +80,32 @@ function initials(name: string): string {
   return name.trim().charAt(0).toUpperCase() || '?';
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+function json(data: unknown, status = 200): Response {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
+export default async function handler(req: Request): Promise<Response> {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return json({ error: 'Method not allowed' }, 405);
   }
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    return res.status(500).json({
-      error: 'ANTHROPIC_API_KEY not configured on server',
-    });
+    return json({ error: 'ANTHROPIC_API_KEY not configured on server' }, 500);
   }
 
   let body: DraftRequest;
   try {
-    body = (typeof req.body === 'string' ? JSON.parse(req.body) : req.body) as DraftRequest;
+    body = (await req.json()) as DraftRequest;
   } catch {
-    return res.status(400).json({ error: 'Invalid JSON body' });
+    return json({ error: 'Invalid JSON body' }, 400);
   }
 
   if (!body?.memberName || !body?.trigger) {
-    return res.status(400).json({
-      error: 'memberName and trigger are required',
-    });
+    return json({ error: 'memberName and trigger are required' }, 400);
   }
 
   const userPrompt = [
@@ -131,7 +139,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Anthropic returns content as an array of blocks; we expect a single text block.
     const textBlock = completion.content.find((b) => b.type === 'text');
     if (!textBlock || textBlock.type !== 'text') {
-      return res.status(502).json({ error: 'No text content returned from model' });
+      return json({ error: 'No text content returned from model' }, 502);
     }
 
     // Strip any accidental code fences before parsing.
@@ -140,17 +148,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     try {
       parsed = JSON.parse(raw);
     } catch {
-      return res.status(502).json({
-        error: 'Model returned non-JSON content',
-        raw: raw.slice(0, 200),
-      });
+      return json({ error: 'Model returned non-JSON content', raw: raw.slice(0, 200) }, 502);
     }
 
     if (!parsed.body || !parsed.conf || !parsed.reasoning) {
-      return res.status(502).json({
-        error: 'Model output missing required fields',
-        got: parsed,
-      });
+      return json({ error: 'Model output missing required fields', got: parsed }, 502);
     }
 
     const response: DraftResponse = {
@@ -192,13 +194,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         outputTokens: response.meta.outputTokens,
       });
     } catch (dbErr) {
-      // Non-fatal — log to function output, ship the draft anyway
-      console.error('Failed to persist live draft to Postgres:', dbErr);
+      // Non-fatal — log to function output, ship the draft anyway.
+      // DatabaseConfigError (no DATABASE_URL) and any other DB error are both
+      // swallowed here on purpose: the analyst still sees the live draft.
+      if (dbErr instanceof DatabaseConfigError) {
+        console.warn('DATABASE_URL not configured — live draft not persisted');
+      } else {
+        console.error('Failed to persist live draft to Postgres:', dbErr);
+      }
     }
 
-    return res.status(200).json(response);
+    return json(response, 200);
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
-    return res.status(502).json({ error: `Claude API error: ${message}` });
+    return json({ error: `Claude API error: ${message}` }, 502);
   }
 }
