@@ -13,13 +13,9 @@ Built as a working prototype for the [Kalos Health](https://www.livekalos.com) S
 🌐 **Live demo:** [telos-kalos.vercel.app](https://telos-kalos.vercel.app)
 📋 **Build plan:** [BUILD_PLAN.md](./BUILD_PLAN.md) — 7-phase production roadmap
 
-<video src="https://github.com/LoriensLibrary/Telos_kalos/raw/main/docs/screenshots/ai-inbox-generate.mp4" controls autoplay loop muted playsinline width="100%">
-  Generate Live Draft demo — your browser doesn't render inline video.
-  <a href="docs/screenshots/ai-inbox-generate.mp4">Download the clip</a>
-  or see the live build at <a href="https://telos-kalos.vercel.app">telos-kalos.vercel.app</a>.
-</video>
+[![Telos AI Inbox — three live Claude-generated draft messages awaiting analyst review, each with LIVE/CLAUDE badges, trigger reasons, and full draft text](docs/screenshots/ai-inbox-live.png)](https://telos-kalos.vercel.app/performance)
 
-*Performance → AI Inbox — the headline feature: AI-drafted member messages awaiting analyst review, with a live Claude-backed draft generator. Every draft is reviewable, editable, and approval-gated before send. Pattern-matched against 2,840+ synthetic coaching arcs in this demo. Captured against the deployed Vercel build; you can see the `LIVE · CLAUDE` badges, model identifier (`claude-haiku-4-5`), and per-draft confidence labels populate in real time.*
+*Performance → AI Inbox — the headline feature: AI-drafted member messages awaiting analyst review, with a live Claude-backed draft generator. Every draft is reviewable, editable, and approval-gated before send. Pattern-matched against 2,840+ synthetic coaching arcs in this demo. Captured from the deployed Vercel build — the `LIVE · CLAUDE` badges, model identifier (`claude-haiku-4-5`), and per-draft confidence labels are real outputs from the live API call. **[Click the screenshot to use the live demo](https://telos-kalos.vercel.app/performance).** A short MP4 recording of the populating animation is in [docs/screenshots/ai-inbox-generate.mp4](docs/screenshots/ai-inbox-generate.mp4).*
 
 ---
 
