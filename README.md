@@ -13,7 +13,7 @@ Built as a working prototype for the [Kalos Health](https://www.livekalos.com) S
 🌐 **Live demo:** [telos-kalos.vercel.app](https://telos-kalos.vercel.app)
 📋 **Build plan:** [BUILD_PLAN.md](./BUILD_PLAN.md) — 7-phase production roadmap
 
-<video src="https://github.com/user-attachments/assets/234ba918-9319-49f1-9748-2663a657b559" controls autoplay loop muted playsinline width="100%">
+<video src="https://github.com/user-attachments/assets/11d42683-95b9-42f7-bc03-810b167852ed" controls autoplay loop muted playsinline width="100%">
   Your viewer doesn't render inline video — <a href="https://telos-kalos.vercel.app/performance">see the live demo</a> or grab the file from <a href="docs/screenshots/ai-inbox-generate.mp4">docs/screenshots/ai-inbox-generate.mp4</a>.
 </video>
 
