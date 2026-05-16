@@ -795,6 +795,19 @@ h2, h3 {
 @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.45; } }
 .pulse { animation: pulse 2.4s ease-in-out infinite; }
 
+/* Respect user motion preferences — disable the decorative loops + transitions
+   when the OS reports prefers-reduced-motion: reduce. Functional transitions
+   (button hover, focus) keep a near-instant timing so the UI stays legible
+   without animation. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 .hairline      { border-top: 1px solid var(--line); }
 .hairline-dash { border-top: 1px dashed var(--line-s); }
 

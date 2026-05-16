@@ -103,13 +103,18 @@ export default function TodayTab() {
           </div>
           <div className="space-y-3">
             {SUPPLEMENTS.map((s, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <input type="checkbox" defaultChecked={i < 3} style={{ accentColor: 'var(--ac)', marginTop: 3 }} />
+              <label key={i} className="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  defaultChecked={i < 3}
+                  aria-label={`${s.name} taken`}
+                  style={{ accentColor: 'var(--ac)', marginTop: 3 }}
+                />
                 <div className="flex-1">
                   <div className="text-sm" style={{ fontWeight: 500 }}>{s.name}</div>
                   <div className="lbl mt-0.5" style={{ fontSize: 9 }}>{s.dose} · {s.when} · {s.adh}% adh</div>
                 </div>
-              </div>
+              </label>
             ))}
           </div>
         </div>
