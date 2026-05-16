@@ -233,7 +233,7 @@ function EmptyDetail() {
 
 function SessionDetail({ s }: { s: Session }) {
   // Hooks must run unconditionally on every render — call before any early return.
-  const [notes, setNotes] = useNotes(s.id, s.notes);
+  const [notes, setNotes] = useState(s.notes ?? '');
   const isBlock = s.status === 'block';
 
   if (isBlock) {
@@ -341,11 +341,6 @@ function SessionDetail({ s }: { s: Session }) {
   );
 }
 
-function useNotes(_id: string, init?: string): [string, (v: string) => void] {
-  const [val, setVal] = useState(init ?? '');
-  return [val, setVal];
-}
-
 /* ============================ INBOX VIEW ============================ */
 
 /**
@@ -390,19 +385,27 @@ function InboxView() {
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Initial load from backend
+  // Initial load from backend. Abort on unmount so we don't setState on a
+  // stale component (Performance is unmounted on route change before the
+  // fetch's ~80ms latency resolves).
   useEffect(() => {
-    liveListDrafts()
+    const controller = new AbortController();
+    liveListDrafts(undefined, controller.signal)
       .then((data) => {
+        if (controller.signal.aborted) return;
         setDrafts(data);
         setUsingFallback(false);
       })
-      .catch(() => {
+      .catch((err) => {
+        if (controller.signal.aborted) return;
+        // AbortError shouldn't trigger the fallback path either.
+        if (err instanceof DOMException && err.name === 'AbortError') return;
         // Backend unreachable (e.g., vite dev). Fall back to static seeds so
         // the UI still works for local development and code review.
         setDrafts(DRAFTS.map(staticToBackend));
         setUsingFallback(true);
       });
+    return () => controller.abort();
   }, []);
 
   const liveDraftCount = drafts ? drafts.filter((d) => d.isLive === 1).length : 0;

@@ -235,9 +235,12 @@ export interface BackendDraft {
   updatedAt: string;
 }
 
-export async function liveListDrafts(stateFilter?: BackendDraft['state']): Promise<BackendDraft[]> {
+export async function liveListDrafts(
+  stateFilter?: BackendDraft['state'],
+  signal?: AbortSignal,
+): Promise<BackendDraft[]> {
   const url = stateFilter ? `/api/drafts?state=${stateFilter}` : '/api/drafts';
-  const res = await fetch(url);
+  const res = await fetch(url, { signal });
   if (!res.ok) throw new Error(`liveListDrafts failed: ${res.status}`);
   return res.json();
 }
