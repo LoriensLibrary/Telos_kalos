@@ -4,9 +4,9 @@ A realistic engineering roadmap to take the front-end prototype in this repo and
 
 This is the build I'd propose on day-one of the role, not a sales doc. Timelines below assume **one engineer starting at Kalos** (me). With a second engineer added at Phase 3, the total compresses meaningfully — noted at the bottom.
 
-> **What exists today:** front-end prototype in `src/`. React 19 + Vite + TypeScript. Synthetic data. No backend. No auth. No real AI. Roughly 60% of the eventual UI surface.
+> **What exists today:** front-end prototype in `src/`. React 19 + Vite + TypeScript on Vercel. Member/coaching data is synthetic, and there is no production backend, auth, or Kalos data integration. The deployed demo does include one Vercel serverless endpoint (`api/draft-message`) backed by a small Hono + Drizzle + Neon Postgres surface for **live Claude-generated drafts** in the AI Inbox — the rest of the page reads from static seeds. Roughly 60% of the eventual UI surface.
 >
-> **What this plan covers:** the other 40% of the surface, plus everything underneath it.
+> **What this plan covers:** the other 40% of the surface, plus everything underneath it — real auth, the production Kalos-data integration, the full backend, and the Phase 2+ work that turns the live-draft demo from "one endpoint" into "the analyst's actual queue."
 
 ---
 
