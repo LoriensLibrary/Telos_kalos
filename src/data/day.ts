@@ -312,7 +312,7 @@ export const PROTOCOLS = [
 ];
 
 export const DAY_BRIEF = {
-  greet: 'Good morning.',
+  greet: 'Good morning, analyst.',
   sessions: 6,
   flagged: 1,
   drafted: 3,

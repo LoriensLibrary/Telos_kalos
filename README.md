@@ -13,6 +13,10 @@ Built as a working prototype for the [Kalos Health](https://www.livekalos.com) S
 🌐 **Live demo:** [telos-kalos.vercel.app](https://telos-kalos.vercel.app)
 📋 **Build plan:** [BUILD_PLAN.md](./BUILD_PLAN.md) — 7-phase production roadmap
 
+![Telos AI Inbox — analyst dashboard showing three AI-drafted member messages awaiting review, with a Generate Live Draft action](docs/screenshots/ai-inbox.png)
+
+*Performance → AI Inbox — the headline feature: AI-drafted member messages awaiting analyst review, with a live Claude-backed draft generator. Every draft is reviewable, editable, and approval-gated before send. Pattern-matched against 2,840+ synthetic coaching arcs in this demo.*
+
 ---
 
 ## Tour in under 2 minutes
