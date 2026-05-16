@@ -5,8 +5,8 @@ export default function Overview() {
   return (
     <div className="max-w-[1400px] mx-auto px-8 py-20">
       {/* HERO */}
-      <div className="grid grid-cols-12 gap-8 mb-24">
-        <div className="col-span-7">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24">
+        <div className="col-span-1 lg:col-span-7">
           <div className="flex items-center gap-3 mb-8">
             <span className="chip chip-ac">
               <span className="dot dot-ac" /> TELOS · v0.6
@@ -46,7 +46,7 @@ export default function Overview() {
             <Link to="/member" className="btn-ac">View Member App →</Link>
             <Link to="/performance" className="btn-gh">View Analyst Tools</Link>
           </div>
-          <div className="mt-12 grid grid-cols-3 gap-6 max-w-2xl">
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl">
             {[
               { v: '6 → 30', l: 'TOUCHPOINTS / QUARTER' },
               { v: 'Auto', l: 'ANALYST PREP · LOADED' },
@@ -65,7 +65,7 @@ export default function Overview() {
           </div>
         </div>
 
-        <div className="col-span-5">
+        <div className="col-span-1 lg:col-span-5">
           <div className="glass glow-cy p-8">
             <div className="flex items-center justify-between mb-4">
               <div className="lbl" style={{ color: '#7DD3FC' }}>
@@ -83,7 +83,7 @@ export default function Overview() {
               Solid = Current (Scan 6) · Dashed = Projected (Scan 12)
             </div>
             <div
-              className="mt-5 pt-5 grid grid-cols-3 gap-3"
+              className="mt-5 pt-5 grid grid-cols-1 md:grid-cols-3 gap-3"
               style={{ borderTop: '1px dashed rgba(255,255,255,0.10)' }}
             >
               {[
@@ -115,7 +115,7 @@ export default function Overview() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-6 mb-24">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
         {[
           {
             num: '01',
@@ -188,7 +188,7 @@ export default function Overview() {
         <h2 className="serif text-3xl mb-6" style={{ fontWeight: 400 }}>
           Real members. Real DEXA data. <em className="italic" style={{ color: 'var(--ac-b)' }}>Real delta.</em>
         </h2>
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {[
             {
               q: "I feel good, I feel strong. I've gone down a couple of sizes, and even just sitting at my desk, I'm so much more comfortable than I used to be.",
@@ -221,8 +221,8 @@ export default function Overview() {
 
       {/* ANALYST POSITIONING */}
       <div className="mb-12 glass glow-cy p-10">
-        <div className="grid grid-cols-12 gap-8 items-center">
-          <div className="col-span-7">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div className="col-span-1 lg:col-span-7">
             <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>PERFORMANCE ANALYSTS · HUMAN JUDGMENT FIRST</div>
             <h2 className="serif text-3xl mb-4" style={{ fontWeight: 400, lineHeight: 1.15 }}>
               Telos gives analysts <em className="italic">leverage</em>.<br/>
@@ -238,7 +238,7 @@ export default function Overview() {
               Telos prepares the context. The analyst delivers the insight.
             </p>
           </div>
-          <div className="col-span-5">
+          <div className="col-span-1 lg:col-span-5">
             <div className="space-y-3">
               {[
                 { n: '6 min', l: 'DEXA SCAN' },
@@ -267,7 +267,7 @@ export default function Overview() {
         <div className="lbl mb-6" style={{ color: '#A0F0C8' }}>
           THE COMPOUNDING THESIS
         </div>
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
           <div
             className="p-6 rounded-xl"
             style={{

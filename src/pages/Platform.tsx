@@ -29,7 +29,7 @@ export default function Platform() {
       </div>
 
       {/* STACK CARDS */}
-      <div className="grid grid-cols-3 gap-6 mb-16">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
         {[
           {
             title: 'Web App',
@@ -92,7 +92,7 @@ export default function Platform() {
         <div className="lbl mb-6" style={{ color: '#A0F0C8' }}>
           MATCHES THE KALOS HIRING SPEC
         </div>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
             { l: 'FRONTEND', v: 'TypeScript · React 19' },
             { l: 'BACKEND', v: 'Node.js · Python' },
@@ -125,8 +125,8 @@ export default function Platform() {
         <div className="lbl mb-4" style={{ color: '#7DD3FC' }}>
           ABOUT THE BUILDER
         </div>
-        <div className="grid grid-cols-12 gap-8 items-start">
-          <div className="col-span-7">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div className="col-span-1 lg:col-span-7">
             <p
               className="text-lg leading-relaxed mb-4"
               style={{ color: 'rgba(245,247,250,0.84)' }}
@@ -160,7 +160,7 @@ export default function Platform() {
               ))}
             </div>
           </div>
-          <div className="col-span-5">
+          <div className="col-span-1 lg:col-span-5">
             <div
               className="p-6 rounded-xl"
               style={{

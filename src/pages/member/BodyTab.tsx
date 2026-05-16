@@ -5,8 +5,8 @@ import { m } from './shared';
 
 export default function BodyTab() {
   return (
-    <div className="grid grid-cols-12 gap-6">
-      <div className="col-span-8 space-y-6">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="col-span-1 lg:col-span-8 space-y-6">
         <div className="glass p-7">
           <div className="flex items-center justify-between mb-2">
             <div className="lbl" style={{ color: 'var(--ac-b)' }}>DEXA BODY COMPOSITION · 6 SCANS</div>
@@ -14,7 +14,7 @@ export default function BodyTab() {
           </div>
           <div className="serif text-xl mb-4" style={{ fontWeight: 400 }}>Your body, measured over time</div>
           <DEXAChart data={m.scans} />
-          <div className="grid grid-cols-3 gap-4 mt-4 pt-4" style={{ borderTop: '1px dashed var(--line-s)' }}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 pt-4" style={{ borderTop: '1px dashed var(--line-s)' }}>
             {[
               { l: 'BODY FAT', v: m.met.fat, d: m.met.fatD },
               { l: 'LEAN MASS', v: m.met.lean, d: m.met.leanD },
@@ -29,7 +29,7 @@ export default function BodyTab() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="glass p-6">
             <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>SEGMENTED LEAN MASS · SCAN #6</div>
             <div className="space-y-3">
@@ -56,7 +56,7 @@ export default function BodyTab() {
 
           <div className="glass p-6">
             <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>BONE & SKELETAL</div>
-            <div className="grid grid-cols-2 gap-3 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
               {[
                 { l: 'BMD', v: '1.12 g/cm²', d: '+0.4% YoY' },
                 { l: 'BMC', v: '2.41 kg', d: 'stable' },
@@ -89,11 +89,11 @@ export default function BodyTab() {
         </div>
       </div>
 
-      <div className="col-span-4 space-y-6">
+      <div className="col-span-1 lg:col-span-4 space-y-6">
         <div className="glass p-6">
           <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>YOUR TRIANGLE</div>
           <TriangleChart scores={m.triangle} projected={m.triProj} size={200} />
-          <div className="grid grid-cols-3 gap-2 mt-4 pt-4" style={{ borderTop: '1px dashed var(--line-s)' }}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mt-4 pt-4" style={{ borderTop: '1px dashed var(--line-s)' }}>
             {[
               { l: 'AESTH', v: 62, p: 78 },
               { l: 'LONG', v: 48, p: 68 },

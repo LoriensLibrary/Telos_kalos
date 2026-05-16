@@ -3,8 +3,8 @@ import Sparkline from '../../components/charts/Sparkline';
 
 export default function MovementTab() {
   return (
-    <div className="grid grid-cols-12 gap-6">
-      <div className="col-span-8 space-y-6">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="col-span-1 lg:col-span-8 space-y-6">
         <div className="glass p-7 glow">
           <div className="flex items-center justify-between mb-3">
             <div className="lbl" style={{ color: 'var(--ac-b)' }}>TODAY · {TODAY_WORKOUT.time}</div>
@@ -58,7 +58,7 @@ export default function MovementTab() {
         </div>
       </div>
 
-      <div className="col-span-4 space-y-6">
+      <div className="col-span-1 lg:col-span-4 space-y-6">
         <div className="glass p-6">
           <div className="lbl mb-4" style={{ color: 'var(--ac-b)' }}>CURRENT PROGRAM</div>
           {PROGRAMS.map((p, i) => (

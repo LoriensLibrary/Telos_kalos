@@ -3,8 +3,8 @@ import Chat from '../../components/ui/Chat';
 
 export default function TelosTab() {
   return (
-    <div className="grid grid-cols-12 gap-6">
-      <div className="col-span-7">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="col-span-1 lg:col-span-7">
         <Chat
           initial={MAYA_CHAT}
           title="Telos"
@@ -13,7 +13,7 @@ export default function TelosTab() {
           placeholder="Tell Telos how you're doing…"
         />
       </div>
-      <div className="col-span-5 space-y-6">
+      <div className="col-span-1 lg:col-span-5 space-y-6">
         <div className="glass p-6 glow-cy">
           <div className="lbl mb-3" style={{ color: 'var(--cy)' }}>WHAT TELOS KNOWS TODAY</div>
           <ul className="space-y-2 text-sm" style={{ color: 'var(--ink-s)' }}>

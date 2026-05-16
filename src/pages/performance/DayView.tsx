@@ -6,9 +6,9 @@ export default function DayView() {
   const open = TODAY_SCHEDULE.find((s) => s.id === openId);
 
   return (
-    <div className="grid grid-cols-12 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       {/* LEFT — SCHEDULE TIMELINE */}
-      <div className="col-span-5">
+      <div className="col-span-1 lg:col-span-5">
         <div className="glass p-6">
           <div className="flex items-center justify-between mb-5">
             <div className="lbl" style={{ color: 'var(--ac-b)' }}>SCHEDULE · WEDNESDAY MAY 13</div>
@@ -21,7 +21,7 @@ export default function DayView() {
           </div>
           <div className="hairline-dash mt-5 pt-4">
             <div className="lbl mb-2">DAY STATS</div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div><div className="lbl" style={{ fontSize: 9 }}>SESSIONS</div><div className="mono num text-lg">6</div></div>
               <div><div className="lbl" style={{ fontSize: 9 }}>SCANS REV.</div><div className="mono num text-lg">2</div></div>
               <div><div className="lbl" style={{ fontSize: 9 }}>NEW INTAKE</div><div className="mono num text-lg">1</div></div>
@@ -31,7 +31,7 @@ export default function DayView() {
       </div>
 
       {/* RIGHT — SESSION DETAIL */}
-      <div className="col-span-7">
+      <div className="col-span-1 lg:col-span-7">
         {open ? <SessionDetail s={open} /> : <EmptyDetail />}
       </div>
     </div>

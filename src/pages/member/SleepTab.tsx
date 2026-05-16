@@ -5,14 +5,14 @@ import Sparkline from '../../components/charts/Sparkline';
 export default function SleepTab() {
   const last = SLEEP_NIGHTS[SLEEP_NIGHTS.length - 1];
   return (
-    <div className="grid grid-cols-12 gap-6">
-      <div className="col-span-8 space-y-6">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="col-span-1 lg:col-span-8 space-y-6">
         <div className="glass p-7">
           <div className="flex items-center justify-between mb-5">
             <div className="lbl" style={{ color: 'var(--ac-b)' }}>LAST NIGHT</div>
             <span className="chip chip-warn">SCORE {last.score}</span>
           </div>
-          <div className="grid grid-cols-4 gap-6 items-center">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 items-center">
             <Ring pct={last.score} size={128} color="var(--warn)" label={`${last.score}`} sublabel="SCORE" />
             <div>
               <div className="lbl">TOTAL</div>
@@ -46,7 +46,7 @@ export default function SleepTab() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="glass p-6">
             <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>HRV · 7 DAYS</div>
             <div className="mono num text-3xl mb-1">{last.hrv}<span className="text-base" style={{ color: 'var(--ink-m)' }}>ms</span></div>
@@ -62,7 +62,7 @@ export default function SleepTab() {
         </div>
       </div>
 
-      <div className="col-span-4 space-y-6">
+      <div className="col-span-1 lg:col-span-4 space-y-6">
         <div className="glass p-6 glow-cy">
           <div className="lbl mb-3" style={{ color: 'var(--cy)' }}>RECOVERY SCORE</div>
           <Ring pct={42} size={160} stroke={12} color="var(--warn)" label="42" sublabel="OF 100" />

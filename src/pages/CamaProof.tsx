@@ -155,7 +155,7 @@ export default function CamaProof() {
           </button>
         )}
       </div>
-      <div className="grid grid-cols-3 gap-6 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         {patterns.map((p) => {
           const active = selectedPatternId === p.id;
           const color = SIGNAL_COLOR[p.signal];
@@ -225,7 +225,7 @@ export default function CamaProof() {
                 outlineOffset: '-1px',
               }}
             >
-              <div className="grid grid-cols-12 gap-5 items-start">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
                 <div className="col-span-2">
                   <div
                     className="mono text-xs mb-1"
@@ -256,7 +256,7 @@ export default function CamaProof() {
                     {m.durability}
                   </div>
                 </div>
-                <div className="col-span-6">
+                <div className="col-span-1 lg:col-span-6">
                   <p
                     className="text-sm mb-2"
                     style={{ color: 'rgba(245,247,250,0.86)', lineHeight: 1.5 }}

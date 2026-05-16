@@ -31,12 +31,12 @@ export default function MemberDetail({ client: c, onBack }: { client: typeof CLI
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-12 gap-6">
-        <div className="col-span-8 space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="col-span-1 lg:col-span-8 space-y-6">
           <div className="glass p-7">
             <div className="lbl mb-2" style={{ color: 'var(--ac-b)' }}>DEXA BODY COMPOSITION</div>
             <DEXAChart data={c.scans} />
-            <div className="grid grid-cols-3 gap-4 mt-4 pt-4" style={{ borderTop: '1px dashed var(--line-s)' }}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 pt-4" style={{ borderTop: '1px dashed var(--line-s)' }}>
               {[{ l: 'BODY FAT', v: c.met.fat, d: c.met.fatD }, { l: 'LEAN MASS', v: c.met.lean, d: c.met.leanD }, { l: 'VISCERAL', v: c.met.visc, d: c.met.viscD }].map((x, i) => (
                 <div key={i}><div className="lbl mb-1">{x.l}</div><div className="mono text-xl num" style={{ fontWeight: 300 }}>{x.v}</div><div className="text-[10px] mono" style={{ color: 'var(--ac)' }}>{x.d}</div></div>
               ))}
@@ -48,7 +48,7 @@ export default function MemberDetail({ client: c, onBack }: { client: typeof CLI
           </div>
           <div className="glass p-7">
             <div className="lbl mb-4" style={{ color: 'var(--ac-b)' }}>WEARABLE SNAPSHOT</div>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[{ l: 'HRV', v: c.wear.hrv }, { l: 'SLEEP', v: c.wear.sleep }, { l: 'RECOVERY', v: c.wear.recov }, { l: 'GLUCOSE', v: c.wear.glu }].map((w, i) => (
                 <div key={i} className="p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--line)' }}>
                   <div className="lbl mb-1">{w.l}</div>
@@ -68,7 +68,7 @@ export default function MemberDetail({ client: c, onBack }: { client: typeof CLI
             </div>
           </div>
         </div>
-        <div className="col-span-4 space-y-6">
+        <div className="col-span-1 lg:col-span-4 space-y-6">
           <div className="glass p-6">
             <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>TRIANGLE</div>
             <TriangleChart scores={c.triangle} projected={c.triProj} size={190} />

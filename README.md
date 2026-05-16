@@ -149,7 +149,7 @@ Telos is a **front-end product prototype** built with React 19, TypeScript, Vite
 - Analyst review/approve/decline state machine for AI-assisted drafts (works for both static seeds and live-generated)
 - Privacy-aware member disclosure pattern (`pages/DataArch.tsx`)
 - Theme system with 7 palettes + localStorage persistence + legacy-key migration
-- Responsive on tablet and desktop; mobile layout in progress.
+- Responsive from 375px through desktop (hamburger nav < `md`, grids collapse mobile-first).
 - Public GitHub repo + auto-deploy via Vercel on push to `main`
 - Vitest + React Testing Library set up with smoke + behavior tests (34 tests, 5 suites)
 

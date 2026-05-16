@@ -25,7 +25,7 @@ export default function DataArch() {
       </div>
 
       <div className="glass overflow-hidden mb-12">
-        <div className="grid grid-cols-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2">
           <div
             className="p-10"
             style={{ borderRight: '1px dashed rgba(255,255,255,0.10)' }}
@@ -141,7 +141,7 @@ export default function DataArch() {
       </div>
 
       {/* PRINCIPLES */}
-      <div className="grid grid-cols-3 gap-6 mt-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
         {[
           {
             t: 'Pattern, not text',

@@ -229,7 +229,7 @@ export default function InboxView() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-3 gap-5">
         {generating && <SkeletonDraftCard />}
         {drafts === null ? (
           // Initial load

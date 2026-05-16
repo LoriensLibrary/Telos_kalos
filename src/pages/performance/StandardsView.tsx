@@ -13,7 +13,7 @@ export default function StandardsView() {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         {PROTOCOLS.map((p) => (
           <div key={p.code} className="glass p-7">
             <div className="flex items-center justify-between mb-3">

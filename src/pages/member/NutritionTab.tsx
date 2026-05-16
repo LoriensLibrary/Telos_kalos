@@ -7,21 +7,21 @@ export default function NutritionTab() {
   const targets = { kcal: 1850, protein: 110, carbs: 200, fat: 65 };
   const eaten = FOOD_LOG.reduce((acc, f) => ({ kcal: acc.kcal + f.kcal, protein: acc.protein + f.protein, carbs: acc.carbs + f.carbs, fat: acc.fat + f.fat }), { kcal: 0, protein: 0, carbs: 0, fat: 0 });
   return (
-    <div className="grid grid-cols-12 gap-6">
-      <div className="col-span-8 space-y-6">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="col-span-1 lg:col-span-8 space-y-6">
         <div className="glass p-7">
           <div className="flex items-center justify-between mb-5">
             <div className="lbl" style={{ color: 'var(--ac-b)' }}>MACROS · TODAY</div>
             <span className="chip chip-ac">{Math.round((eaten.kcal/targets.kcal)*100)}% TO TARGET</span>
           </div>
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
               { l: 'CALORIES', v: eaten.kcal, t: targets.kcal, u: 'kcal', c: 'var(--ac)' },
               { l: 'PROTEIN', v: eaten.protein, t: targets.protein, u: 'g', c: 'var(--cy)' },
               { l: 'CARBS', v: eaten.carbs, t: targets.carbs, u: 'g', c: 'var(--purple)' },
               { l: 'FAT', v: eaten.fat, t: targets.fat, u: 'g', c: 'var(--warn)' },
             ].map((x, i) => (
-              <div key={i} className="flex items-center gap-4">
+              <div key={i} className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-left">
                 <Ring pct={(x.v/x.t)*100} size={84} color={x.c} label={`${x.v}`} sublabel={x.u} />
                 <div>
                   <div className="lbl">{x.l}</div>
@@ -88,13 +88,13 @@ export default function NutritionTab() {
         </div>
       </div>
 
-      <div className="col-span-4 space-y-6">
+      <div className="col-span-1 lg:col-span-4 space-y-6">
         <div className="glass p-6">
           <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>LINGO · GLUCOSE · 24h</div>
           <div className="mono num text-3xl mb-1">{GLUCOSE_STATS.avg}<span className="text-base" style={{ color: 'var(--ink-m)' }}>mg/dL</span></div>
           <div className="lbl mb-3" style={{ fontSize: 9 }}>AVG · GMI {GLUCOSE_STATS.gmi}</div>
           <Sparkline values={GLUCOSE_TRACE} color="var(--cy)" height={90} fill />
-          <div className="grid grid-cols-3 gap-2 mt-3 pt-3" style={{ borderTop: '1px dashed var(--line-s)' }}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mt-3 pt-3" style={{ borderTop: '1px dashed var(--line-s)' }}>
             <div><div className="lbl">PEAK</div><div className="mono num text-sm">{GLUCOSE_STATS.peak}</div></div>
             <div><div className="lbl">TIR</div><div className="mono num text-sm">{GLUCOSE_STATS.tir}%</div></div>
             <div><div className="lbl">SPIKES</div><div className="mono num text-sm">{GLUCOSE_STATS.spikes}</div></div>

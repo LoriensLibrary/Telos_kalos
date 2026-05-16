@@ -14,7 +14,7 @@ export default function CaseloadView({ onOpen }: { onOpen: (id: string) => void 
 
   return (
     <div>
-      <div className="grid grid-cols-4 gap-4 mb-10">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
         {CASELOAD.map((x, i) => {
           const active = filter === x.label;
           return (
@@ -89,7 +89,7 @@ export default function CaseloadView({ onOpen }: { onOpen: (id: string) => void 
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {visibleClients.map((x) => (
             <button
               key={x.id}
@@ -134,7 +134,7 @@ export default function CaseloadView({ onOpen }: { onOpen: (id: string) => void 
                 </div>
               </div>
               <div className="mb-3"><DEXAChart data={x.scans} height={80} /></div>
-              <div className="grid grid-cols-3 gap-2 text-[10px] mono" style={{ color: 'var(--ink-m)' }}>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-[10px] mono" style={{ color: 'var(--ink-m)' }}>
                 <div>FAT {x.met.fat}</div>
                 <div>LEAN {x.met.lean}</div>
                 <div>VISC {x.met.visc}</div>

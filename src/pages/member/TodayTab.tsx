@@ -5,17 +5,17 @@ import { m, ringColors, ringTrack } from './shared';
 
 export default function TodayTab() {
   return (
-    <div className="grid grid-cols-12 gap-6">
-      <div className="col-span-8 space-y-6">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="col-span-1 lg:col-span-8 space-y-6">
         {/* RINGS */}
         <div className="glass p-7">
           <div className="flex items-center justify-between mb-5">
             <div className="lbl" style={{ color: 'var(--ac-b)' }}>TODAY · ACTIVITY RINGS</div>
             <span className="chip chip-ac">68% TO TARGET</span>
           </div>
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {TODAY_RINGS.map((r, i) => (
-              <div key={r.label} className="flex items-center gap-4">
+              <div key={r.label} className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-left">
                 <Ring pct={r.pct} size={84} color={ringColors[i]} track={ringTrack} label={r.v.split(' ')[0]} />
                 <div>
                   <div className="lbl">{r.label}</div>
@@ -81,7 +81,7 @@ export default function TodayTab() {
       </div>
 
       {/* RIGHT — Daily check-ins / hydration / sup */}
-      <div className="col-span-4 space-y-6">
+      <div className="col-span-1 lg:col-span-4 space-y-6">
         <div className="glass p-6">
           <div className="lbl mb-4" style={{ color: 'var(--ac-b)' }}>HYDRATION</div>
           <div className="flex items-center justify-between mb-3">
