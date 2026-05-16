@@ -31,6 +31,10 @@ function pickReply(input: string): string {
   return REPLIES.default;
 }
 
+let chatMsgCounter = 0;
+const nextMsgId = (): string =>
+  `m-${Date.now().toString(36)}-${(chatMsgCounter++).toString(36)}`;
+
 export default function Chat({
   initial,
   title = 'Telos',
@@ -38,7 +42,12 @@ export default function Chat({
   scope = 'PRIVATE TO YOU',
   placeholder = 'Type a message…',
 }: Props) {
-  const [msgs, setMsgs] = useState<ChatMsg[]>(initial);
+  // Assign a stable id to each seed message on mount so React's reconciler
+  // gets a per-message key instead of array index (which mis-tracks during
+  // append + typing-indicator state changes).
+  const [msgs, setMsgs] = useState<ChatMsg[]>(() =>
+    initial.map((m) => (m.id ? m : { ...m, id: nextMsgId() })),
+  );
   const [input, setInput] = useState('');
   const [typing, setTyping] = useState(false);
   const endRef = useRef<HTMLDivElement | null>(null);
@@ -50,13 +59,13 @@ export default function Chat({
   const send = () => {
     const text = input.trim();
     if (!text) return;
-    setMsgs((m) => [...m, { who: 'me', text }]);
+    setMsgs((m) => [...m, { who: 'me', text, id: nextMsgId() }]);
     setInput('');
     setTyping(true);
     const reply = pickReply(text);
     window.setTimeout(() => {
       setTyping(false);
-      setMsgs((m) => [...m, { who: 'ai', text: reply }]);
+      setMsgs((m) => [...m, { who: 'ai', text: reply, id: nextMsgId() }]);
     }, 900 + Math.random() * 500);
   };
 
@@ -95,13 +104,13 @@ export default function Chat({
       </div>
 
       <div className="flex-1 overflow-y-auto px-6 py-5 space-y-3">
-        {msgs.map((m, i) =>
+        {msgs.map((m) =>
           m.who === 'sys' ? (
-            <div key={i} className="flex justify-center">
+            <div key={m.id} className="flex justify-center">
               <div className="bub-sys">{m.text}</div>
             </div>
           ) : (
-            <div key={i} className={`flex ${m.who === 'me' ? 'justify-end' : 'justify-start'}`}>
+            <div key={m.id} className={`flex ${m.who === 'me' ? 'justify-end' : 'justify-start'}`}>
               <div className={`bub ${m.who === 'me' ? 'bub-me' : 'bub-ai'}`}>
                 {m.text}
                 {m.meta && (
@@ -139,6 +148,7 @@ export default function Chat({
       >
         <div className="flex items-center gap-2">
           <input
+            aria-label="Message input"
             className="input"
             placeholder={placeholder}
             value={input}

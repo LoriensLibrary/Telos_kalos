@@ -2,6 +2,8 @@ export interface ChatMsg {
   who: 'me' | 'ai' | 'sys';
   text: string;
   meta?: string;
+  /** Stable per-message key. Optional on seed data; assigned at runtime when missing. */
+  id?: string;
 }
 
 // Maya's between-scan conversation with the Telos (member-facing).

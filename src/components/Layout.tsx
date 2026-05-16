@@ -13,6 +13,12 @@ const NAV = [
 export default function Layout() {
   return (
     <div style={{ minHeight: '100vh' }}>
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:px-3 focus:py-2 focus:rounded focus:bg-[color:var(--bg)] focus:text-[color:var(--ink)] focus:border focus:border-[color:var(--ac)]"
+      >
+        Skip to main content
+      </a>
       <header
         className="sticky top-0 z-50"
         style={{
@@ -53,7 +59,7 @@ export default function Layout() {
                   </div>
                 </div>
               </div>
-              <nav className="flex items-center gap-7">
+              <nav aria-label="Primary" className="flex items-center gap-7">
                 {NAV.map((n) => (
                   <NavLink
                     key={n.to}
@@ -88,7 +94,7 @@ export default function Layout() {
         </div>
       </header>
 
-      <main>
+      <main id="main">
         <Outlet />
       </main>
 
