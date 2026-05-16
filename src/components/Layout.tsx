@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 import ThemeToggle from './ui/ThemeToggle';
 
 const NAV = [
@@ -13,14 +13,12 @@ const NAV = [
 
 export default function Layout() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const location = useLocation();
+  const closeMenu = () => setMenuOpen(false);
 
-  // Auto-close the mobile menu on route change
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [location.pathname]);
-
-  // Lock body scroll while the mobile menu is open
+  // Lock body scroll while the mobile menu is open. The cleanup restores the
+  // previous overflow value; route changes close the menu via NavLink onClick
+  // handlers below (no effect-driven setState — the react-hooks/set-state-in-
+  // effect rule reasonably blocks that pattern).
   useEffect(() => {
     if (!menuOpen) return;
     const prev = document.body.style.overflow;
@@ -170,6 +168,7 @@ export default function Layout() {
                   key={n.to}
                   to={n.to}
                   end={n.to === '/'}
+                  onClick={closeMenu}
                   className="block px-3 py-3 rounded-lg text-sm transition-colors"
                   style={({ isActive }) =>
                     isActive
