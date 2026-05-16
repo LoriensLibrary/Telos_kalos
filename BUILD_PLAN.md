@@ -76,7 +76,7 @@ Every Telos feature ships behind a per-member feature flag (LaunchDarkly or simp
 
 The single biggest integration risk is **doubling the source of truth on member identity.** If Telos creates its own `members` table that drifts from Kalos's, audit becomes impossible. Mitigation: Telos's `members` table is a **denormalized read cache** with FK to Kalos's canonical member ID. Writes go to Kalos's app; Telos receives change events via webhook or scheduled sync.
 
-**Deliverable:** an explicit RACI document (or whatever Kalos uses) for who owns what during the dual-write period, plus the per-feature flag dashboard so Harsh/Callum can see what's live to which cohort at any time.
+**Deliverable:** an explicit RACI document (or whatever Kalos uses) for who owns what during the dual-write period, plus the per-feature flag dashboard so the founders can see what's live to which cohort at any time.
 
 ---
 
@@ -186,7 +186,7 @@ erDiagram
 - Pre-session brief generator
   - Generates 24h before each scheduled session
   - 3-5 bullet member context + suggested talking points + protocol citation
-- Standards library (already prototyped): admin UI for Harsh/Callum to edit protocols. RAG retrieves into briefs.
+- Standards library (already prototyped): admin UI for the founders to edit protocols. RAG retrieves into briefs.
 
 **Risk:** voice imitation. We label every draft as "drafted by Telos, edited by [Analyst]" in the member-visible thread. Analyst always reviews before send.
 
@@ -201,7 +201,7 @@ erDiagram
 Ship order is deliberate:
 
 1. **Apple Health** (week 11) — via lightweight iOS PWA shim or "Apple Health Web" if shipped by then. Otherwise wait until Phase 6 native app.
-2. **Whoop** (week 12) — OAuth 2.0 + REST. Highest-priority wearable per Harsh's audience.
+2. **Whoop** (week 12) — OAuth 2.0 + REST. Highest-priority wearable per the founders' audience.
 3. **Oura** (week 13) — REST API, similar pattern.
 4. **Abbott Lingo (CGM)** (week 14) — newer API, fewer references, expect debugging.
 
@@ -236,7 +236,7 @@ For each: OAuth flow, background sync job (every 4h), normalization layer to a u
   - Voice fidelity to Kalos's coaching style
   - Better protocol-citation accuracy
   - Lower variance in tone
-- Evaluation: human-graded panel (Harsh + Callum + 2-3 analysts) blind-rates outputs from fine-tuned vs base
+- Evaluation: human-graded panel (the founders + 2-3 analysts) blind-rates outputs from fine-tuned vs base
 - A/B test in production: 20% of drafts come from fine-tuned, measure accept-rate, edit-distance, send-rate
 - Continuous learning loop: every approved draft (with diff to original LLM output) becomes a training pair
 
@@ -308,7 +308,7 @@ Real numbers people privately wonder about. All ranges; actuals depend on member
 **Variables that would meaningfully shift these**
 
 - Going Opus instead of Haiku for drafts → ~5–10× the AI line item
-- Going SQL Server instead of Postgres (matches Kalos's existing stack) → similar baseline cost but different vendor mix; switch happens in Phase 0 if Harsh wants
+- Going SQL Server instead of Postgres (matches Kalos's existing stack) → similar baseline cost but different vendor mix; switch happens in Phase 0 if leadership wants
 - Going self-hosted earlier than Phase 7 → reduces Clerk + Vercel monthly but adds eng-time + on-call overhead
 - Skipping mobile (Phase 6) → no app-store fees, but caps Apple Health depth
 
@@ -328,16 +328,16 @@ These assume normal vacation, normal incident interruptions, and no scope creep.
 
 ---
 
-## What I'd want to validate in the first week
+## Week 1 — Validation interviews
 
-Before writing code, four conversations:
+Before writing code, four conversations shape the final phase ordering:
 
-1. **With Harsh + Callum** — confirm Phase 2 (AI Inbox + briefs) is actually the highest-leverage starting point, or if there's a more urgent operational need
+1. **With the founders** — confirm Phase 2 (AI Inbox + briefs) is actually the highest-leverage starting point, or if there's a more urgent operational need
 2. **With 2-3 analysts** — shadow a day. What takes them the most time today? What would they want drafted vs. what would feel like overreach?
-3. **With 1-2 long-tenured members** — what would actually feel valuable between scans vs. annoying?
+3. **1–2 long-tenured members** — what would actually feel valuable between scans vs. annoying?
 4. **With whoever owns Kalos's current data infrastructure** — what schema does the existing app use, what's the migration path, what's the risk of doubling the source of truth
 
-That research changes Phase 1 and 2 ordering, possibly significantly. The plan above is my prior; the first week's job is updating that prior.
+These conversations may reorder Phase 1 and 2 significantly. The plan above is the starting prior; Week 1's job is updating it.
 
 ---
 
@@ -359,11 +359,15 @@ If Kalos decides any of the above belongs in Telos, each is a scoping conversati
 
 ---
 
-## What I'd flag as the biggest risk
+## Biggest risk: voice imitation in Phase 2 messages
 
-**Voice imitation in Phase 2 messages.** A drafted message in an analyst's voice that the analyst forgets to edit and that lands wrong on a member is a trust-breaking event. Mitigations baked into the design above: explicit "drafted by Telos, sent by [Analyst]" attribution on every message, default to "edit before send" (not "send as-is"), member-side disclosure that some messages are AI-prepared.
+A drafted message in an analyst's voice that the analyst forgets to edit — and that lands wrong on a member — is a trust-breaking event. Mitigations baked into the design above:
 
-Worth deciding day-one with Harsh: do members ever see the word "Telos" in their app, or is Telos invisible infrastructure under the Kalos brand? Both are defensible. The choice shapes the messaging language meaningfully.
+- Explicit "drafted by Telos, sent by [Analyst]" attribution on every message
+- Default to "edit before send," not "send as-is"
+- Member-side disclosure that some messages are AI-prepared
+
+**Open decision for Week 1:** Do members ever see the word "Telos" in their app, or is Telos invisible infrastructure under the Kalos brand? Both are defensible. The choice shapes messaging language across every phase.
 
 ---
 
