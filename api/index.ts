@@ -14,9 +14,11 @@
  * The live-draft endpoint (api/draft-message.ts) takes precedence for
  * /api/draft-message because Vercel routes specific files before catch-all.
  *
- * Runtime: Node (consistent with draft-message.ts and the Vercel adapter
- * pattern for Hono). Database: Neon Postgres via @neondatabase/serverless
- * HTTP driver (no connection pool to manage in serverless).
+ * Runtime: Edge (required by hono/vercel's `handle()` adapter, and compatible
+ * with @neondatabase/serverless's HTTP-based driver). draft-message.ts stays
+ * on Node because @anthropic-ai/sdk pulls in node:fs / node:path. Database:
+ * Neon Postgres via @neondatabase/serverless HTTP driver (no connection pool
+ * to manage in serverless).
  */
 
 import { Hono } from 'hono';
