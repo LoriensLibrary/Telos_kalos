@@ -1,3 +1,9 @@
+// TODO(refactor): extract per-tab components into src/pages/member/*Tab.tsx
+// The 6 nested tab components (Today, Body, Nutrition, Movement, Sleep, Telos)
+// each close over the module-level `m` const and the tab-bar constants, so the
+// extraction is mostly mechanical: move each component into its own file,
+// import `m`/`FLAGS`/`ringColors`/`ringTrack` from a shared module (or pass as
+// props), and replace the inline `<Today />` calls below with module imports.
 import { useState } from 'react';
 import { CLIENTS } from '../data/clients';
 import { MAYA_CHAT } from '../data/chat';
