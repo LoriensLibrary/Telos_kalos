@@ -13,9 +13,13 @@ Built as a working prototype for the [Kalos Health](https://www.livekalos.com) S
 🌐 **Live demo:** [telos-kalos.vercel.app](https://telos-kalos.vercel.app)
 📋 **Build plan:** [BUILD_PLAN.md](./BUILD_PLAN.md) — 7-phase production roadmap
 
-![Telos AI Inbox — Generate Live Draft action capturing the moment a new analyst draft message is requested and rendered](docs/screenshots/ai-inbox-generate.gif)
+<video src="https://github.com/LoriensLibrary/Telos_kalos/raw/main/docs/screenshots/ai-inbox-generate.mp4" controls autoplay loop muted playsinline width="100%">
+  Generate Live Draft demo — your browser doesn't render inline video.
+  <a href="docs/screenshots/ai-inbox-generate.mp4">Download the clip</a>
+  or see the live build at <a href="https://telos-kalos.vercel.app">telos-kalos.vercel.app</a>.
+</video>
 
-*Performance → AI Inbox — the headline feature: AI-drafted member messages awaiting analyst review, with a live Claude-backed draft generator. Every draft is reviewable, editable, and approval-gated before send. Pattern-matched against 2,840+ synthetic coaching arcs in this demo.*
+*Performance → AI Inbox — the headline feature: AI-drafted member messages awaiting analyst review, with a live Claude-backed draft generator. Every draft is reviewable, editable, and approval-gated before send. Pattern-matched against 2,840+ synthetic coaching arcs in this demo. Captured against the deployed Vercel build; you can see the `LIVE · CLAUDE` badges, model identifier (`claude-haiku-4-5`), and per-draft confidence labels populate in real time.*
 
 ---
 
