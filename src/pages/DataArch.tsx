@@ -50,7 +50,7 @@ export default function DataArch() {
           <div className="p-10">
             <div className="flex items-center justify-between mb-6">
               <div className="lbl" style={{ color: '#A0F0C8' }}>
-                WHAT JAMES SEES
+                WHAT THE ANALYST SEES
               </div>
               <span className="chip chip-ac">OPERATIONAL SIGNAL</span>
             </div>

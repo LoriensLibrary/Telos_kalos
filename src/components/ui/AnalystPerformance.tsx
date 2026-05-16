@@ -1,4 +1,4 @@
-import { JAMES_KPIS, JAMES_COHORT, EXPERIMENTS, COMP_THIS_MONTH, CERTIFICATIONS, TEAM_STANDING } from '../../data/match';
+import { ANALYST_KPIS, ANALYST_COHORT, EXPERIMENTS, COMP_THIS_MONTH, CERTIFICATIONS, TEAM_STANDING } from '../../data/match';
 import Sparkline from '../charts/Sparkline';
 
 const trendColor: Record<string, string> = {
@@ -24,14 +24,14 @@ export default function AnalystPerformance() {
           How your members are doing — and how you stack up.
         </h2>
         <p className="text-sm max-w-2xl" style={{ color: 'var(--ink-s)' }}>
-          Cohort-level outcomes for the members you analyze. Aggregated weekly. Used by Harsh + Callum at the
+          Cohort-level outcomes for the members you analyze. Aggregated weekly. Used by the founders at the
           Friday cohort review.
         </p>
       </div>
 
       {/* KPIs */}
       <div className="grid grid-cols-6 gap-4">
-        {JAMES_KPIS.map((k) => (
+        {ANALYST_KPIS.map((k) => (
           <div key={k.label} className="glass p-5">
             <div className="lbl mb-3" style={{ fontSize: 9 }}>{k.label}</div>
             <div className="mono num text-3xl mb-1" style={{ color: trendColor[k.trend], fontWeight: 500 }}>
@@ -55,7 +55,7 @@ export default function AnalystPerformance() {
               <span className="chip chip-ac">5 ON-TRACK · 1 FLAGGED</span>
             </div>
             <div className="space-y-2">
-              {JAMES_COHORT.map((m) => (
+              {ANALYST_COHORT.map((m) => (
                 <div
                   key={m.name}
                   className="grid grid-cols-12 gap-3 items-center p-3 rounded-lg"
@@ -174,7 +174,7 @@ export default function AnalystPerformance() {
         </h3>
         <p className="text-sm mb-5 max-w-2xl" style={{ color: 'var(--ink-s)' }}>
           Single-variable tests across your roster. Feeds back into the Standards library when results hit
-          high-confidence. Harsh's framing — "every analyst is a data scientist."
+          high-confidence. Leadership framing — "every analyst is a data scientist."
         </p>
         <div className="grid grid-cols-2 gap-5">
           {EXPERIMENTS.map((e) => (

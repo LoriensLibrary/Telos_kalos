@@ -89,7 +89,7 @@ export default function Performance() {
       <div className="mb-8 flex items-end justify-between flex-wrap gap-4">
         <div>
           <div className="lbl mb-4" style={{ color: 'var(--ac-b)' }}>
-            PERFORMANCE STUDIO · JAMES WEI · ANALYST · METABOLIC HEALTH
+            PERFORMANCE STUDIO · ANALYST 2 · METABOLIC HEALTH
           </div>
           <h1
             className="brk"
@@ -961,7 +961,7 @@ function StandardsView() {
           The house playbook.
         </h2>
         <p className="mt-2 text-sm max-w-xl" style={{ color: 'var(--ink-s)' }}>
-          Versioned protocols Telos uses to draft briefs and suggest adjustments. Edited by Harsh + Callum quarterly.
+          Versioned protocols Telos uses to draft briefs and suggest adjustments. Edited by the founders quarterly.
         </p>
       </div>
 

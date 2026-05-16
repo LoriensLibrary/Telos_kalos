@@ -198,7 +198,7 @@ export default function DEXAReport() {
                 <h2 className="serif text-3xl mb-1" style={{ fontWeight: 400 }}>
                   Maya Reyes
                 </h2>
-                <div className="lbl">{s.date} · SF STUDIO · ANALYST: JAMES WEI</div>
+                <div className="lbl">{s.date} · SF STUDIO · ANALYST: ANALYST 2</div>
               </div>
               <div className="text-right">
                 <div className="lbl mb-2">REPORT</div>

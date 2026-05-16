@@ -134,7 +134,7 @@ export default function Onboarding() {
               J
             </div>
             <div>
-              <div className="text-sm" style={{ fontWeight: 500 }}>James Wei</div>
+              <div className="text-sm" style={{ fontWeight: 500 }}>Analyst 2</div>
               <div className="lbl mt-1" style={{ fontSize: 9 }}>METABOLIC HEALTH · NASM CPT</div>
             </div>
           </div>
@@ -169,7 +169,7 @@ export default function Onboarding() {
           </p>
           <div className="flex items-center gap-2">
             <button className="btn-ac">Ask Telos</button>
-            <button className="btn-gh">Message James</button>
+            <button className="btn-gh">Message analyst</button>
           </div>
         </div>
       </div>

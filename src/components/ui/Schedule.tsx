@@ -85,7 +85,7 @@ export default function Schedule() {
           <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>NEXT UP</div>
           <div className="mono num text-3xl mb-1">21h</div>
           <div className="text-sm mb-2" style={{ color: 'var(--ink-s)' }}>Tue · May 12 · 09:00</div>
-          <div className="text-base mb-4" style={{ fontWeight: 500 }}>Analyst session · James Wei</div>
+          <div className="text-base mb-4" style={{ fontWeight: 500 }}>Analyst session · Analyst 2</div>
           <p className="text-xs mb-4" style={{ color: 'var(--ink-s)' }}>
             DEXA #6 review · scan #7 prep · adjustment to the minimum-effective block through 5/13.
           </p>

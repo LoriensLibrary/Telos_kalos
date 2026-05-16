@@ -177,7 +177,7 @@ export default function Feedback({ audience }: Props) {
         <div className="glass p-6 glow-cy">
           <div className="lbl mb-3" style={{ color: 'var(--cy)' }}>YOUR THOUGHTS, FAST</div>
           <p className="text-sm" style={{ color: 'var(--ink-s)' }}>
-            Every suggestion lands in the same queue Harsh + Callum review weekly. Quick wins ship in 2 weeks, bigger asks move to roadmap. You'll see it appear in <em className="serif italic">"Recent ideas that shipped"</em> when it lands.
+            Every suggestion lands in the same queue the founders review weekly. Quick wins ship in 2 weeks, bigger asks move to roadmap. You'll see it appear in <em className="serif italic">"Recent ideas that shipped"</em> when it lands.
           </p>
         </div>
       </div>

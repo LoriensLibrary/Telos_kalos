@@ -63,24 +63,26 @@ export interface Analyst {
   signature: string;
 }
 
-// Real Kalos analysts pulled from livekalos.com/team
+// Demo analyst roster - fully fictional. Specialty tags and certifications
+// mirror the shape of a real fitness-coaching team without naming or
+// identifying any specific person.
 export const ANALYSTS: Analyst[] = [
   {
-    id: 'callum',
-    name: 'Callum Parker',
-    initials: 'CP',
-    bio: 'Co-Founder. Cambridge Economics, 800m PR 1:54, 1000lb club. Strength + endurance.',
+    id: 'a1',
+    name: 'Analyst 1',
+    initials: 'A1',
+    bio: 'Strength + endurance specialist. Performance-focused programming for advanced athletes.',
     specialties: ['Strength', 'Endurance', 'Performance'],
     cert: 'NASM CPT',
     location: 'SF · Palo Alto',
     match: ['strength', 'endurance', 'sport', 'direct', 'advanced'],
-    signature: 'Hardest worker on the team. Strong + fast same week.',
+    signature: 'High-intensity, data-driven, goal-focused.',
   },
   {
-    id: 'james',
-    name: 'James Wei',
-    initials: 'J',
-    bio: 'Metabolic health · body composition · busy-professional protocols.',
+    id: 'a2',
+    name: 'Analyst 2',
+    initials: 'A2',
+    bio: 'Metabolic health and body-composition protocols for busy professionals.',
     specialties: ['Body-comp', 'Metabolic', 'Longevity'],
     cert: 'NASM CPT/CNC',
     location: 'SF studio',
@@ -88,10 +90,10 @@ export const ANALYSTS: Analyst[] = [
     signature: 'Data-first. Protocols citing matched arcs. Calm under load.',
   },
   {
-    id: 'max',
-    name: 'Max Shakespeare',
-    initials: 'MS',
-    bio: 'Harvard Psych · Stanford Public Health. Behavior change + longevity.',
+    id: 'a3',
+    name: 'Analyst 3',
+    initials: 'A3',
+    bio: 'Behavior change and longevity coaching. Habit-first programming.',
     specialties: ['Behavior', 'Longevity', 'Wellbeing'],
     cert: 'NASM CPT · MPH',
     location: 'Palo Alto',
@@ -99,32 +101,32 @@ export const ANALYSTS: Analyst[] = [
     signature: 'Where the body meets the brain. Slow wins, sustained.',
   },
   {
-    id: 'noah',
-    name: 'Noah Feinberg',
-    initials: 'NF',
-    bio: 'Mayo Clinic + UFC strength. NHL + Olympic strength & conditioning.',
+    id: 'a4',
+    name: 'Analyst 4',
+    initials: 'A4',
+    bio: 'Sport-performance and elite strength & conditioning.',
     specialties: ['Strength', 'Sport', 'Power'],
     cert: 'CSCS · MSc',
     location: 'SF · Campbell',
     match: ['muscle', 'sport', 'advanced', 'data', 'direct'],
-    signature: 'Olympic-grade S&C. Elite athletes who want serious work.',
+    signature: 'Elite-level S&C for serious athletes.',
   },
   {
-    id: 'morgan',
-    name: 'Morgan Mitchell',
-    initials: 'MM',
-    bio: 'KPMG consultant + Equinox top trainer 2023/24. Strength + endurance.',
+    id: 'a5',
+    name: 'Analyst 5',
+    initials: 'A5',
+    bio: 'Aesthetic recomposition and race-training. Strength + endurance hybrid.',
     specialties: ['Strength', 'Endurance', 'Aesthetic'],
     cert: 'NASM CPT',
     location: 'SF studio',
     match: ['aesthetic', 'endurance', 'encouraging', 'morning'],
-    signature: 'Aesthetic recomp + race training. Polished + warm.',
+    signature: 'Aesthetic recomp + race training. Polished and warm.',
   },
   {
-    id: 'matteo',
-    name: 'Matteo Ascherio-Victoria',
-    initials: 'MA',
-    bio: 'Strength + mobility + movement + yoga. Pain-free for life framing.',
+    id: 'a6',
+    name: 'Analyst 6',
+    initials: 'A6',
+    bio: 'Mobility, movement, and pain-free strength. Yoga-informed.',
     specialties: ['Mobility', 'Strength', 'Movement'],
     cert: 'NASM CPT · 200hr Yoga',
     location: 'Palo Alto',
@@ -152,7 +154,7 @@ export interface AnalystKpi {
   detail: string;
 }
 
-export const JAMES_KPIS: AnalystKpi[] = [
+export const ANALYST_KPIS: AnalystKpi[] = [
   { label: 'ACTIVE MEMBERS', value: '23', delta: '+2 vs last mo', trend: 'up', detail: 'capacity 28' },
   { label: 'RETENTION (90d)', value: '94%', delta: '+3pt vs cohort', trend: 'up', detail: 'team avg 88%' },
   { label: 'AVG FAT-LOSS', value: '-1.4%', delta: 'per 4 wks', trend: 'up', detail: 'cohort -1.1%' },
@@ -171,7 +173,7 @@ export interface CohortMember {
   status: 'on-track' | 'flagged' | 'plateau' | 'new';
 }
 
-export const JAMES_COHORT: CohortMember[] = [
+export const ANALYST_COHORT: CohortMember[] = [
   { init: 'M', name: 'Maya Reyes', weeks: 24, fatΔ: '-3.7%', leanΔ: '+4.0lb', adherence: 78, status: 'flagged' },
   { init: 'D', name: 'Daniel K.', weeks: 24, fatΔ: '-2.2%', leanΔ: '+3.4lb', adherence: 91, status: 'plateau' },
   { init: 'P', name: 'Priya S.', weeks: 24, fatΔ: '-7.1%', leanΔ: '+4.2lb', adherence: 96, status: 'on-track' },

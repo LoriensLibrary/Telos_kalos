@@ -243,7 +243,7 @@ export default function MemberApp() {
             <div className="space-y-2 text-xs" style={{ color: 'var(--ink-s)' }}>
               {[
                 { v: 'Next DEXA scan', t: 'Reserved · May 13 · 11:30' },
-                { v: 'Analyst check-in', t: 'James Wei · 09:00' },
+                { v: 'Analyst check-in', t: 'Analyst 2 · 09:00' },
                 { v: 'Active program', t: 'Min-effective · wk 2 of 4' },
                 { v: 'App + analyst access', t: '24/7' },
               ].map((a, i) => (
@@ -768,14 +768,14 @@ export default function MemberApp() {
           </div>
 
           <div className="glass p-6">
-            <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>WHAT JAMES SEES</div>
+            <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>WHAT THE ANALYST SEES</div>
             <div className="text-sm mb-2" style={{ color: 'var(--ink-s)' }}>
               <span className="lbl mr-2">PATTERN</span>High cognitive-load period · last 72h
             </div>
             <div className="text-sm mb-4" style={{ color: 'var(--ink-s)' }}>
               <span className="lbl mr-2">SIGNAL</span>Adherence likely to drop. Recommend simplified structure 2–4 weeks. Do not press.
             </div>
-            <button className="btn-gh" style={{ width: '100%' }}>Surface a topic to James</button>
+            <button className="btn-gh" style={{ width: '100%' }}>Surface a topic to your analyst</button>
           </div>
 
           <div className="glass p-6">

@@ -23,7 +23,7 @@ export const MAYA_CHAT: ChatMsg[] = [
   {
     who: 'ai',
     text:
-      'Thanks for telling me. I want you to know this stays between us — James will only see that adherence dipped and recovery is low. He won\'t see what you just told me unless you ask me to surface it.',
+      'Thanks for telling me. I want you to know this stays between us — your analyst will only see that adherence dipped and recovery is low. They won\'t see what you just told me unless you ask me to surface it.',
   },
   {
     who: 'ai',
@@ -39,7 +39,7 @@ export const MAYA_CHAT: ChatMsg[] = [
   },
 ];
 
-// James's pre-session prep — AI-drafted member messages awaiting analyst review.
+// Analyst pre-session prep — AI-drafted member messages awaiting analyst review.
 // Style: short, specific, designed for a Kalos-style coaching tone.
 // Analyst approves / edits / declines before anything reaches the member.
 export interface DraftMsg {

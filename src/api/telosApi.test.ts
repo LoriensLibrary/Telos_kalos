@@ -84,11 +84,11 @@ describe('Telos API · analyst matching', () => {
   it('matchAnalyst returns higher-scoring analyst for matching tags', async () => {
     const endurance = await matchAnalyst(['endurance', 'sport', 'advanced']);
     expect(endurance).toBeDefined();
-    expect(endurance.name).toMatch(/Parker|Feinberg/); // Callum or Noah are endurance/sport-tagged
+    expect(endurance.name).toMatch(/Analyst (1|4)/); // A1 and A4 are endurance/sport-tagged
 
     const behavior = await matchAnalyst(['holistic', 'longevity', 'beginner']);
     expect(behavior).toBeDefined();
-    expect(behavior.name).toMatch(/Shakespeare|Ascherio/); // Max or Matteo are behavior/longevity
+    expect(behavior.name).toMatch(/Analyst (3|6)/); // A3 and A6 are behavior/longevity-tagged
   });
 });
 

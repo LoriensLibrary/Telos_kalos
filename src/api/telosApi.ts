@@ -42,7 +42,7 @@ export async function getMember(memberId: string): Promise<Member> {
     initials: c.init,
     status: c.status,
     goals: c.goals,
-    analystId: 'james',
+    analystId: 'a2',
   };
 }
 
@@ -54,7 +54,7 @@ export async function listMembers(): Promise<Member[]> {
     initials: c.init,
     status: c.status,
     goals: c.goals,
-    analystId: 'james',
+    analystId: 'a2',
   }));
 }
 

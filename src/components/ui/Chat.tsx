@@ -19,7 +19,7 @@ const REPLIES: Record<string, string> = {
   protein:
     'Aim for 30g before 10am. Greek yogurt + 2 eggs gets you there. Lingo will show the difference within 48h.',
   sleep:
-    'Sleep is the upstream variable here. If it stays under 6h for another 3 nights I want James in the loop — okay if I flag it?',
+    'Sleep is the upstream variable here. If it stays under 6h for another 3 nights I want your analyst in the loop — okay if I flag it?',
 };
 
 function pickReply(input: string): string {

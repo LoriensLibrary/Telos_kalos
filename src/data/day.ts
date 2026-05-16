@@ -269,7 +269,7 @@ export const TODAY_SCHEDULE: Session[] = [
     type: 'TEAM SYNC · 8 MEMBERS',
     duration: '30m',
     status: 'upcoming',
-    brief: ['Weekly cohort-level review with Harsh + Callum.', 'Bring Maya + Marcus context.'],
+    brief: ['Weekly cohort-level review with the founders.', 'Bring Maya + Marcus context.'],
   },
 ];
 
@@ -312,7 +312,7 @@ export const PROTOCOLS = [
 ];
 
 export const DAY_BRIEF = {
-  greet: 'Good morning, James.',
+  greet: 'Good morning.',
   sessions: 6,
   flagged: 1,
   drafted: 3,
