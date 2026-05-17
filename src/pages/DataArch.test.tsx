@@ -28,6 +28,18 @@ describe('Privacy · pattern-not-text invariant', () => {
     expect(screen.getByText(/adherence likely to drop/i)).toBeInTheDocument();
   });
 
+  it("raw disclosure text appears exactly once — in Maya's column, never in the analyst's", () => {
+    // Negation guard: the privacy seal isn't proven by "the pattern is on
+    // the analyst side." It's proven by "the raw text is NOT on the analyst
+    // side." If a future refactor leaked the disclosure text into the
+    // analyst column (e.g., by passing the wrong prop, or showing both
+    // views as a debug aid), the previous tests would still pass. This
+    // test would fail.
+    render(<DataArch />);
+    const rawDisclosureMatches = screen.queryAllByText(/hard call with my mom/i);
+    expect(rawDisclosureMatches).toHaveLength(1);
+  });
+
   it('pipeline enforces text-sealed-to-member as step 01', () => {
     render(<DataArch />);
     expect(screen.getByText(/raw disclosure/i)).toBeInTheDocument();

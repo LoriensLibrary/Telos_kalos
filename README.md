@@ -151,7 +151,7 @@ Telos is a **front-end product prototype** built with React 19, TypeScript, Vite
 - Theme system with 7 palettes + localStorage persistence + legacy-key migration
 - Responsive from 375px through desktop (hamburger nav < `md`, grids collapse mobile-first).
 - Public GitHub repo + auto-deploy via Vercel on push to `main`
-- Vitest + React Testing Library set up with smoke + behavior tests (34 tests, 5 suites)
+- Vitest + React Testing Library + axe-core set up with smoke + behavior tests + a11y baseline (42 tests, 6 suites)
 
 **Production path (what shipping this for real would require):**
 
@@ -227,13 +227,14 @@ On Windows there's also a `Telos.bat` launcher on the Desktop — one click star
 
 ## Test coverage
 
-34 tests across 5 suites verify the parts that have to be right:
+42 tests across 6 suites verify the parts that have to be right:
 
 - **`src/api/telosApi.test.ts`** — API surface: members CRUD, DEXA trajectory invariants, AI Inbox approve / decline state machine, analyst matching algorithm, integrations honesty (live vs roadmap), schedule ordering
 - **`src/api/draftClient.test.ts`** — live AI draft client contract: error mapping (config / network / validation / model), request shape, never-throw guarantee
 - **`src/components/ui/ThemeToggle.test.tsx`** — theme persistence to localStorage, migration from the legacy `companion.theme` key, dropdown interaction
-- **`src/pages/DataArch.test.tsx`** — privacy invariant: analyst's view contains pattern + signal but never the member's raw disclosure text
+- **`src/pages/DataArch.test.tsx`** — privacy invariant: pattern + signal appear in the analyst column, and the raw disclosure text appears *exactly once* — never in the analyst column. The negation guard catches the regression a positive-only test would miss.
 - **`src/pages/CamaProof.test.tsx`** — provenance integrity: every Pattern.derivedFrom and AnalystInsight.patternIds reference resolves; UI trace works end-to-end
+- **`src/a11y.test.tsx`** — axe-core scan against every public page (Overview, MemberApp, Performance, DataArch, CamaProof, Platform, Layout). Fails the build on any serious or critical WCAG 2.1 AA violation. Also pinned: `prefers-reduced-motion` CSS guards.
 
 Run with `npm test`.
 
