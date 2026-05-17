@@ -56,7 +56,7 @@ export default function MemberApp() {
             .
           </h1>
           <p className="mt-3 text-base max-w-xl" style={{ color: 'var(--ink-s)' }}>
-            8 days since DEXA #6 · 21 days until DEXA #7. Telos is keeping watch.
+            8 days since DEXA #6 · 21 days until DEXA #7. Telos is here when you need it.
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
