@@ -141,9 +141,9 @@ export default function Platform() {
               className="text-sm leading-relaxed mb-5"
               style={{ color: 'rgba(245,247,250,0.66)' }}
             >
-              Architect of CAMA — 53,000+ memories, 151,000+ relational edges, 55 MCP tools.
-              11 published papers on Zenodo. This demo was built solo, end-to-end, in the
-              same workflow Kalos hires for.
+              Architect of CAMA — 53,000+ memories, 238,000+ relational edges, 34 MCP tools
+              plus 9 optional subsystems. 11 published papers on Zenodo. This demo was built
+              solo, end-to-end, in the same workflow Kalos hires for.
             </p>
             <div className="flex items-center gap-2 flex-wrap">
               {[
