@@ -134,16 +134,26 @@ export default function InboxView() {
     void runGenerate(idx);
   };
 
+  // Static seed drafts (d1, d2, d3 from src/data/chat.ts) only live on the
+  // client — they're demo content, never inserted into Postgres. Live drafts
+  // generated through /api/draft-message get `d-live-${timestamp}` ids and
+  // do persist. The API approve/decline/edit endpoints 404 on seed ids
+  // because there's no row to update. So: branch on the id prefix — live
+  // drafts go through the API, seeds get an optimistic client-only update.
+  const isLiveDraft = (id: string) => id.startsWith('d-live-');
+
+  const localUpdate = (id: string, patch: Partial<BackendDraft>) =>
+    setDrafts((prev) =>
+      prev?.map((d) => (d.id === id ? { ...d, ...patch } : d)) ?? null,
+    );
+
   const handleApprove = async (id: string, isEdit: boolean) => {
-    if (usingFallback) {
-      // Dev/no-backend mode: mutate local state directly
-      setDrafts((prev) =>
-        prev?.map((d) =>
-          d.id === id
-            ? { ...d, state: isEdit ? 'edited' : 'approved', editedBody: isEdit ? edits[id] ?? null : d.editedBody }
-            : d,
-        ) ?? null,
-      );
+    const patch: Partial<BackendDraft> = {
+      state: isEdit ? 'edited' : 'approved',
+      editedBody: isEdit ? edits[id] ?? null : undefined,
+    };
+    if (usingFallback || !isLiveDraft(id)) {
+      localUpdate(id, patch);
       setEditing(null);
       return;
     }
@@ -159,10 +169,8 @@ export default function InboxView() {
   };
 
   const handleDecline = async (id: string) => {
-    if (usingFallback) {
-      setDrafts((prev) =>
-        prev?.map((d) => (d.id === id ? { ...d, state: 'declined' } : d)) ?? null,
-      );
+    if (usingFallback || !isLiveDraft(id)) {
+      localUpdate(id, { state: 'declined' });
       return;
     }
     try {
