@@ -22,7 +22,7 @@ export default function Onboarding() {
           </h2>
           <p className="text-base mb-6" style={{ color: 'var(--ink-s)' }}>
             You're about to get the clearest picture of your body anyone has ever shown you. Then a Performance Analyst
-            who's obsessed with data is going to help you act on it. Here's how the first three weeks unfold.
+            trained to read what your data is telling you is going to help you act on it. Here's how the first three weeks unfold.
           </p>
           <div className="grid grid-cols-2 gap-4">
             <div className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--line)' }}>
