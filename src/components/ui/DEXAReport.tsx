@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import DEXAChart from '../charts/DEXAChart';
-import DEXABody from '../charts/DEXABody';
+import DEXABody, { type DexaBodyMode } from '../charts/DEXABody';
 import { CLIENTS } from '../../data/clients';
 
 const m = CLIENTS[0];
@@ -119,8 +119,18 @@ const ROWS: Row[] = [
   },
 ];
 
+const BODY_MODES: { key: DexaBodyMode; label: string; sub: string }[] = [
+  { key: 'composite', label: 'COMPOSITE', sub: 'all layers' },
+  { key: 'lean',      label: 'LEAN MASS', sub: 'muscle distribution' },
+  { key: 'fat',       label: 'FAT',       sub: 'subcutaneous + visceral' },
+  { key: 'visceral',  label: 'VISCERAL',  sub: 'metabolic risk focus' },
+  { key: 'symmetry',  label: 'SYMMETRY',  sub: 'L/R balance' },
+  { key: 'bone',      label: 'BONE',      sub: 'skeletal density' },
+];
+
 export default function DEXAReport() {
   const [scanIdx, setScanIdx] = useState(SCANS.length - 1); // default to latest
+  const [bodyMode, setBodyMode] = useState<DexaBodyMode>('composite');
   const s = SCANS[scanIdx];
   const prev = scanIdx > 0 ? SCANS[scanIdx - 1] : undefined;
   const baseline = SCANS[0];
@@ -244,6 +254,39 @@ export default function DEXAReport() {
                 <div className="lbl" style={{ color: 'var(--ac-b)' }}>SCAN IMAGE · ANTERIOR · #{s.num}</div>
                 <span className="chip chip-ac">SEGMENTED</span>
               </div>
+              {/* Anatomical module picker — MouseMapper-style toggleable
+                  layers. Default 'composite' preserves existing render. */}
+              <div className="flex flex-wrap gap-1.5 mb-3" role="tablist" aria-label="Scan module">
+                {BODY_MODES.map((bm) => {
+                  const active = bm.key === bodyMode;
+                  return (
+                    <button
+                      key={bm.key}
+                      type="button"
+                      role="tab"
+                      aria-selected={active}
+                      onClick={() => setBodyMode(bm.key)}
+                      className="chip"
+                      style={{
+                        cursor: 'pointer',
+                        padding: '4px 10px',
+                        fontSize: 10,
+                        letterSpacing: 1,
+                        background: active
+                          ? 'color-mix(in srgb, var(--ac) 14%, transparent)'
+                          : 'rgba(255,255,255,0.03)',
+                        border: active
+                          ? '1px solid color-mix(in srgb, var(--ac) 55%, transparent)'
+                          : '1px solid var(--line)',
+                        color: active ? 'var(--ac-b)' : 'rgba(255,255,255,0.65)',
+                        transition: 'all 220ms ease',
+                      }}
+                    >
+                      {bm.label}
+                    </button>
+                  );
+                })}
+              </div>
               <div
                 className="rounded-xl p-4"
                 style={{
@@ -252,7 +295,11 @@ export default function DEXAReport() {
                   border: '1px solid var(--line)',
                 }}
               >
-                <DEXABody size={420} segments={s.segments} visceral={s.visceralNum} />
+                <DEXABody size={420} segments={s.segments} visceral={s.visceralNum} mode={bodyMode} />
+              </div>
+              <div className="lbl mt-2" style={{ fontSize: 8, color: 'rgba(255,255,255,0.5)' }}>
+                MODULE: <span style={{ color: 'var(--ac-b)' }}>{BODY_MODES.find((b) => b.key === bodyMode)?.label}</span>
+                {' · '}{BODY_MODES.find((b) => b.key === bodyMode)?.sub}
               </div>
               <div className="lbl mt-3" style={{ fontSize: 9 }}>
                 SEGMENTAL LEAN: HEAD {s.segments.head} · L ARM {s.segments.lArm} · R ARM {s.segments.rArm} · TRUNK {s.segments.trunk} · L LEG {s.segments.lLeg} · R LEG {s.segments.rLeg} (LB)
