@@ -21,6 +21,21 @@ Built as a working prototype for the [Kalos Health](https://www.livekalos.com) S
 
 ---
 
+## At a glance
+
+| Surface | Screenshot |
+|---|---|
+| **Overview** — hero landing, positioning, Kalos Triangle radar | ![Overview hero](docs/screenshots/01-overview.png) |
+| **Performance → AI Inbox** — analyst-review state machine over Claude-drafted messages | ![AI Inbox](docs/screenshots/04-ai-inbox.png) |
+| **CAMA Proof Layer** — every analyst insight traces to the patterns and memory records that produced it | ![CAMA Proof Layer](docs/screenshots/05-cama-proof.png) |
+| **Member → DEXA Report → COMPOSITE** — anterior body scan, all anatomical layers visible | ![DEXA composite](docs/screenshots/03-dexa-composite.png) |
+| **Member → DEXA Report → VISCERAL** — toggleable anatomical-module visualization; body fades to translucent silhouette, visceral hotspot prominent | ![DEXA visceral](docs/screenshots/03-dexa-visceral.png) |
+| **Member → DEXA Report → BONE** — soft tissues fade to phantom, skeletal layer brightened (MouseMapper-inspired whole-body scan) | ![DEXA bone](docs/screenshots/03-dexa-bone.png) |
+
+> All screenshots are from the live Vercel build. Regenerate with `python scripts/capture_screenshots.py` after `npm run dev` is running; downsize for README with `python scripts/optimize_screenshots.py`.
+
+---
+
 ## Tour in under 2 minutes
 
 If you want to evaluate this without poking around blindly, here's the fastest path to the substance:

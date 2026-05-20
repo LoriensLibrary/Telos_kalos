@@ -35,3 +35,6 @@ Kalos.zip
 # Tool-vendor metadata
 .agents/
 skills-lock.json
+
+# Pre-optimization screenshot originals (regenerable; ~15MB)
+scripts/.originals/
