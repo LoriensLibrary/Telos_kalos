@@ -4,7 +4,7 @@
  * These types are the contract between the API layer (src/api) and the UI
  * (src/components, src/pages). The current API implementation in src/api/telosApi.ts
  * returns mocked instances of these types. In production they'd be served from a
- * Hono REST API backed by Postgres + Drizzle (see BUILD_PLAN.md).
+ * Hono REST API backed by Postgres + Drizzle (see docs/BUILD_PLAN.md).
  *
  * Keep these UI-agnostic: no React, no styling concerns, no rendering hints.
  */

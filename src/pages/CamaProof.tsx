@@ -320,7 +320,7 @@ export default function CamaProof() {
         <p className="text-sm" style={{ color: 'rgba(245,247,250,0.66)', lineHeight: 1.6 }}>
           No Kalos private data was used. Data ingestion, consent, governance, and security review
           are prerequisites to applying the same architecture to real coaching workflows. See{' '}
-          <span className="mono">BUILD_PLAN.md</span> for the production rollout sequence.
+          <span className="mono">docs/BUILD_PLAN.md</span> for the production rollout sequence.
         </p>
       </div>
     </div>

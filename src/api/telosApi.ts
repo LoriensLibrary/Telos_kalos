@@ -3,7 +3,7 @@
  *
  * These functions are the boundary the UI calls. Today they return synthetic
  * data from src/data/*. In production they'd hit a Hono REST API backed by
- * Postgres + Drizzle (see BUILD_PLAN.md, Phase 1).
+ * Postgres + Drizzle (see docs/BUILD_PLAN.md, Phase 1).
  *
  * Every function is async and returns typed data. UI components should call
  * these — never reach into src/data/* directly. That separation is what makes

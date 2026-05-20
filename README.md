@@ -11,7 +11,7 @@ Built as a working prototype for the [Kalos Health](https://www.livekalos.com) S
 > *Telos* — Greek τέλος, "the goal you're working toward."
 
 🌐 **Live demo:** [telos-kalos.vercel.app](https://telos-kalos.vercel.app)
-📋 **Build plan:** [BUILD_PLAN.md](./BUILD_PLAN.md) — 7-phase production roadmap
+📋 **Build plan:** [BUILD_PLAN.md](./docs/BUILD_PLAN.md) — 7-phase production roadmap
 
 <video src="https://github.com/user-attachments/assets/11d42683-95b9-42f7-bc03-810b167852ed" controls autoplay loop muted playsinline width="100%">
   Your viewer doesn't render inline video — <a href="https://telos-kalos.vercel.app/performance">see the live demo</a> or grab the file from <a href="docs/screenshots/ai-inbox-generate.mp4">docs/screenshots/ai-inbox-generate.mp4</a>.
@@ -37,7 +37,7 @@ If you want to evaluate this without poking around blindly, here's the fastest p
 
 6. **Theme dropdown** in the header — 7 palettes including Kalos's actual royal blue. Switch to *Galaxy* or *Aurora* to see the design system shift. *(~10 sec)*
 
-7. *(Optional, ~5 min)* **[`BUILD_PLAN.md`](./BUILD_PLAN.md)** — 7-phase production roadmap with stack choices, timelines, risks, and the four conversations I'd want in week one before committing to phasing.
+7. *(Optional, ~5 min)* **[`BUILD_PLAN.md`](./docs/BUILD_PLAN.md)** — 7-phase production roadmap with stack choices, timelines, risks, and the four conversations I'd want in week one before committing to phasing.
 
 ---
 
@@ -131,7 +131,7 @@ An analyst-facing insight cites the Patterns it was built from. Each Pattern cit
 
 Every MemoryRecord carries: `member_id`, `memory_type`, `timestamp`, `source`, `content`, `tags`, `confidence`, `provenance`, `durability`. Memory types include `dexa_summary`, `analyst_note`, `food_log`, `checkin`, `goal`, `setback`, `preference`.
 
-The data is fabricated, modeled after public coaching workflows. No Kalos member data is used anywhere. The same architecture would apply to approved coaching data only after consent, governance, data access, and audit-logging are in place — see [`BUILD_PLAN.md`](./BUILD_PLAN.md) for the production rollout sequence.
+The data is fabricated, modeled after public coaching workflows. No Kalos member data is used anywhere. The same architecture would apply to approved coaching data only after consent, governance, data access, and audit-logging are in place — see [`BUILD_PLAN.md`](./docs/BUILD_PLAN.md) for the production rollout sequence.
 
 The provenance contract is enforced by tests: every `Pattern.derivedFrom` id and every `AnalystInsight.patternIds` reference is verified at test time, so the audit chain cannot quietly break.
 
@@ -165,7 +165,7 @@ Telos is a **front-end product prototype** built with React 19, TypeScript, Vite
 | 6 | HIPAA-ready hosting (BAA), encryption-at-rest, SOC 2 evidence collection | 4 wks |
 | 7 | Native mobile (React Native, HealthKit, BLE) | 6–8 wks |
 
-Full phased roadmap with stack rationale + risks: [`BUILD_PLAN.md`](./BUILD_PLAN.md).
+Full phased roadmap with stack rationale + risks: [`BUILD_PLAN.md`](./docs/BUILD_PLAN.md).
 
 ## Architecture
 
