@@ -1,5 +1,9 @@
 # Telos · for Kalos
 
+[![CI](https://github.com/LoriensLibrary/Telos_kalos/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/LoriensLibrary/Telos_kalos/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Live demo](https://img.shields.io/badge/demo-telos--kalos.vercel.app-success)](https://telos-kalos.vercel.app)
+
 > *Unofficial applicant prototype, built independently as a portfolio piece for the [Kalos Health](https://www.livekalos.com) Software Engineer role. Not affiliated with, endorsed by, or representing Kalos Health. All member data shown is synthetic. The "Kalos" brand and product references appear here as context for the role being applied to.*
 
 **An AI continuity layer between DEXA scans.**
