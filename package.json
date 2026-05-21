@@ -47,5 +47,10 @@
     "vite": "^8.0.12",
     "vitest": "^4.1.6",
     "vitest-axe": "^0.1.0"
+  },
+  "overrides": {
+    "@vercel/node": {
+      "undici": "^6.23.1"
+    }
   }
 }
