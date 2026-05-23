@@ -55,7 +55,11 @@
     "path-to-regexp": "^6.3.0",
     "minimatch": "^10.2.3",
     "smol-toml": "^1.6.1",
-    "ajv": "^8.18.0",
-    "esbuild": "^0.25.0"
+    "@vercel/static-config": {
+      "ajv": "^8.18.0"
+    },
+    "drizzle-kit": {
+      "esbuild": "^0.25.0"
+    }
   }
 }
