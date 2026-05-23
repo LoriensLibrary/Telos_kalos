@@ -51,6 +51,11 @@
   "overrides": {
     "@vercel/node": {
       "undici": "^6.23.1"
-    }
+    },
+    "path-to-regexp": "^6.3.0",
+    "minimatch": "^10.2.3",
+    "smol-toml": "^1.6.1",
+    "ajv": "^8.18.0",
+    "esbuild": "^0.25.0"
   }
 }
