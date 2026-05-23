@@ -57,9 +57,6 @@
     "smol-toml": "^1.6.1",
     "@vercel/static-config": {
       "ajv": "^8.18.0"
-    },
-    "drizzle-kit": {
-      "esbuild": "^0.25.0"
     }
   }
 }
