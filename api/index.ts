@@ -26,6 +26,7 @@ import { handle } from 'hono/vercel';
 import { eq } from 'drizzle-orm';
 import { db, DatabaseConfigError } from '../db/client.js';
 import { dexaScans, members, messageDrafts } from '../db/schema.js';
+import { requireDemoToken } from './_lib/auth.js';
 
 /** Vercel Edge runtime — required for hono/vercel's `handle()` and works
  *  with @neondatabase/serverless's HTTP-based driver. */
@@ -96,7 +97,7 @@ app.get('/drafts', async (c) => {
   return c.json(filtered);
 });
 
-app.post('/drafts', async (c) => {
+app.post('/drafts', requireDemoToken, async (c) => {
   const body = await c.req.json();
   if (!body?.id || !body?.memberName || !body?.body) {
     return c.json(
@@ -123,7 +124,7 @@ app.post('/drafts', async (c) => {
   return c.json({ ok: true, id: body.id }, 201);
 });
 
-app.post('/drafts/:id/approve', async (c) => {
+app.post('/drafts/:id/approve', requireDemoToken, async (c) => {
   const id = c.req.param('id');
   const result = await db
     .update(messageDrafts)
@@ -140,7 +141,7 @@ app.post('/drafts/:id/approve', async (c) => {
   return c.json(result[0]);
 });
 
-app.post('/drafts/:id/edit', async (c) => {
+app.post('/drafts/:id/edit', requireDemoToken, async (c) => {
   const id = c.req.param('id');
   const body = await c.req.json();
   if (typeof body?.body !== 'string') {
@@ -162,7 +163,7 @@ app.post('/drafts/:id/edit', async (c) => {
   return c.json(result[0]);
 });
 
-app.post('/drafts/:id/decline', async (c) => {
+app.post('/drafts/:id/decline', requireDemoToken, async (c) => {
   const id = c.req.param('id');
   const result = await db
     .update(messageDrafts)

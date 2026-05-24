@@ -19,6 +19,15 @@ Built for the [Kalos Health](https://www.livekalos.com) Software Engineer role.
 🌐 **Live demo:** [telos-kalos.vercel.app](https://telos-kalos.vercel.app)
 📋 **Build plan:** [BUILD_PLAN.md](./docs/BUILD_PLAN.md) — 7-phase production roadmap
 
+> **Trying the live demo from outside the browser?** The write/model API
+> routes (`POST /api/drafts*`, `POST /api/draft-message`) require an
+> `X-Demo-Token` header so bots can't mutate the shared draft queue or
+> burn through Anthropic quota. The web UI sends this automatically. If
+> you're hitting the API directly (e.g. `curl`, Postman), the token is
+> set in Vercel project env and shared only with intended reviewers — DM
+> me on GitHub if you need it. The model route is also capped at 10 calls
+> per IP per hour.
+
 <video src="https://github.com/user-attachments/assets/11d42683-95b9-42f7-bc03-810b167852ed" controls autoplay loop muted playsinline width="100%">
   Your viewer doesn't render inline video — <a href="https://telos-kalos.vercel.app/performance">see the live demo</a> or grab the file from <a href="docs/screenshots/ai-inbox-generate.mp4">docs/screenshots/ai-inbox-generate.mp4</a>.
 </video>
@@ -132,8 +141,17 @@ UI prepends to drafts grid · LIVE · CLAUDE chip · same approve/edit/decline b
 
 1. `cp .env.example .env.local`
 2. Add an Anthropic API key from [console.anthropic.com](https://console.anthropic.com) to `.env.local`
-3. For local testing: `vercel dev` (the `/api` routes do not run under plain `vite`)
-4. For production: set `ANTHROPIC_API_KEY` in Vercel project → Settings → Environment Variables
+3. Set `DEMO_TOKEN` and `VITE_DEMO_TOKEN` to the same value — the write/model
+   routes reject any request without a matching `X-Demo-Token` header. Pick any
+   opaque string for local dev; the deployed Vercel build uses a separate value
+   set in project env and shared only with intended reviewers (never committed
+   to this repo).
+4. *(Optional)* Set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` to
+   back the per-IP rate limit with cross-instance state. Without these, the
+   limiter falls back to per-instance in-memory counters.
+5. For local testing: `vercel dev` (the `/api` routes do not run under plain `vite`)
+6. For production: set `ANTHROPIC_API_KEY`, `DEMO_TOKEN`, `VITE_DEMO_TOKEN` (and
+   optionally the Upstash pair) in Vercel project → Settings → Environment Variables
 
 The frontend client (`src/api/draftClient.ts`) returns a discriminated union (never throws) and maps server errors to user-readable messaging. When the API key isn't configured, the analyst sees a clear "not configured on this deployment" notice instead of a crash.
 

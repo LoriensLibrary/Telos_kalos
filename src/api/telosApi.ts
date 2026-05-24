@@ -211,7 +211,28 @@ export async function getBriefForSession(sessionId: string): Promise<AnalystBrie
  * subsequent passes. Mock helpers above remain so existing tests + unmigrated
  * callers keep working — this is how production migrations actually happen,
  * progressively, not in one bang.
+ *
+ * Mutation routes (POST /drafts, POST /drafts/:id/*) and the model-calling
+ * /api/draft-message route require an X-Demo-Token header — see
+ * api/_lib/auth.ts for the server side and the README live-demo callout for
+ * the public token value.
  */
+
+/**
+ * Read the demo token from Vite's build-time env. Returns undefined when
+ * the token isn't configured (local `vite` dev mode), in which case the
+ * write helpers below still send the header as an empty string so the
+ * server consistently returns 401 — better than silently 503ing on a
+ * missing header.
+ */
+function demoToken(): string {
+  const token = (import.meta.env.VITE_DEMO_TOKEN ?? '') as string;
+  return token;
+}
+
+function authedHeaders(extra?: Record<string, string>): Record<string, string> {
+  return { 'X-Demo-Token': demoToken(), ...(extra ?? {}) };
+}
 
 /** Shape returned by GET /api/drafts — mirrors the Postgres `message_drafts` row. */
 export interface BackendDraft {
@@ -246,7 +267,10 @@ export async function liveListDrafts(
 }
 
 export async function liveApproveDraft(id: string): Promise<BackendDraft> {
-  const res = await fetch(`/api/drafts/${encodeURIComponent(id)}/approve`, { method: 'POST' });
+  const res = await fetch(`/api/drafts/${encodeURIComponent(id)}/approve`, {
+    method: 'POST',
+    headers: authedHeaders(),
+  });
   if (!res.ok) throw new Error(`liveApproveDraft failed: ${res.status}`);
   return res.json();
 }
@@ -254,7 +278,7 @@ export async function liveApproveDraft(id: string): Promise<BackendDraft> {
 export async function liveEditDraft(id: string, body: string): Promise<BackendDraft> {
   const res = await fetch(`/api/drafts/${encodeURIComponent(id)}/edit`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: authedHeaders({ 'Content-Type': 'application/json' }),
     body: JSON.stringify({ body }),
   });
   if (!res.ok) throw new Error(`liveEditDraft failed: ${res.status}`);
@@ -262,7 +286,10 @@ export async function liveEditDraft(id: string, body: string): Promise<BackendDr
 }
 
 export async function liveDeclineDraft(id: string): Promise<BackendDraft> {
-  const res = await fetch(`/api/drafts/${encodeURIComponent(id)}/decline`, { method: 'POST' });
+  const res = await fetch(`/api/drafts/${encodeURIComponent(id)}/decline`, {
+    method: 'POST',
+    headers: authedHeaders(),
+  });
   if (!res.ok) throw new Error(`liveDeclineDraft failed: ${res.status}`);
   return res.json();
 }
