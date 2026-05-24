@@ -57,6 +57,7 @@
     "smol-toml": "^1.6.1",
     "@vercel/static-config": {
       "ajv": "^8.18.0"
-    }
+    },
+    "zod": "^3.25.0"
   }
 }
