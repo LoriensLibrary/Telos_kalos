@@ -34,6 +34,7 @@ describe('generateDraft', () => {
           source: 'Live Claude generation · supportive tone',
           live: true,
           meta: { model: 'claude-haiku-4-5', inputTokens: 100, outputTokens: 80 },
+          persisted: true,
         }),
       }) as unknown as typeof fetch;
     });
@@ -155,10 +156,43 @@ describe('generateDraft', () => {
         '/api/draft-message',
         expect.objectContaining({
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: expect.objectContaining({
+            'Content-Type': 'application/json',
+            'X-Demo-Token': expect.any(String),
+          }),
           body: expect.stringContaining('Maya'),
         }),
       );
+    });
+  });
+
+  describe('demo-auth error mapping', () => {
+    it('maps 401 to kind:"auth"', async () => {
+      globalThis.fetch = vi.fn().mockResolvedValue({
+        ok: false,
+        status: 401,
+        json: async () => ({ error: 'Invalid or missing X-Demo-Token header' }),
+      }) as unknown as typeof fetch;
+
+      const result = await generateDraft({ memberName: 'X', trigger: 't' });
+      expect(result.state).toBe('error');
+      if (result.state === 'error') {
+        expect(result.error.kind).toBe('auth');
+      }
+    });
+
+    it('maps 429 to kind:"rate_limit"', async () => {
+      globalThis.fetch = vi.fn().mockResolvedValue({
+        ok: false,
+        status: 429,
+        json: async () => ({ error: 'Rate limit exceeded — 10 requests/hour per IP.' }),
+      }) as unknown as typeof fetch;
+
+      const result = await generateDraft({ memberName: 'X', trigger: 't' });
+      expect(result.state).toBe('error');
+      if (result.state === 'error') {
+        expect(result.error.kind).toBe('rate_limit');
+      }
     });
   });
 });

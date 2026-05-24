@@ -111,6 +111,10 @@ export default function InboxView() {
           ? 'Live drafting is not configured on this deployment yet (server-side API key missing).'
           : result.error.kind === 'network'
           ? 'Could not reach the drafting service. (Live drafts run only on the deployed Vercel build, not in local dev.)'
+          : result.error.kind === 'auth'
+          ? 'Demo access token missing or invalid. See the README live-demo callout for the public token.'
+          : result.error.kind === 'rate_limit'
+          ? result.error.message
           : result.error.message;
       setError(friendly);
     }

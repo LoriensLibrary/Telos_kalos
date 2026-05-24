@@ -21,13 +21,21 @@ export interface LiveDraft extends DraftMsg {
   /** True for drafts generated live via Claude (vs the static demo seed). */
   live: true;
   meta?: { model: string; inputTokens: number; outputTokens: number };
+  /**
+   * Whether the server successfully wrote the draft to Postgres. False means
+   * the draft is generation-only — it will not survive a reload and the UI
+   * should surface a "generated, not saved" state.
+   */
+  persisted: boolean;
 }
 
 export type DraftError =
   | { kind: 'config'; message: string }
   | { kind: 'network'; message: string }
   | { kind: 'validation'; message: string }
-  | { kind: 'model'; message: string };
+  | { kind: 'model'; message: string }
+  | { kind: 'auth'; message: string }
+  | { kind: 'rate_limit'; message: string };
 
 export type DraftResult =
   | { state: 'success'; draft: LiveDraft }
@@ -45,7 +53,10 @@ export async function generateDraft(req: DraftRequest): Promise<DraftResult> {
   try {
     res = await fetch('/api/draft-message', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Demo-Token': (import.meta.env.VITE_DEMO_TOKEN ?? '') as string,
+      },
       body: JSON.stringify(req),
     });
   } catch (err) {
@@ -71,11 +82,16 @@ export async function generateDraft(req: DraftRequest): Promise<DraftResult> {
   if (!res.ok) {
     const errBody = payload as { error?: string };
     const message = errBody?.error ?? `HTTP ${res.status}`;
-    const kind: DraftError['kind'] = message.includes('ANTHROPIC_API_KEY')
-      ? 'config'
-      : res.status === 400
-      ? 'validation'
-      : 'model';
+    const kind: DraftError['kind'] =
+      res.status === 401
+        ? 'auth'
+        : res.status === 429
+        ? 'rate_limit'
+        : message.includes('ANTHROPIC_API_KEY') || message.includes('DEMO_TOKEN not configured')
+        ? 'config'
+        : res.status === 400
+        ? 'validation'
+        : 'model';
     return { state: 'error', error: { kind, message } };
   }
 

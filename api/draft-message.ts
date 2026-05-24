@@ -2,6 +2,11 @@ import Anthropic from '@anthropic-ai/sdk';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { db, DatabaseConfigError } from '../db/client.js';
 import { messageDrafts } from '../db/schema.js';
+import { rejectIfUnauthorized } from './_lib/auth.js';
+import { checkRateLimit, clientIpFromHeaders } from './_lib/rateLimit.js';
+
+const RATE_LIMIT_PER_HOUR = 10;
+const RATE_LIMIT_WINDOW_SEC = 60 * 60;
 
 /**
  * /api/draft-message — live AI draft generation for the Performance AI Inbox.
@@ -44,6 +49,13 @@ interface DraftResponse {
   live: true;
   /** Model + token info for transparency. */
   meta: { model: string; inputTokens: number; outputTokens: number };
+  /**
+   * Whether the draft was written to Postgres. False means the draft was
+   * generated but not persisted (DATABASE_URL missing, or the insert
+   * failed) — the UI should surface a "generated, not saved" state so
+   * the analyst knows reloads will lose it.
+   */
+  persisted: boolean;
 }
 
 const SYSTEM_PROMPT = `You are Telos — an AI assistant for Kalos Health. You draft messages from a Performance Analyst (the human expert at Kalos) to a member. The analyst always reviews and approves your drafts before anything sends; you are leverage, not replacement.
@@ -83,6 +95,26 @@ function initials(name: string): string {
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  if (rejectIfUnauthorized(req, res)) return;
+
+  const ip = clientIpFromHeaders(req.headers as Record<string, unknown>);
+  const limit = await checkRateLimit(
+    ip,
+    'draft-message',
+    RATE_LIMIT_PER_HOUR,
+    RATE_LIMIT_WINDOW_SEC,
+  );
+  res.setHeader('X-RateLimit-Limit', String(limit.limit));
+  res.setHeader('X-RateLimit-Remaining', String(limit.remaining));
+  res.setHeader('X-RateLimit-Reset', String(Math.ceil(limit.resetAt / 1000)));
+  if (!limit.allowed) {
+    const retryAfterSec = Math.max(1, Math.ceil((limit.resetAt - Date.now()) / 1000));
+    res.setHeader('Retry-After', String(retryAfterSec));
+    return res.status(429).json({
+      error: `Rate limit exceeded — ${limit.limit} requests/hour per IP. Try again in ${retryAfterSec}s.`,
+    });
   }
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
@@ -162,7 +194,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    const response: DraftResponse = {
+    const draft = {
       id: `d-live-${Date.now()}`,
       member: body.memberName,
       init: body.memberInit ?? initials(body.memberName),
@@ -171,45 +203,51 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       body: parsed.body,
       conf: parsed.conf,
       source: `Live Claude generation · ${parsed.reasoning}`,
+    };
+
+    // Persist the live draft to Postgres so it survives reloads + can be
+    // approved/edited/declined through the same /api/drafts/:id/* endpoints.
+    // Awaited (not fire-and-forget): Vercel kills unawaited work after the
+    // response returns, so a fire-and-forget insert was silently dropping
+    // drafts in prod. Cost: 200-500ms of Neon HTTP latency. Benefit: the
+    // `persisted` flag below reflects reality, and we never lie to the UI.
+    let persisted = false;
+    try {
+      await db.insert(messageDrafts).values({
+        id: draft.id,
+        memberId: null,
+        memberName: draft.member,
+        init: draft.init,
+        draftedAt: draft.draftedAt,
+        trigger: draft.trigger,
+        body: draft.body,
+        conf: draft.conf,
+        source: draft.source,
+        state: 'pending',
+        isLive: 1,
+        model: completion.model,
+        inputTokens: completion.usage.input_tokens,
+        outputTokens: completion.usage.output_tokens,
+      });
+      persisted = true;
+    } catch (dbErr) {
+      if (dbErr instanceof DatabaseConfigError) {
+        console.warn('DATABASE_URL not configured — live draft not persisted');
+      } else {
+        console.error('Failed to persist live draft to Postgres:', dbErr);
+      }
+    }
+
+    const response: DraftResponse = {
+      ...draft,
       live: true,
       meta: {
         model: completion.model,
         inputTokens: completion.usage.input_tokens,
         outputTokens: completion.usage.output_tokens,
       },
+      persisted,
     };
-
-    // Persist the live draft to Postgres so it survives reloads + can be
-    // approved/edited/declined through the same /api/drafts/:id/* endpoints.
-    // Fire-and-forget: we don't await this — the analyst sees the draft as
-    // soon as Claude returns. The DB write happens after the response goes
-    // out, and a failure is logged but never blocks the user. This saves
-    // 200-500ms of perceived latency (the Neon serverless write was
-    // previously sequential between Claude's response and ours).
-    db.insert(messageDrafts)
-      .values({
-        id: response.id,
-        memberId: null,
-        memberName: response.member,
-        init: response.init,
-        draftedAt: response.draftedAt,
-        trigger: response.trigger,
-        body: response.body,
-        conf: response.conf,
-        source: response.source,
-        state: 'pending',
-        isLive: 1,
-        model: response.meta.model,
-        inputTokens: response.meta.inputTokens,
-        outputTokens: response.meta.outputTokens,
-      })
-      .catch((dbErr) => {
-        if (dbErr instanceof DatabaseConfigError) {
-          console.warn('DATABASE_URL not configured — live draft not persisted');
-        } else {
-          console.error('Failed to persist live draft to Postgres:', dbErr);
-        }
-      });
 
     return res.status(200).json(response);
   } catch (err) {
