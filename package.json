@@ -58,6 +58,7 @@
     "@vercel/static-config": {
       "ajv": "^8.18.0"
     },
-    "zod": "^3.25.0"
+    "zod": "^3.25.0",
+    "esbuild": "^0.25.0"
   }
 }
