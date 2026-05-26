@@ -23,7 +23,7 @@ export interface LiveDraft extends DraftMsg {
   meta?: { model: string; inputTokens: number; outputTokens: number };
   /**
    * Whether the server successfully wrote the draft to Postgres. False means
-   * the draft is generation-only — it will not survive a reload and the UI
+   * the draft is generation-only. It will not survive a reload and the UI
    * should surface a "generated, not saved" state.
    */
   persisted: boolean;
@@ -44,7 +44,7 @@ export type DraftResult =
 /**
  * Request a live AI-drafted message from the backend.
  *
- * Returns a discriminated union — never throws — so callers can render
+ * Returns a discriminated union, never throws, so callers can render
  * specific error states (e.g. "API key not configured" vs "network down")
  * without try/catch noise.
  */

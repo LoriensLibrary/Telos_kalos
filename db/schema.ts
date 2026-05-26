@@ -2,9 +2,9 @@
  * Drizzle schema for Telos · for Kalos.
  *
  * Three tables back the live demo today:
- *   - members        — analyst's roster (replaces src/data/clients.ts)
- *   - dexa_scans     — body-comp trajectory per member
- *   - message_drafts — AI Inbox queue (static seeds + live Claude drafts)
+ *   - members       , analyst's roster (replaces src/data/clients.ts)
+ *   - dexa_scans    , body-comp trajectory per member
+ *   - message_drafts, AI Inbox queue (static seeds + live Claude drafts)
  *
  * All tables are seeded from the existing static data so the demo is
  * deterministic. The live-draft endpoint inserts new rows on each

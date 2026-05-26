@@ -1,7 +1,7 @@
 import type { Client } from './types';
 
 /**
- * Analyst 2's full caseload — 9 members.
+ * Analyst 2's full caseload, 9 members.
  * Composition: 5 on-track, 2 plateau, 1 flagged, 1 new = 9 total
  * (matches the cohort summary cards in the Caseload tab).
  *

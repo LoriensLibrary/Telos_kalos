@@ -8,7 +8,7 @@
  *
  * The expected token is in process.env.DEMO_TOKEN; the public value is
  * documented in the README live-demo callout so genuine demo visitors
- * can use it from a browser. This is deliberately weak auth — it's a
+ * can use it from a browser. This is deliberately weak auth, it's a
  * speed bump, not a security boundary, and the threat model is automated
  * traffic, not a determined human attacker.
  *

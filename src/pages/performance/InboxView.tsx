@@ -63,7 +63,7 @@ export default function InboxView() {
     });
     if (result.state === 'success') {
       // Optimistically add the live draft to local state. The server may or
-      // may not have persisted it to Postgres — if DATABASE_URL isn't set on
+      // may not have persisted it to Postgres, if DATABASE_URL isn't set on
       // this deployment, the server's DB write silently fails (non-fatal by
       // design) and the row won't appear in a refetch. Adding locally first
       // means the analyst sees the draft regardless of DB state.
@@ -103,7 +103,7 @@ export default function InboxView() {
         });
         setUsingFallback(false);
       } catch {
-        // Silent — optimistic state remains.
+        // Silent, optimistic state remains.
       }
     } else {
       const friendly =
@@ -139,10 +139,10 @@ export default function InboxView() {
   };
 
   // Static seed drafts (d1, d2, d3 from src/data/chat.ts) only live on the
-  // client — they're demo content, never inserted into Postgres. Live drafts
+  // client, they're demo content, never inserted into Postgres. Live drafts
   // generated through /api/draft-message get `d-live-${timestamp}` ids and
   // do persist. The API approve/decline/edit endpoints 404 on seed ids
-  // because there's no row to update. So: branch on the id prefix — live
+  // because there's no row to update. So: branch on the id prefix, live
   // drafts go through the API, seeds get an optimistic client-only update.
   const isLiveDraft = (id: string) => id.startsWith('d-live-');
 

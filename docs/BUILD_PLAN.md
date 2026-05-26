@@ -371,4 +371,4 @@ A drafted message in an analyst's voice that the analyst forgets to edit (and th
 
 ---
 
-— Angela Reinhold
+Angela Reinhold

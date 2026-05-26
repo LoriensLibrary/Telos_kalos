@@ -4,7 +4,7 @@
  * Renders each public page and runs axe-core against the resulting DOM.
  * Fails the build on any serious or critical WCAG 2.1 AA violation.
  *
- * Coverage is intentionally page-level, not per-component — the goal is to
+ * Coverage is intentionally page-level, not per-component, the goal is to
  * catch regressions in real composed UI (the shape a screen-reader user
  * actually encounters), not to test components in isolation.
  */

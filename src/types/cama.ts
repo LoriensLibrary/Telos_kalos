@@ -1,5 +1,5 @@
 /**
- * CAMA — Circular Associative Memory Architecture
+ * CAMA, Circular Associative Memory Architecture
  *
  * Provenance-aware, longitudinal memory primitives for coaching context.
  * Every retrieved insight can be traced back to the specific MemoryRecords
@@ -49,7 +49,7 @@ export interface Pattern {
 /**
  * An analyst-facing insight surfaced before the next session. Built from
  * one or more Patterns. The `patternIds` field is the second layer of
- * provenance — insight → patterns → memories.
+ * provenance, insight → patterns → memories.
  */
 export interface AnalystInsight {
   id: string;

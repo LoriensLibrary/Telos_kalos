@@ -1,5 +1,5 @@
 /**
- * /api/* — Hono catch-all REST API for Telos.
+ * /api/*, Hono catch-all REST API for Telos.
  *
  * Routes implemented (all under /api):
  *   GET    /members                       → roster (9 rows from Neon)
@@ -28,13 +28,13 @@ import { db, DatabaseConfigError } from '../db/client.js';
 import { dexaScans, members, messageDrafts } from '../db/schema.js';
 import { requireDemoToken } from './_lib/auth.js';
 
-/** Vercel Edge runtime — required for hono/vercel's `handle()` and works
+/** Vercel Edge runtime, required for hono/vercel's `handle()` and works
  *  with @neondatabase/serverless's HTTP-based driver. */
 export const config = { runtime: 'edge' };
 
 const app = new Hono().basePath('/api');
 
-// Global error handler — catches DatabaseConfigError + any other thrown
+// Global error handler, catches DatabaseConfigError + any other thrown
 // errors and returns a structured JSON 5xx response instead of letting
 // Vercel surface a FUNCTION_INVOCATION_FAILED page.
 app.onError((err, c) => {

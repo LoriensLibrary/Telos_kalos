@@ -6,7 +6,7 @@
  * Postgres + Drizzle (see docs/BUILD_PLAN.md, Phase 1).
  *
  * Every function is async and returns typed data. UI components should call
- * these — never reach into src/data/* directly. That separation is what makes
+ * these, never reach into src/data/* directly. That separation is what makes
  * swapping in real network calls a single-file change later.
  *
  * Latency is simulated (~80ms) to verify loading states render correctly.
@@ -209,11 +209,11 @@ export async function getBriefForSession(sessionId: string): Promise<AnalystBrie
  * These helpers call the real Hono REST API at /api/* (Postgres-backed via
  * Neon + Drizzle). Used by AI Inbox today; other surfaces will migrate in
  * subsequent passes. Mock helpers above remain so existing tests + unmigrated
- * callers keep working — this is how production migrations actually happen,
+ * callers keep working. This is how production migrations actually happen,
  * progressively, not in one bang.
  *
  * Mutation routes (POST /drafts, POST /drafts/:id/*) and the model-calling
- * /api/draft-message route require an X-Demo-Token header — see
+ * /api/draft-message route require an X-Demo-Token header. See
  * api/_lib/auth.ts for the server side and the README live-demo callout for
  * the public token value.
  */
@@ -222,7 +222,7 @@ export async function getBriefForSession(sessionId: string): Promise<AnalystBrie
  * Read the demo token from Vite's build-time env. Returns undefined when
  * the token isn't configured (local `vite` dev mode), in which case the
  * write helpers below still send the header as an empty string so the
- * server consistently returns 401 — better than silently 503ing on a
+ * server consistently returns 401, better than silently 503ing on a
  * missing header.
  */
 function demoToken(): string {
@@ -234,7 +234,7 @@ function authedHeaders(extra?: Record<string, string>): Record<string, string> {
   return { 'X-Demo-Token': demoToken(), ...(extra ?? {}) };
 }
 
-/** Shape returned by GET /api/drafts — mirrors the Postgres `message_drafts` row. */
+/** Shape returned by GET /api/drafts, mirrors the Postgres `message_drafts` row. */
 export interface BackendDraft {
   id: string;
   memberId: string | null;
@@ -294,7 +294,7 @@ export async function liveDeclineDraft(id: string): Promise<BackendDraft> {
   return res.json();
 }
 
-/** Health check — used by `GET /api/health` to verify DB connectivity. */
+/** Health check, used by `GET /api/health` to verify DB connectivity. */
 export async function liveHealth(): Promise<{ ok: boolean; members?: number; timestamp?: string; error?: string }> {
   try {
     const res = await fetch('/api/health');
