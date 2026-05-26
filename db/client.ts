@@ -40,7 +40,7 @@ export function getDb() {
 /**
  * Convenience proxy so existing callers can keep writing `db.select(...)`.
  * The first property access triggers `getDb()`, which throws cleanly if
- * DATABASE_URL is missing — caught by route handlers, returned as JSON.
+ * DATABASE_URL is missing, caught by route handlers, returned as JSON.
  */
 export const db = new Proxy({} as ReturnType<typeof drizzle>, {
   get(_target, prop) {

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ============================ THEME TOKENS ============================ */
-/* KALOS BRAND THEME — pulled directly from livekalos.com:
+/* KALOS BRAND THEME, pulled directly from livekalos.com:
    bg #04040a · primary #4570ff · indigo family · Manrope.
    Verdant kept as alias for back-compat. */
 :root,
@@ -230,7 +230,7 @@ body {
   background-attachment: fixed;
 }
 
-/* atmospheric mist/fog bands + stars — gives the background visible texture */
+/* atmospheric mist/fog bands + stars, gives the background visible texture */
 body::before {
   content: '';
   position: fixed;
@@ -238,7 +238,7 @@ body::before {
   pointer-events: none;
   z-index: 0;
   background:
-    /* subtle starfield — random tiny dots via multiple radial gradients */
+    /* subtle starfield, random tiny dots via multiple radial gradients */
     radial-gradient(2px 2px at 14% 12%,  rgba(255,255,255,0.45), transparent 50%),
     radial-gradient(1px 1px at 28% 8%,   rgba(255,255,255,0.30), transparent 50%),
     radial-gradient(1px 1px at 42% 18%,  rgba(255,255,255,0.40), transparent 50%),
@@ -252,13 +252,13 @@ body::before {
     radial-gradient(2px 2px at 22% 56%,  rgba(255,255,255,0.18), transparent 50%),
     radial-gradient(1px 1px at 68% 62%,  rgba(255,255,255,0.18), transparent 50%),
     radial-gradient(1px 1px at 48% 78%,  rgba(255,255,255,0.10), transparent 50%),
-    /* horizontal fog bands — atmospheric haze */
+    /* horizontal fog bands, atmospheric haze */
     linear-gradient(180deg, transparent 24%, rgba(255,255,255,0.05) 30%, transparent 36%),
     linear-gradient(180deg, transparent 48%, rgba(255,255,255,0.03) 52%, transparent 56%);
   opacity: 0.9;
 }
 
-/* drifting light pools — feels alive */
+/* drifting light pools, feels alive */
 body::after {
   content: '';
   position: fixed;
@@ -300,7 +300,7 @@ body::after {
 .glass {
   position: relative;
   background:
-    /* a glassy base — slightly luminous top, slightly cool bottom */
+    /* a glassy base, slightly luminous top, slightly cool bottom */
     linear-gradient(180deg, rgba(255,255,255,0.075) 0%, rgba(255,255,255,0.022) 48%, rgba(0,0,0,0.08) 100%);
   border: 1px solid rgba(255,255,255,0.14);
   backdrop-filter: blur(40px) saturate(180%) brightness(108%);
@@ -308,12 +308,12 @@ body::after {
   border-radius: 18px;
   overflow: hidden;
   box-shadow:
-    /* glass rim light — top highlight, 2px catches the key */
+    /* glass rim light, top highlight, 2px catches the key */
     inset 0 1px 0 rgba(255,255,255,0.22),
     inset 0 2px 1px -1px rgba(255,255,255,0.08),
-    /* bottom inset shadow — curves the edge */
+    /* bottom inset shadow, curves the edge */
     inset 0 -1px 0 rgba(0,0,0,0.35),
-    /* side highlight — left edge catches light */
+    /* side highlight, left edge catches light */
     inset 1px 0 0 rgba(255,255,255,0.05),
     /* hairline outer ring */
     inset 0 0 0 1px rgba(255,255,255,0.02),
@@ -327,7 +327,7 @@ body::after {
     0 56px 112px -36px rgba(0,0,0,0.65);
   transition: box-shadow 200ms ease, transform 200ms ease;
 }
-/* FROSTED CORNERS — the four corners look like real frost forming inward */
+/* FROSTED CORNERS, the four corners look like real frost forming inward */
 .glass::before {
   content: '';
   position: absolute;
@@ -335,15 +335,15 @@ body::after {
   pointer-events: none;
   border-radius: inherit;
   background:
-    /* top-left frost — densest at the corner, fades inward */
+    /* top-left frost, densest at the corner, fades inward */
     radial-gradient(circle at 0% 0%,   rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 18%, transparent 38%),
     /* top-right frost */
     radial-gradient(circle at 100% 0%, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.04) 18%, transparent 38%),
-    /* bottom-left frost — slightly lighter */
+    /* bottom-left frost, slightly lighter */
     radial-gradient(circle at 0% 100%, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 20%, transparent 40%),
-    /* bottom-right frost — picks up theme tint */
+    /* bottom-right frost, picks up theme tint */
     radial-gradient(circle at 100% 100%, color-mix(in srgb, var(--ac) 14%, rgba(255,255,255,0.08)) 0%, transparent 42%),
-    /* top sheen — gentle, no diagonal line */
+    /* top sheen, gentle, no diagonal line */
     radial-gradient(140% 60% at 50% -10%, rgba(255,255,255,0.08), transparent 60%);
   opacity: 0.95;
   z-index: 0;
@@ -388,7 +388,7 @@ body::after {
   pointer-events: none;
   border-radius: inherit;
   background:
-    /* frosted corners — deeper, icier */
+    /* frosted corners, deeper, icier */
     radial-gradient(circle at 0% 0%,   rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.05) 20%, transparent 42%),
     radial-gradient(circle at 100% 0%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 20%, transparent 42%),
     radial-gradient(circle at 0% 100%, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 22%, transparent 44%),
@@ -421,7 +421,7 @@ body::after {
     0 8px 20px -8px rgba(0,0,0,0.45);
 }
 
-/* TILE — pop for the small panels inside glass cards
+/* TILE, pop for the small panels inside glass cards
    (food log rows, stat boxes, supplement items, amenities, etc.).
    Targets the consistent inline pattern so we don't have to refactor JSX. */
 [style*="rgba(255,255,255,0.02)"]:not(.tabs):not(html):not(body) {
@@ -492,7 +492,7 @@ body::after {
   transform: translateY(-1px);
 }
 
-/* hover lift — only when interactive (link/button wrapped) */
+/* hover lift, only when interactive (link/button wrapped) */
 a.glass:hover,
 button.glass:hover,
 .glass-hover:hover {
@@ -507,14 +507,14 @@ button.glass:hover,
     0 64px 128px -36px rgba(0,0,0,0.70);
 }
 
-/* corner brackets — futuristic flourish */
+/* corner brackets, futuristic flourish */
 .brk { position: relative; }
 
 /* Glow modifiers KEEP the full glass 3D shadow stack
    and ADD a theme-tinted halo + ring on top. Additive, not replacing. */
 .glow {
   box-shadow:
-    /* full glass shadow stack — same lift as .glass */
+    /* full glass shadow stack, same lift as .glass */
     inset 0 1px 0 rgba(255,255,255,0.22),
     inset 0 2px 1px -1px rgba(255,255,255,0.08),
     inset 0 -1px 0 rgba(0,0,0,0.35),
@@ -556,7 +556,7 @@ button.glass:hover,
     0 56px 112px -36px rgba(0,0,0,0.65);
 }
 
-/* Hero h1 — entire sentence floats above the canvas.
+/* Hero h1, entire sentence floats above the canvas.
    ONE clean shadow underneath. Nothing wraps the letters. */
 h1 {
   text-shadow: 0 24px 16px rgba(0,0,0,0.60);
@@ -713,7 +713,7 @@ h1 {
   font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--ink);
 }
 
-/* every ring hovers above its card — circular cast shadow on the surface below */
+/* every ring hovers above its card, circular cast shadow on the surface below */
 .ring-wrap {
   border-radius: 50%;
   box-shadow:
@@ -721,7 +721,7 @@ h1 {
     0 28px 40px -10px rgba(0,0,0,0.35);
 }
 
-/* buttons float — bump the lift */
+/* buttons float, bump the lift */
 .btn-ac {
   box-shadow:
     0 0 0 1px color-mix(in srgb, var(--ac) 30%, transparent),
@@ -795,7 +795,7 @@ h2, h3 {
 @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.45; } }
 .pulse { animation: pulse 2.4s ease-in-out infinite; }
 
-/* Respect user motion preferences — disable the decorative loops + transitions
+/* Respect user motion preferences, disable the decorative loops + transitions
    when the OS reports prefers-reduced-motion: reduce. Functional transitions
    (button hover, focus) keep a near-instant timing so the UI stays legible
    without animation. */
@@ -831,7 +831,7 @@ h2, h3 {
   .grid.grid-cols-7 {
     grid-template-columns: repeat(2, 1fr) !important;
   }
-  /* small stat-tile grids (gap-3 / gap-4) stay 2-wide — looks better than a tall single column.
+  /* small stat-tile grids (gap-3 / gap-4) stay 2-wide, looks better than a tall single column.
      Wider dual-view sections (no small-gap class) stack single column. */
   .glass .grid.grid-cols-2.gap-3,
   .glass .grid.grid-cols-2.gap-4,
@@ -861,7 +861,7 @@ h2, h3 {
   /* header nav: smaller gap + smaller fonts so it fits */
   header nav { gap: 1rem !important; }
   header nav a { font-size: 12px !important; }
-  /* hide the "LIVE DEMO" chip on small screens — header has too much already */
+  /* hide the "LIVE DEMO" chip on small screens, header has too much already */
   header .chip { display: none; }
   /* allow the header's inner flex to wrap when items don't fit */
   header > div > div.flex.items-center.justify-between {
@@ -886,7 +886,7 @@ h2, h3 {
 }
 
 @media (max-width: 900px) {
-  /* theme dropdown trigger lives on the left of its own row on mobile —
+  /* theme dropdown trigger lives on the left of its own row on mobile,
      so the panel needs to open rightward, not leftward */
   [role="listbox"][aria-label="Theme"] {
     right: auto !important;

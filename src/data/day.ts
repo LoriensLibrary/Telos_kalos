@@ -1,4 +1,4 @@
-// Member daily state — Maya, May 13 2026
+// Member daily state, Maya, May 13 2026
 export interface FoodEntry {
   time: string;
   meal: string;

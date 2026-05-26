@@ -17,7 +17,7 @@ export default function Layout() {
 
   // Lock body scroll while the mobile menu is open. The cleanup restores the
   // previous overflow value; route changes close the menu via NavLink onClick
-  // handlers below (no effect-driven setState — the react-hooks/set-state-in-
+  // handlers below (no effect-driven setState, the react-hooks/set-state-in-
   // effect rule reasonably blocks that pattern).
   useEffect(() => {
     if (!menuOpen) return;
@@ -78,7 +78,7 @@ export default function Layout() {
                 </div>
               </div>
 
-              {/* Desktop nav — hidden below md */}
+              {/* Desktop nav, hidden below md */}
               <nav aria-label="Primary" className="hidden md:flex items-center gap-7">
                 {NAV.map((n) => (
                   <NavLink
@@ -107,7 +107,7 @@ export default function Layout() {
                 LIVE DEMO
               </span>
 
-              {/* Mobile hamburger — hidden at md+ */}
+              {/* Mobile hamburger, hidden at md+ */}
               <button
                 type="button"
                 className="md:hidden flex flex-col justify-center items-center w-10 h-10 rounded-lg"

@@ -27,7 +27,7 @@ const DEFAULT_SEGMENTS: Segments = {
 };
 
 // Per-mode opacity for each layer group. Lets us light up one anatomical
-// "module" at a time while keeping the body shape visible — the
+// "module" at a time while keeping the body shape visible, the
 // MouseMapper-style whole-body translucent scan applied to body comp.
 const MODE_OPACITY: Record<DexaBodyMode, { lean: number; fat: number; bone: number; visceral: number; regions: number }> = {
   composite: { lean: 1.0,  fat: 1.0,  bone: 1.0,  visceral: 1.0, regions: 1.0 },
@@ -63,7 +63,7 @@ function asymmetry(left: string, right: string) {
 // Stylized whole-body DEXA scan visualization with toggleable anatomical
 // modules. The composite (default) mode renders every layer at normal
 // opacity. The other modes brighten one layer and fade the others into
-// a translucent silhouette — modeled after MouseMapper's anatomical
+// a translucent silhouette, modeled after MouseMapper's anatomical
 // module visualization, applied to body composition.
 export default function DEXABody({
   size = 380,
@@ -117,7 +117,7 @@ export default function DEXABody({
         <filter id="glow">
           <feGaussianBlur stdDeviation="2" />
         </filter>
-        {/* Phantom silhouette for non-composite modes — visible outline even
+        {/* Phantom silhouette for non-composite modes, visible outline even
             when all soft-tissue layers are dimmed. Keeps the body shape
             recognizable in module views. */}
         <linearGradient id="phantomOutline" x1="0" y1="0" x2="0" y2="1">
@@ -126,7 +126,7 @@ export default function DEXABody({
         </linearGradient>
       </defs>
 
-      {/* background grid — scan ruler feel */}
+      {/* background grid, scan ruler feel */}
       {Array.from({ length: 13 }).map((_, i) => (
         <line key={`h${i}`} x1="0" y1={i * 40} x2={w} y2={i * 40} stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
       ))}

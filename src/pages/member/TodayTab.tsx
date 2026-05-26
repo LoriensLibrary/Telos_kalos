@@ -80,7 +80,7 @@ export default function TodayTab() {
         </div>
       </div>
 
-      {/* RIGHT — Daily check-ins / hydration / sup */}
+      {/* RIGHT, Daily check-ins / hydration / sup */}
       <div className="col-span-1 lg:col-span-4 space-y-6">
         <div className="glass p-6">
           <div className="lbl mb-4" style={{ color: 'var(--ac-b)' }}>HYDRATION</div>

@@ -3,7 +3,7 @@ import type { BackendDraft } from '../../api/telosApi';
 
 /**
  * Pre-set scenarios for live AI draft generation. Each represents a different
- * coaching context (slip, plateau, stress disclosure) — distinct from the
+ * coaching context (slip, plateau, stress disclosure), distinct from the
  * static seed drafts so live drafts are clearly *new* alongside them.
  */
 export interface LiveScenario {

@@ -9,7 +9,7 @@
  *   the obvious case of one client hammering a single warm function.
  *
  * The fallback exists so this module never silently disables itself if the
- * Redis env vars are missing — a partial speed bump is better than none.
+ * Redis env vars are missing, a partial speed bump is better than none.
  */
 
 interface RateLimitResult {

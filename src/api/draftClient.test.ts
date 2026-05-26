@@ -5,7 +5,7 @@ import { generateDraft } from './draftClient';
  * Contract test for the live-draft frontend client.
  *
  * The client must:
- * - Never throw — all failure modes return a discriminated `{state: 'error', error: {kind, message}}`.
+ * - Never throw, all failure modes return a discriminated `{state: 'error', error: {kind, message}}`.
  * - Map specific error shapes to the right `kind` so the UI can render appropriate messaging.
  * - Pass through the server response shape on success.
  */

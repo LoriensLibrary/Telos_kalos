@@ -7,7 +7,7 @@ export default function DayView() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      {/* LEFT — SCHEDULE TIMELINE */}
+      {/* LEFT, SCHEDULE TIMELINE */}
       <div className="col-span-1 lg:col-span-5">
         <div className="glass p-6">
           <div className="flex items-center justify-between mb-5">
@@ -30,7 +30,7 @@ export default function DayView() {
         </div>
       </div>
 
-      {/* RIGHT — SESSION DETAIL */}
+      {/* RIGHT, SESSION DETAIL */}
       <div className="col-span-1 lg:col-span-7">
         {open ? <SessionDetail s={open} /> : <EmptyDetail />}
       </div>
@@ -97,7 +97,7 @@ function EmptyDetail() {
 }
 
 function SessionDetail({ s }: { s: Session }) {
-  // Hooks must run unconditionally on every render — call before any early return.
+  // Hooks must run unconditionally on every render, call before any early return.
   const [notes, setNotes] = useState(s.notes ?? '');
   const isBlock = s.status === 'block';
 

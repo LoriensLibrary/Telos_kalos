@@ -1,4 +1,4 @@
-// Analyst matching — mirrors how Kalos actually does it:
+// Analyst matching, mirrors how Kalos actually does it:
 // slot-based assignment by location/time + soft-match by goals/style.
 
 export interface Question {
@@ -135,7 +135,7 @@ export const ANALYSTS: Analyst[] = [
   },
 ];
 
-// Simple match scoring — sum tag matches per analyst
+// Simple match scoring, sum tag matches per analyst
 export function scoreAnalysts(answers: Record<string, string>): Analyst[] {
   const tags = Object.values(answers);
   return [...ANALYSTS]

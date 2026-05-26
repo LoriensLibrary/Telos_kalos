@@ -9,13 +9,13 @@ const RATE_LIMIT_PER_HOUR = 10;
 const RATE_LIMIT_WINDOW_SEC = 60 * 60;
 
 /**
- * /api/draft-message — live AI draft generation for the Performance AI Inbox.
+ * /api/draft-message, live AI draft generation for the Performance AI Inbox.
  *
  * Takes a member context (name, trigger, optional recent chat / metrics) and
  * returns a structured draft message in the same shape as the static demo
  * drafts in src/data/chat.ts (DraftMsg).
  *
- * The draft is *never sent* without analyst approval — the response is wired
+ * The draft is *never sent* without analyst approval, the response is wired
  * into the existing approve/edit/decline state machine on the client.
  *
  * Model: claude-haiku-4-5 (fast, cheap, sufficient for structured short-form).
@@ -52,7 +52,7 @@ interface DraftResponse {
   /**
    * Whether the draft was written to Postgres. False means the draft was
    * generated but not persisted (DATABASE_URL missing, or the insert
-   * failed) — the UI should surface a "generated, not saved" state so
+   * failed), the UI should surface a "generated, not saved" state so
    * the analyst knows reloads will lose it.
    */
   persisted: boolean;

@@ -5,7 +5,7 @@ import { CLIENTS } from '../../data/clients';
 
 const m = CLIENTS[0];
 
-// Full per-scan data — what changes scan-to-scan
+// Full per-scan data, what changes scan-to-scan
 interface ScanData {
   num: number;
   date: string;
@@ -247,14 +247,14 @@ export default function DEXAReport() {
             )}
           </div>
 
-          {/* BODY SCAN IMAGE — the visual hero */}
+          {/* BODY SCAN IMAGE, the visual hero */}
           <div className="grid grid-cols-12 gap-6 p-10">
             <div className="col-span-7">
               <div className="flex items-center justify-between mb-3">
                 <div className="lbl" style={{ color: 'var(--ac-b)' }}>SCAN IMAGE · ANTERIOR · #{s.num}</div>
                 <span className="chip chip-ac">SEGMENTED</span>
               </div>
-              {/* Anatomical module picker — MouseMapper-style toggleable
+              {/* Anatomical module picker, MouseMapper-style toggleable
                   layers. Default 'composite' preserves existing render. */}
               <div className="flex flex-wrap gap-1.5 mb-3" role="tablist" aria-label="Scan module">
                 {BODY_MODES.map((bm) => {
@@ -352,7 +352,7 @@ export default function DEXAReport() {
           </div>
         </div>
 
-        {/* Visual takeaways — short, scannable */}
+        {/* Visual takeaways, short, scannable */}
         <div className="glass p-7">
           <div className="flex items-center justify-between mb-5">
             <div className="lbl" style={{ color: 'var(--ac-b)' }}>FIVE THINGS TO KNOW · SCAN #{s.num}</div>

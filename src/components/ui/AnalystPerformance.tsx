@@ -196,7 +196,7 @@ export default function AnalystPerformance() {
         </div>
       </div>
 
-      {/* COMP TRACKER — structure only, no synthetic dollar values */}
+      {/* COMP TRACKER, structure only, no synthetic dollar values */}
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-8">
           <div className="glass p-7">

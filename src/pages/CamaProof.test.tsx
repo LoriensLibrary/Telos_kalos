@@ -4,7 +4,7 @@ import CamaProof from './CamaProof';
 import { analystInsight, memoryRecords, patterns } from '../data/cama';
 
 /**
- * CAMA Proof Layer — the contract we promise reviewers:
+ * CAMA Proof Layer, the contract we promise reviewers:
  *
  *   Insight → Patterns → MemoryRecords
  *

@@ -182,7 +182,7 @@ export default function Overview() {
         ))}
       </div>
 
-      {/* TESTIMONIALS — verbatim from livekalos.com */}
+      {/* TESTIMONIALS, verbatim from livekalos.com */}
       <div className="mb-12">
         <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>DON'T TAKE OUR WORD FOR IT</div>
         <h2 className="serif text-3xl mb-6" style={{ fontWeight: 400 }}>

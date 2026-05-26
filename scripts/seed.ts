@@ -1,5 +1,5 @@
 /**
- * Seed script — populates Neon Postgres from the existing static data files.
+ * Seed script, populates Neon Postgres from the existing static data files.
  *
  * Run locally with:
  *   npx tsx scripts/seed.ts
