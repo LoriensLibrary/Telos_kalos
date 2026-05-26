@@ -17,11 +17,11 @@ export default function Apps() {
         <div className="col-span-8">
           <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>2 LIVE · 7 ON ROADMAP</div>
           <h2 className="serif text-3xl mb-3" style={{ fontWeight: 400 }}>
-            What plugs in today — and what's coming.
+            What plugs in today, and what's coming.
           </h2>
           <p className="text-sm" style={{ color: 'var(--ink-s)' }}>
             Telos ships with the Kalos photo food log and weight log live. Wearable and CGM integrations
-            are queued for the next four quarters — Apple Health and Whoop first.
+            are queued for the next four quarters, Apple Health and Whoop first.
           </p>
         </div>
         <div className="col-span-4">

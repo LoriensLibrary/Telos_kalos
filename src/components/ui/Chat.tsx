@@ -11,15 +11,15 @@ interface Props {
 
 const REPLIES: Record<string, string> = {
   default:
-    "Heard. Logged this against your trend. I'll surface it in your pre-scan brief on May 13 — only the pattern, not the words.",
+    "Heard. Logged this against your trend. I'll surface it in your pre-scan brief on May 13, only the pattern, not the words.",
   yes:
     'Good. Holding the plan as-is. I\'ll check in Friday morning with the first signal read.',
   no:
-    'No pressure. We can adjust the plan, or just hold today. What feels off — the volume, the food, or the timing?',
+    'No pressure. We can adjust the plan, or just hold today. What feels off, the volume, the food, or the timing?',
   protein:
     'Aim for 30g before 10am. Greek yogurt + 2 eggs gets you there. Lingo will show the difference within 48h.',
   sleep:
-    'Sleep is the upstream variable here. If it stays under 6h for another 3 nights I want your analyst in the loop — okay if I flag it?',
+    'Sleep is the upstream variable here. If it stays under 6h for another 3 nights I want your analyst in the loop, okay if I flag it?',
 };
 
 function pickReply(input: string): string {

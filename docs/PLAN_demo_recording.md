@@ -1,4 +1,4 @@
-# Demo-Recording Storyboard — Telos for Kalos
+# Demo-Recording Storyboard: Telos for Kalos
 
 **Goal:** A 45–60 second silent screen recording that proves the prototype is real to any reviewer who reads the README without opening the live demo.
 
@@ -20,7 +20,7 @@
 
 ## Storyboard (60 seconds)
 
-Each beat is timestamped and labels what should be visually obvious. Pace fast — reviewers click away in 10 seconds if nothing moves.
+Each beat is timestamped and labels what should be visually obvious. Pace fast, reviewers click away in 10 seconds if nothing moves.
 
 | 0:00 – 0:05 | Open on Overview page. Scroll once to the "Performance Analysts · The Human Edge" section. Stop. | Frames the positioning. |
 | 0:05 – 0:10 | Click into Member → Telos tab. Maya's chat is visible. | Establishes the member surface exists and is populated. |
@@ -29,14 +29,14 @@ Each beat is timestamped and labels what should be visually obvious. Pace fast �
 | 0:25 – 0:35 | Switch to Performance → AI Inbox. Click **✨ Generate Live Draft**. Pause on the spinner; the new draft appears with LIVE · CLAUDE chip. | **The strongest engineering beat.** This is a real Claude API call. |
 | 0:35 – 0:42 | Click **Approve & Send** on one draft. The state transitions visually (color change / icon swap / move from inbox to history). | Proves the state machine works end-to-end. |
 | 0:42 – 0:55 | Click CAMA Proof tab. Click any pattern chip on the analyst insight. The underlying memory records highlight; non-contributors dim. | Proves the provenance chain is interactive and auditable. |
-| 0:55 – 0:60 | Click the theme dropdown in the header. Switch to *Galaxy* or *Aurora*. End on the visibly different palette. | A small flourish — shows the design system depth. |
+| 0:55 – 0:60 | Click the theme dropdown in the header. Switch to *Galaxy* or *Aurora*. End on the visibly different palette. | A small flourish, shows the design system depth. |
 
 ---
 
 ## Pre-recording checklist
 
 Before you hit record:
-- [ ] `npm run dev` — confirm the dev server is at http://localhost:5181
+- [ ] `npm run dev`, confirm the dev server is at http://localhost:5181
 - [ ] `.env.local` has a valid `ANTHROPIC_API_KEY` so the **Generate Live Draft** call actually fires (otherwise the beat at 0:25 fails)
 - [ ] Use a fresh browser profile or incognito so no devtools/extensions appear
 - [ ] Close other tabs; resize browser to ~1280×800
@@ -62,17 +62,17 @@ Once recorded, replace the existing "Tour in under 2 minutes" section header wit
 
 ## Watch the tour (60 seconds)
 
-![Telos tour — Maya's chat, live AI draft generation, CAMA Proof, theme switching](docs/telos-tour.gif)
+![Telos tour, Maya's chat, live AI draft generation, CAMA Proof, theme switching](docs/telos-tour.gif)
 
-*Or [open the live demo](https://telos-kalos.vercel.app) — full interactivity in your browser.*
+*Or [open the live demo](https://telos-kalos.vercel.app), full interactivity in your browser.*
 
 ---
 ```
 
-Keep the existing "Tour in under 2 minutes" *numbered* section directly below it — the GIF gives the visual proof, the numbered tour gives the deep-evaluator path. Reviewers self-select.
+Keep the existing "Tour in under 2 minutes" *numbered* section directly below it, the GIF gives the visual proof, the numbered tour gives the deep-evaluator path. Reviewers self-select.
 
 ---
 
 ## Fallback if the live-draft API isn't configured at recording time
 
-The Generate Live Draft beat (0:25–0:35) is the strongest moment because it proves a real API call. If you record without an API key configured, the UI shows the "not configured on this deployment" error state — that's still honest and demonstrates the discriminated-union error handling, but it's a weaker beat. **Configure the key before recording if at all possible.**
+The Generate Live Draft beat (0:25–0:35) is the strongest moment because it proves a real API call. If you record without an API key configured, the UI shows the "not configured on this deployment" error state, that's still honest and demonstrates the discriminated-union error handling, but it's a weaker beat. **Configure the key before recording if at all possible.**

@@ -97,7 +97,7 @@ export default function AnalystMatch() {
         <div className="glass p-6">
           <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>WHY THIS QUIZ</div>
           <p className="text-sm mb-3" style={{ color: 'var(--ink-s)' }}>
-            Kalos has 14 analysts — every one is an athlete who became a data scientist. They specialize in
+            Kalos has 14 analysts, every one is an athlete who became a data scientist. They specialize in
             different things: hypertrophy, longevity, performance, behavior change, mobility.
           </p>
           <p className="text-sm" style={{ color: 'var(--ink-s)' }}>
@@ -249,7 +249,7 @@ function MatchResult({ analyst, onRestart }: { analyst: Analyst; onRestart: () =
         <div className="glass p-6 glow-cy">
           <div className="lbl mb-3" style={{ color: 'var(--cy)' }}>HOW THE MATCH WORKED</div>
           <p className="text-sm" style={{ color: 'var(--ink-s)' }}>
-            Telos scored every analyst on the team against your 4 answers — goal fit, training history,
+            Telos scored every analyst on the team against your 4 answers, goal fit, training history,
             coaching style, schedule. {analyst.name.split(' ')[0]} topped the list because their specialties
             map to what you said you want most.
           </p>

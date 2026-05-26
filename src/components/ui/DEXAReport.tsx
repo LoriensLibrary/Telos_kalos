@@ -32,7 +32,7 @@ const SCANS: ScanData[] = [
     visceral: '1.45 lb', visceralNum: 1.45, almi: '7.51', bmd: '1.10 g/cm²',
     tScore: '+0.4', zScore: '+0.6', symmetry: '95.8%',
     segments: { head: '3.6', lArm: '6.0', rArm: '6.2', trunk: '46.4', lLeg: '23.0', rLeg: '22.4' },
-    note: 'Baseline. Starting point — no comparison yet.',
+    note: 'Baseline. Starting point, no comparison yet.',
   },
   {
     num: 2, date: 'DEC 3, 2025', reportId: 'KAL-DXA-25-1203-MR',
@@ -115,7 +115,7 @@ const ROWS: Row[] = [
   {
     label: 'Symmetry (L/R lean)', range: '> 95% target', trend: 'good',
     getValue: (s) => s.symmetry,
-    getNote: () => 'Within tolerance — no imbalance to correct.',
+    getNote: () => 'Within tolerance, no imbalance to correct.',
   },
 ];
 
@@ -310,8 +310,8 @@ export default function DEXAReport() {
               <div className="space-y-3">
                 {[
                   { label: 'WHERE THE LEAN IS', val: 'Trunk + legs leading', tone: 'var(--ac)' },
-                  { label: 'WHERE THE FAT IS', val: 'Visceral pocket — shrinking', tone: 'var(--warn)' },
-                  { label: 'SYMMETRY', val: `${s.symmetry} — no imbalance`, tone: 'var(--ac)' },
+                  { label: 'WHERE THE FAT IS', val: 'Visceral pocket, shrinking', tone: 'var(--warn)' },
+                  { label: 'SYMMETRY', val: `${s.symmetry}, no imbalance`, tone: 'var(--ac)' },
                   { label: 'BONE', val: `T-score ${s.tScore} · above median`, tone: 'var(--ac)' },
                 ].map((x) => (
                   <div
@@ -475,11 +475,11 @@ export default function DEXAReport() {
           <div className="lbl mb-3" style={{ color: 'var(--cy)' }}>HOW DEXA WORKS</div>
           <p className="text-sm mb-3" style={{ color: 'var(--ink-s)' }}>
             Dual-energy X-ray absorptiometry sends two low-dose X-ray beams through your body. Tissues absorb the
-            beams differently — bone most, fat least, lean tissue in between. The scanner reconstructs the result
+            beams differently, bone most, fat least, lean tissue in between. The scanner reconstructs the result
             into three layers: <em className="serif italic">bone, fat, lean</em>.
           </p>
           <p className="text-sm mb-3" style={{ color: 'var(--ink-s)' }}>
-            Radiation dose: ~0.001 mSv — roughly 1/1000th of an annual background dose. Safe to repeat every
+            Radiation dose: ~0.001 mSv, roughly 1/1000th of an annual background dose. Safe to repeat every
             4–8 weeks, the Kalos cadence.
           </p>
           <div className="lbl mt-4 mb-2">SCAN SEQUENCE</div>

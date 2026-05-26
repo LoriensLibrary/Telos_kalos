@@ -185,7 +185,7 @@ describe('generateDraft', () => {
       globalThis.fetch = vi.fn().mockResolvedValue({
         ok: false,
         status: 429,
-        json: async () => ({ error: 'Rate limit exceeded — 10 requests/hour per IP.' }),
+        json: async () => ({ error: 'Rate limit exceeded, 10 requests/hour per IP.' }),
       }) as unknown as typeof fetch;
 
       const result = await generateDraft({ memberName: 'X', trigger: 't' });

@@ -39,7 +39,7 @@ export default function Overview() {
             style={{ color: 'rgba(255,255,255,0.72)' }}
           >
             A continuity layer between DEXA scans. Performance Analysts get AI-prepared briefs and
-            reviewable draft messages — designed to draw on Kalos's coaching corpus once consent and
+            reviewable draft messages, designed to draw on Kalos's coaching corpus once consent and
             governance land. Members track between visits.
           </p>
           <div className="flex items-center gap-3 mt-8">
@@ -122,7 +122,7 @@ export default function Overview() {
             title: 'Member App',
             sub: 'Track between scans',
             body:
-              'DEXA journey charts. Wearable + Lingo integration. Food ingredient scanner. Daily Telos chat — private to the member.',
+              'DEXA journey charts. Wearable + Lingo integration. Food ingredient scanner. Daily Telos chat, private to the member.',
             color: '#A0F0C8',
             ring: 'rgba(101,217,168,0.22)',
             to: '/member',
@@ -142,7 +142,7 @@ export default function Overview() {
             title: 'Pattern Engine',
             sub: 'Built for Kalos data',
             body:
-              "Designed to learn from Kalos's real coaching arcs and DEXA outcomes once consent and governance land. Pattern leverage for every analyst — never replacement.",
+              "Designed to learn from Kalos's real coaching arcs and DEXA outcomes once consent and governance land. Pattern leverage for every analyst, never replacement.",
             color: '#B49AFF',
             ring: 'rgba(180,154,255,0.22)',
             to: '/data',
@@ -201,7 +201,7 @@ export default function Overview() {
               p: 'Nurse',
             },
             {
-              q: "Working out is my favorite hobby right now — and my A1C was 5.7 going into all this, now it's 4.7.",
+              q: "Working out is my favorite hobby right now, and my A1C was 5.7 going into all this, now it's 4.7.",
               n: 'Jennifer, 43',
               p: 'Lab Technician',
             },
@@ -229,7 +229,7 @@ export default function Overview() {
               <span style={{ color: 'var(--ink-s)' }}>It never replaces them.</span>
             </h2>
             <p className="text-base mb-4" style={{ color: 'var(--ink-s)' }}>
-              Kalos's promise isn't just better data — it's better interpretation. Members come for insight
+              Kalos's promise isn't just better data, it's better interpretation. Members come for insight
               generic AI cannot provide. Telos supports that promise by preparing the analyst, surfacing
               relevant between-scan patterns, and turning daily member signals into reviewable context
               before the session begins.

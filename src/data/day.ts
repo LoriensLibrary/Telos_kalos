@@ -149,9 +149,9 @@ export const TODAY_SCHEDULE: Session[] = [
       'Fat -1.2% scan 5→6. Lean +0.4 lb. Decelerating.',
       'Strong first 2 weeks then drift. 3 of 6 lifts missed.',
       'HRV depressed (38 ms). Sleep avg 5:42. Lingo: 3 spikes/d post-dinner.',
-      'Pattern flag: high cognitive-load period — last 72h. Do not press.',
+      'Pattern flag: high cognitive-load period, last 72h. Do not press.',
     ],
-    notes: 'Lead with progress. Frame as "we are protecting work already done." Avoid optimizing — minimum-effective block through 5/13.',
+    notes: 'Lead with progress. Frame as "we are protecting work already done." Avoid optimizing, minimum-effective block through 5/13.',
   },
   {
     id: 's2',
@@ -185,7 +185,7 @@ export const TODAY_SCHEDULE: Session[] = [
       '96% adherence trending up. HRV climbing 54→58 ms.',
       'All wearables green. No recovery flags.',
     ],
-    notes: 'Discuss: maintenance vs continued cut. Ask about subjective energy — numbers are great, want narrative match.',
+    notes: 'Discuss: maintenance vs continued cut. Ask about subjective energy, numbers are great, want narrative match.',
   },
   {
     id: 'b1',
@@ -209,10 +209,10 @@ export const TODAY_SCHEDULE: Session[] = [
     protocol: 'New member onboarding · Kalos Standard v0.9',
     flags: ['new-member'],
     brief: [
-      'First DEXA today — body composition baseline.',
+      'First DEXA today, body composition baseline.',
       'Tech founder · 38 · sedentary 5 years · high stress · single, no kids.',
       'Goals: lose 15 lb, rebuild cardiorespiratory base, sleep > 7h consistently.',
-      'No wearable yet — Whoop issued at session end. Lingo activation tomorrow.',
+      'No wearable yet, Whoop issued at session end. Lingo activation tomorrow.',
       'Insurance: cash-pay membership. Health record uploaded last Friday.',
       'Onboarding step 02/07 begins today. Next: pair wearables (3 days).',
     ],

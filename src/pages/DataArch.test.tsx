@@ -13,8 +13,8 @@ describe('Privacy · pattern-not-text invariant', () => {
     render(<DataArch />);
     const heading = screen.getByText(/what maya sees/i);
     expect(heading).toBeInTheDocument();
-    // The raw disclosure text — should be visible in Maya's column
-    expect(screen.getByText(/hard call with my mom/i)).toBeInTheDocument();
+    // The raw disclosure text should be visible in Maya's column
+    expect(screen.getByText(/heavy personal news/i)).toBeInTheDocument();
   });
 
   it("the analyst column shows pattern + signal, not the disclosure text", () => {
@@ -28,7 +28,7 @@ describe('Privacy · pattern-not-text invariant', () => {
     expect(screen.getByText(/adherence likely to drop/i)).toBeInTheDocument();
   });
 
-  it("raw disclosure text appears exactly once — in Maya's column, never in the analyst's", () => {
+  it("raw disclosure text appears exactly once: in Maya's column, never in the analyst's", () => {
     // Negation guard: the privacy seal isn't proven by "the pattern is on
     // the analyst side." It's proven by "the raw text is NOT on the analyst
     // side." If a future refactor leaked the disclosure text into the
@@ -36,7 +36,7 @@ describe('Privacy · pattern-not-text invariant', () => {
     // views as a debug aid), the previous tests would still pass. This
     // test would fail.
     render(<DataArch />);
-    const rawDisclosureMatches = screen.queryAllByText(/hard call with my mom/i);
+    const rawDisclosureMatches = screen.queryAllByText(/heavy personal news/i);
     expect(rawDisclosureMatches).toHaveLength(1);
   });
 

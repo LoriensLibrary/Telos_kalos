@@ -315,7 +315,7 @@ export default function CamaProof() {
         <p className="text-sm mb-3" style={{ color: 'rgba(245,247,250,0.84)', lineHeight: 1.6 }}>
           This proof layer demonstrates how approved coaching and body-composition data could be
           converted into persistent memory records, retrieved across time, and surfaced as
-          analyst-support insights — with every claim auditable down to the source memory.
+          analyst-support insights, with every claim auditable down to the source memory.
         </p>
         <p className="text-sm" style={{ color: 'rgba(245,247,250,0.66)', lineHeight: 1.6 }}>
           No Kalos private data was used. Data ingestion, consent, governance, and security review
