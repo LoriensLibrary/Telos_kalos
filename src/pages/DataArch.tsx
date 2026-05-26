@@ -20,7 +20,7 @@ export default function DataArch() {
         </h1>
         <p className="mt-4 text-base max-w-2xl" style={{ color: 'rgba(245,247,250,0.66)' }}>
           Members confide raw context. Analysts act on operational signal. Telos is the
-          interpreter — and the seal between them.
+          interpreter, and the seal between them.
         </p>
       </div>
 
@@ -40,7 +40,7 @@ export default function DataArch() {
               A private surface
             </div>
             <div className="bub bub-ai mb-4" style={{ maxWidth: '100%' }}>
-              "I had a hard call with my mom about her health and I've been eating around it.
+              "Got hit with some heavy personal news and I've been eating around it.
               Three nights of takeout, no workouts."
             </div>
             <div className="text-xs" style={{ color: 'rgba(245,247,250,0.40)' }}>
@@ -58,7 +58,7 @@ export default function DataArch() {
               A coachable signal
             </div>
             <p className="text-sm mb-2">
-              <span className="lbl mr-2">PATTERN</span>High cognitive-load period — last 72h
+              <span className="lbl mr-2">PATTERN</span>High cognitive-load period · last 72h
             </p>
             <p
               className="text-sm mb-5"

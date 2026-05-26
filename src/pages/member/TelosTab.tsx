@@ -21,7 +21,7 @@ export default function TelosTab() {
               'Adherence dipped 95% → 48% over weeks 4–6.',
               'Sleep avg 5:42 last 7 nights. HRV depressed 38ms.',
               'Lingo: 3 glucose spikes/day, all post-dinner.',
-              'Disclosed: high cognitive-load period from family health.',
+              'Disclosed: high cognitive-load period from personal strain.',
               'Workouts: 4 of 7 this week. 2 missed mid-week.',
             ].map((x, i) => (
               <li key={i} className="flex items-start gap-2">

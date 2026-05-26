@@ -21,7 +21,7 @@ export default function AnalystPerformance() {
       <div>
         <div className="lbl mb-3" style={{ color: 'var(--purple)' }}>YOUR PERFORMANCE · MAY 2026</div>
         <h2 className="serif text-3xl mb-3" style={{ fontWeight: 400 }}>
-          How your members are doing — and how you stack up.
+          How your members are doing, and how you stack up.
         </h2>
         <p className="text-sm max-w-2xl" style={{ color: 'var(--ink-s)' }}>
           Cohort-level outcomes for the members you analyze. Aggregated weekly. Used by the founders at the
@@ -170,11 +170,11 @@ export default function AnalystPerformance() {
       <div>
         <div className="lbl mb-3" style={{ color: 'var(--purple)' }}>YOUR EXPERIMENT LOG</div>
         <h3 className="serif text-2xl mb-3" style={{ fontWeight: 400 }}>
-          Protocols you've tested — and their cohort-level results.
+          Protocols you've tested, and their cohort-level results.
         </h3>
         <p className="text-sm mb-5 max-w-2xl" style={{ color: 'var(--ink-s)' }}>
           Single-variable tests across your roster. Feeds back into the Standards library when results hit
-          high-confidence. Leadership framing — "every analyst is a data scientist."
+          high-confidence. Leadership framing, "every analyst is a data scientist."
         </p>
         <div className="grid grid-cols-2 gap-5">
           {EXPERIMENTS.map((e) => (

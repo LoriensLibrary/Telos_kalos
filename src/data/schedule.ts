@@ -99,7 +99,7 @@ export const CONNECTED_APPS: ConnectedApp[] = [
     category: 'Body comp',
     metrics: ['Daily weight', 'Trend', 'DEXA delta'],
     lastSync: '6h ago',
-    desc: 'Home weigh-ins between scans. Trend-only — Telos ignores daily noise.',
+    desc: 'Home weigh-ins between scans. Trend-only, Telos ignores daily noise.',
   },
   {
     name: 'Apple Health',
@@ -107,7 +107,7 @@ export const CONNECTED_APPS: ConnectedApp[] = [
     category: 'Aggregator',
     metrics: ['Steps', 'Heart rate', 'Workouts', 'VO2 max'],
     lastSync: 'roadmap · Q2',
-    desc: 'iPhone health hub — pulls from Apple Watch + third-party apps. Coming this quarter.',
+    desc: 'iPhone health hub, pulls from Apple Watch + third-party apps. Coming this quarter.',
   },
   {
     name: 'Whoop 4.0',

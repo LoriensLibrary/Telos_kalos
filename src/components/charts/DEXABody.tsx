@@ -299,7 +299,7 @@ export default function DEXABody({
           )}
           {!armPulse && !legPulse && (
             <text x={120} y={510} textAnchor="middle" fill="rgba(255,255,255,0.55)" fontFamily="Geist Mono, monospace" fontSize="8" letterSpacing="1.5">
-              L/R Δ &lt; 2% — WITHIN NORMAL RANGE
+              L/R Δ &lt; 2%, WITHIN NORMAL RANGE
             </text>
           )}
         </g>

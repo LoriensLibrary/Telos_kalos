@@ -70,7 +70,7 @@ export default function CaseloadView({ onOpen }: { onOpen: (id: string) => void 
           <div className="lbl mb-2">NONE IN YOUR ROSTER</div>
           <p className="text-sm max-w-md mx-auto" style={{ color: 'var(--ink-s)' }}>
             {filterMeta?.val ?? 0} member{(filterMeta?.val ?? 0) === 1 ? '' : 's'} {filter?.toLowerCase()} cohort-wide
-            — none currently in your direct caseload. Click another status above or{' '}
+           , none currently in your direct caseload. Click another status above or{' '}
             <button
               type="button"
               onClick={() => setFilter(null)}

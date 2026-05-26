@@ -58,23 +58,23 @@ interface DraftResponse {
   persisted: boolean;
 }
 
-const SYSTEM_PROMPT = `You are Telos — an AI assistant for Kalos Health. You draft messages from a Performance Analyst (the human expert at Kalos) to a member. The analyst always reviews and approves your drafts before anything sends; you are leverage, not replacement.
+const SYSTEM_PROMPT = `You are Telos, an AI assistant for Kalos Health. You draft messages from a Performance Analyst (the human expert at Kalos) to a member. The analyst always reviews and approves your drafts before anything sends; you are leverage, not replacement.
 
 Kalos's coaching philosophy:
 - Supportive accountability. Never strict correction.
 - Pattern, not raw disclosure. Never expose private member text the analyst hasn't already surfaced.
 - Specific to the member's actual data (DEXA scans, adherence, recovery signals).
 - Short, direct, warm. Like a senior Performance Analyst, not a chatbot.
-- "Between-scan continuity" — your job is to hold momentum across the gaps.
+- "Between-scan continuity": your job is to hold momentum across the gaps.
 
-Terminology: refer to the human at Kalos as the *Performance Analyst* or *analyst* — never "coach." The activity itself can be called "coaching" (matches Kalos's own language), but the role is Performance Analyst.
+Terminology: refer to the human at Kalos as the *Performance Analyst* or *analyst*. Never "coach." The activity itself can be called "coaching" (matches Kalos's own language), but the role is Performance Analyst.
 
 You will receive a member context: name, trigger reason, optionally recent member messages and metrics. Draft a single message from the analyst to the member, then return ONLY a JSON object with these exact fields (no markdown, no commentary, no code fences):
 
 {
-  "body": string — the draft message body (60-300 chars, direct, warm, specific),
-  "conf": "high" | "med" | "low" — your confidence in the recommendation given the data,
-  "reasoning": string — one short sentence on why this draft (used as the source citation)
+  "body": string (the draft message body; 60-300 chars, direct, warm, specific),
+  "conf": "high" | "med" | "low" (your confidence in the recommendation given the data),
+  "reasoning": string (one short sentence on why this draft, used as the source citation)
 }
 
 Hard rules:
@@ -113,7 +113,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const retryAfterSec = Math.max(1, Math.ceil((limit.resetAt - Date.now()) / 1000));
     res.setHeader('Retry-After', String(retryAfterSec));
     return res.status(429).json({
-      error: `Rate limit exceeded — ${limit.limit} requests/hour per IP. Try again in ${retryAfterSec}s.`,
+      error: `Rate limit exceeded, ${limit.limit} requests/hour per IP. Try again in ${retryAfterSec}s.`,
     });
   }
 
@@ -232,7 +232,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       persisted = true;
     } catch (dbErr) {
       if (dbErr instanceof DatabaseConfigError) {
-        console.warn('DATABASE_URL not configured — live draft not persisted');
+        console.warn('DATABASE_URL not configured, live draft not persisted');
       } else {
         console.error('Failed to persist live draft to Postgres:', dbErr);
       }

@@ -222,7 +222,7 @@ export default function InboxView() {
           }}
         >
           <span className="lbl mr-2" style={{ color: 'var(--cy)' }}>DEV MODE</span>
-          Backend unreachable — showing static seed drafts. State changes won't persist. Live deployment uses Postgres (Neon) via the Hono REST API.
+          Backend unreachable, showing static seed drafts. State changes won't persist. Live deployment uses Postgres (Neon) via the Hono REST API.
         </div>
       )}
 
@@ -410,7 +410,7 @@ function DraftCard({ d, state, editing, body, isLive, liveMeta, onApprove, onEdi
             color: 'rgba(245,247,250,0.55)',
             letterSpacing: '0.05em',
           }}
-          title="Model + token usage from this generation — for analyst-side transparency on AI cost"
+          title="Model + token usage from this generation, for analyst-side transparency on AI cost"
         >
           {liveMeta.model} · in {liveMeta.inputTokens} · out {liveMeta.outputTokens} tok
         </div>
@@ -425,7 +425,7 @@ function DraftCard({ d, state, editing, body, isLive, liveMeta, onApprove, onEdi
               className="btn-gh"
               onClick={onRegenerate}
               data-testid="regenerate-draft"
-              title="Re-run Claude with the same context — useful if the first draft missed the tone"
+              title="Re-run Claude with the same context, useful if the first draft missed the tone"
             >
               ↻ Regenerate
             </button>

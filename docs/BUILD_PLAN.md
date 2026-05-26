@@ -2,11 +2,11 @@
 
 A realistic engineering roadmap to take the front-end prototype in this repo and ship Telos as a production AI continuity layer for Kalos Health.
 
-This is the build I'd propose on day-one of the role, not a sales doc. Timelines below assume **one engineer starting at Kalos** (me). With a second engineer added at Phase 3, the total compresses meaningfully — noted at the bottom.
+This is the build I'd propose on day-one of the role, not a sales doc. Timelines below assume **one engineer starting at Kalos** (me). With a second engineer added at Phase 3, the total compresses meaningfully, noted at the bottom.
 
-> **What exists today:** front-end prototype in `src/`. React 19 + Vite + TypeScript on Vercel. Member/coaching data is synthetic, and there is no production backend, auth, or Kalos data integration. The deployed demo does include one Vercel serverless endpoint (`api/draft-message`) backed by a small Hono + Drizzle + Neon Postgres surface for **live Claude-generated drafts** in the AI Inbox — the rest of the page reads from static seeds. Roughly 60% of the eventual UI surface.
+> **What exists today:** front-end prototype in `src/`. React 19 + Vite + TypeScript on Vercel. Member/coaching data is synthetic, and there is no production backend, auth, or Kalos data integration. The deployed demo does include one Vercel serverless endpoint (`api/draft-message`) backed by a small Hono + Drizzle + Neon Postgres surface for **live Claude-generated drafts** in the AI Inbox, the rest of the page reads from static seeds. Roughly 60% of the eventual UI surface.
 >
-> **What this plan covers:** the other 40% of the surface, plus everything underneath it — real auth, the production Kalos-data integration, the full backend, and the Phase 2+ work that turns the live-draft demo from "one endpoint" into "the analyst's actual queue."
+> **What this plan covers:** the other 40% of the surface, plus everything underneath it, real auth, the production Kalos-data integration, the full backend, and the Phase 2+ work that turns the live-draft demo from "one endpoint" into "the analyst's actual queue."
 
 ---
 
@@ -52,24 +52,24 @@ Kalos has a member area on livekalos.com today. Telos has to integrate with what
 
 **Sequence**
 
-1. **Week 1 — discovery** (no code yet). Read access to staging DB, schema doc, existing API contracts. Identify which entities Telos owns vs. mirrors:
+1. **Week 1, discovery** (no code yet). Read access to staging DB, schema doc, existing API contracts. Identify which entities Telos owns vs. mirrors:
    - **Telos owns:** `dexa_scans`, `message_drafts`, `session_briefs`, `physiological_signal`, `audit_log` (Phase 4)
    - **Kalos already owns:** `members` (auth + profile + payment), `analysts` (employment + scheduling), `appointments`
    - **Shared:** `sessions` (Kalos's calendar = source of truth; Telos reads it, writes brief metadata to its own table)
-2. **Week 2-3 — read-only mirror.** Telos reads from Kalos's existing DB via a thin adapter (`packages/kalos-adapter`). Member + analyst tables are read-only from Telos's POV. No Telos UI surfaces are member-facing yet.
-3. **Week 4-6 — Telos-owned tables go live.** Members can see DEXA scans + log meals/weight in Telos. Kalos's existing member area continues to work; both surfaces show the same scan data because Telos is the new source of truth for `dexa_scans`.
-4. **Week 7+ — analyst-side surfaces ship to internal team only first** (5-10 analysts). 2-week soak before opening to all.
-5. **Week 12 — sunset Kalos's old DEXA/scan UI** if Telos has full coverage. Members redirect to Telos.
+2. **Week 2-3, read-only mirror.** Telos reads from Kalos's existing DB via a thin adapter (`packages/kalos-adapter`). Member + analyst tables are read-only from Telos's POV. No Telos UI surfaces are member-facing yet.
+3. **Week 4-6, Telos-owned tables go live.** Members can see DEXA scans + log meals/weight in Telos. Kalos's existing member area continues to work; both surfaces show the same scan data because Telos is the new source of truth for `dexa_scans`.
+4. **Week 7+, analyst-side surfaces ship to internal team only first** (5-10 analysts). 2-week soak before opening to all.
+5. **Week 12, sunset Kalos's old DEXA/scan UI** if Telos has full coverage. Members redirect to Telos.
 
 **Rollback plan**
 
-Every Telos feature ships behind a per-member feature flag (LaunchDarkly or simpler home-grown). If Telos's DEXA view breaks, the member silently falls back to Kalos's existing view. The flag is per-feature, per-cohort — we never have to choose between "all in" and "all out."
+Every Telos feature ships behind a per-member feature flag (LaunchDarkly or simpler home-grown). If Telos's DEXA view breaks, the member silently falls back to Kalos's existing view. The flag is per-feature, per-cohort. We never have to choose between "all in" and "all out."
 
 **What I'd need from the existing-app team in week 1**
 
-- Read access to staging Postgres (or SQL Server — TBD which Kalos uses for member data)
+- Read access to staging Postgres (or SQL Server, TBD which Kalos uses for member data)
 - Current member auth flow walkthrough (Telos must integrate with the same session, not double-prompt for login)
-- Schema doc for `members`, `analysts`, `appointments` — even if it's just a screenshot of the ERD
+- Schema doc for `members`, `analysts`, `appointments`, even if it's just a screenshot of the ERD
 - The contact who owns the existing app's deploy process so changes coordinate
 
 **Risk**
@@ -157,7 +157,7 @@ erDiagram
 
 **What's already shipped in this prototype:** `members`, `dexa_scans`, `message_drafts` (with the live-vs-seed + token-meta + audit columns shown above) all live in Neon Postgres, queried via Drizzle through the Hono REST API at `/api/*`. Schema files: [`db/schema.ts`](./db/schema.ts).
 
-**What this Phase 1 plan adds:** `analysts`, `sessions`, `session_briefs`, `weight_logs`, `food_log_entries`, `programs`, `goals`, `protocol_citations`, `audit_log` — and proper auth-mapped FKs to Kalos's existing member identity (see Phase 0.5 above).
+**What this Phase 1 plan adds:** `analysts`, `sessions`, `session_briefs`, `weight_logs`, `food_log_entries`, `programs`, `goals`, `protocol_citations`, `audit_log`, and proper auth-mapped FKs to Kalos's existing member identity (see Phase 0.5 above).
 
 ### Endpoints + delivery
 
@@ -200,10 +200,10 @@ erDiagram
 
 Ship order is deliberate:
 
-1. **Apple Health** (week 11) — via lightweight iOS PWA shim or "Apple Health Web" if shipped by then. Otherwise wait until Phase 6 native app.
-2. **Whoop** (week 12) — OAuth 2.0 + REST. Highest-priority wearable per the founders' audience.
-3. **Oura** (week 13) — REST API, similar pattern.
-4. **Abbott Lingo (CGM)** (week 14) — newer API, fewer references, expect debugging.
+1. **Apple Health** (week 11), via lightweight iOS PWA shim or "Apple Health Web" if shipped by then. Otherwise wait until Phase 6 native app.
+2. **Whoop** (week 12), OAuth 2.0 + REST. Highest-priority wearable per the founders' audience.
+3. **Oura** (week 13), REST API, similar pattern.
+4. **Abbott Lingo (CGM)** (week 14), newer API, fewer references, expect debugging.
 
 For each: OAuth flow, background sync job (every 4h), normalization layer to a unified `physiological_signal` table, member-side connect/disconnect UI, "last sync" timestamps.
 
@@ -217,7 +217,7 @@ For each: OAuth flow, background sync job (every 4h), normalization layer to a u
 
 - Member chat messages stored encrypted (column-level, AES-256-GCM)
 - Pattern extraction layer: LLM run server-side, classifies each message into a small set of signal categories (load, recovery, motivation, disclosure type, urgency) without persisting the raw text in an analyst-visible table
-- Analyst view queries the signal table only — no read path to raw member text
+- Analyst view queries the signal table only, no read path to raw member text
 - Member "Surface to analyst" action explicitly promotes a chosen message into the analyst-visible thread
 - Audit log: every read of a member's raw message is logged with reason + actor; alerts trigger on unusual patterns
 - Member can export or delete all data (GDPR-style right-to-erasure even before EU expansion)
@@ -240,7 +240,7 @@ For each: OAuth flow, background sync job (every 4h), normalization layer to a u
 - A/B test in production: 20% of drafts come from fine-tuned, measure accept-rate, edit-distance, send-rate
 - Continuous learning loop: every approved draft (with diff to original LLM output) becomes a training pair
 
-**Deliverable:** the "AI-powered tools trained on thousands of real coaching conversations" promise from the job posting — actually shipped.
+**Deliverable:** the "AI-powered tools trained on thousands of real coaching conversations" promise from the job posting, actually shipped.
 
 **Risk:** under 1,000 training pairs the fine-tune adds noise. Need ~3,000+ approved drafts in production before this is worth doing. Don't fine-tune early just to claim we did.
 
@@ -251,7 +251,7 @@ For each: OAuth flow, background sync job (every 4h), normalization layer to a u
 **Goal:** App Store + Play Store apps. HealthKit native. Push notifications. BLE wearable pairing.
 
 - React Native + Expo, port the existing components (most are pure presentational + theme-aware)
-- Apple HealthKit deep integration (sleep, HRV, workouts, VO2 max — way richer than the web bridge)
+- Apple HealthKit deep integration (sleep, HRV, workouts, VO2 max, way richer than the web bridge)
 - Background sync for wearables (no more "tap to refresh")
 - Push notifications: morning check-in, weekly pre-scan reminder, draft-needs-review (for analysts)
 - BLE pairing for Whoop / Oura / Lingo (where supported) so members don't need vendor apps open
@@ -265,7 +265,7 @@ For each: OAuth flow, background sync job (every 4h), normalization layer to a u
 
 **Goal:** Kalos can sign enterprise contracts (employer wellness, clinical partnerships).
 
-- HIPAA BAA-ready hosting (AWS with BAA, or Google Cloud equivalent) — migrate API + DB
+- HIPAA BAA-ready hosting (AWS with BAA, or Google Cloud equivalent), migrate API + DB
 - SOC 2 Type I audit (Vanta or Drata to automate evidence collection)
 - Multi-region deployment for latency (US-East, US-West)
 - Performance: get TTI under 1s on mobile 4G, P95 API latency under 200ms
@@ -283,20 +283,20 @@ Real numbers people privately wonder about. All ranges; actuals depend on member
 
 | Phase | Monthly recurring | One-time |
 |---|---|---|
-| **0 · Foundation** | $0–50 | — |
-| **1 · Member MVP** | $70–180 | — |
-| **2 · AI Inbox** | $100–400 | — |
-| **3 · Wearables** | $100–450 | — |
-| **4 · Privacy** | $110–500 | — |
+| **0 · Foundation** | $0–50 |, |
+| **1 · Member MVP** | $70–180 |, |
+| **2 · AI Inbox** | $100–400 |, |
+| **3 · Wearables** | $100–450 |, |
+| **4 · Privacy** | $110–500 |, |
 | **5 · Fine-tune** | $300–1,000 | $5–15K (training run) |
 | **6 · Native mobile** | $130–550 | $99/yr Apple Dev, $25 Google Play |
 | **7 · Compliance + scale** | $1,500–4,000 | $35–90K (SOC 2 + pen test + cyber insurance setup) |
 
 **What sits inside the recurring buckets**
 
-- **Phases 0–4** — Vercel Pro ($20), Railway/Fly compute ($5–80 depending on traffic), Neon Postgres Pro ($19+ scaling), Clerk free tier (under 10K MAU), S3 for photo food-log uploads, Honeycomb free tier, KMS for encrypted columns at Phase 4 (~$10–30/mo).
-- **Phase 5** — base inference is the variable. Claude Haiku 4.5 at our prompt size: ~$0.001–0.002 per drafted message. At 50 drafts/day per analyst × 10 analysts = ~$15–30/mo just for drafts. Volume grows linearly with caseload.
-- **Phase 7** — moves DB + API to AWS with HIPAA BAA (~$1.5–3K/mo for an HA setup with read replica + multi-region), adds Vanta/Drata for SOC 2 evidence collection (~$300–800/mo), cyber insurance with a healthcare-data rider ($5–20K/year amortized).
+- **Phases 0–4**: Vercel Pro ($20), Railway/Fly compute ($5–80 depending on traffic), Neon Postgres Pro ($19+ scaling), Clerk free tier (under 10K MAU), S3 for photo food-log uploads, Honeycomb free tier, KMS for encrypted columns at Phase 4 (~$10–30/mo).
+- **Phase 5**: base inference is the variable. Claude Haiku 4.5 at our prompt size: ~$0.001–0.002 per drafted message. At 50 drafts/day per analyst × 10 analysts = ~$15–30/mo just for drafts. Volume grows linearly with caseload.
+- **Phase 7**: moves DB + API to AWS with HIPAA BAA (~$1.5–3K/mo for an HA setup with read replica + multi-region), adds Vanta/Drata for SOC 2 evidence collection (~$300–800/mo), cyber insurance with a healthcare-data rider ($5–20K/year amortized).
 
 **Unit economics worth committing to memory**
 
@@ -328,14 +328,14 @@ These assume normal vacation, normal incident interruptions, and no scope creep.
 
 ---
 
-## Week 1 — Validation interviews
+## Week 1: Validation interviews
 
 Before writing code, four conversations shape the final phase ordering:
 
-1. **With the founders** — confirm Phase 2 (AI Inbox + briefs) is actually the highest-leverage starting point, or if there's a more urgent operational need
-2. **With 2-3 analysts** — shadow a day. What takes them the most time today? What would they want drafted vs. what would feel like overreach?
-3. **1–2 long-tenured members** — what would actually feel valuable between scans vs. annoying?
-4. **With whoever owns Kalos's current data infrastructure** — what schema does the existing app use, what's the migration path, what's the risk of doubling the source of truth
+1. **With the founders**: confirm Phase 2 (AI Inbox + briefs) is actually the highest-leverage starting point, or if there's a more urgent operational need
+2. **With 2-3 analysts**: shadow a day. What takes them the most time today? What would they want drafted vs. what would feel like overreach?
+3. **1–2 long-tenured members**: what would actually feel valuable between scans vs. annoying?
+4. **With whoever owns Kalos's current data infrastructure**: what schema does the existing app use, what's the migration path, what's the risk of doubling the source of truth
 
 These conversations may reorder Phase 1 and 2 significantly. The plan above is the starting prior; Week 1's job is updating it.
 
@@ -345,23 +345,23 @@ These conversations may reorder Phase 1 and 2 significantly. The plan above is t
 
 Explicit scope boundaries so reviewers know what's intentionally out vs. accidentally missing:
 
-- **Compensation, billing, payment** — Kalos already has these systems. Telos doesn't replace them; member payment status is read from Kalos's app via the integration adapter (Phase 0.5).
-- **Marketing site** — livekalos.com stays separate. Telos is the in-product experience (member app + analyst Performance Studio), not the public-facing site.
-- **Analyst hiring funnel** — Kalos's existing recruiting process. Out of scope.
-- **Member acquisition / referrals** — handled by Kalos marketing. Telos can surface referral attribution as a metric in the analyst dashboard, but doesn't drive acquisition.
-- **Lab integrations beyond DEXA** — bloodwork, sleep studies, gut microbiome panels are roadmap conversations. Not in this plan because they each need their own data-model + consent thinking.
-- **Telehealth video sessions** — would be a separate Phase 8 if Kalos wants it. Telos is async-first by design (the AI continuity layer between scans, not the live-session tool).
-- **EHR / clinical export** — if Kalos partners with a primary-care provider or insurance plan in the future, exporting member data to a clinical EHR is a distinct compliance project. Not scoped here because it changes the privacy posture significantly (Phase 4 → Phase 7 work compounds).
-- **Member-to-member social features** — cohort comparisons, peer challenges, leaderboards. Could fit later but actively avoided in this plan because they conflict with Kalos's "every member's plan is individual" positioning.
-- **Hardware** — no plans for Kalos-branded scales, BLE-tagged equipment, in-clinic kiosks, etc. Phase 6 mobile reads from existing wearables; that's the hardware story.
+- **Compensation, billing, payment**: Kalos already has these systems. Telos doesn't replace them; member payment status is read from Kalos's app via the integration adapter (Phase 0.5).
+- **Marketing site**: livekalos.com stays separate. Telos is the in-product experience (member app + analyst Performance Studio), not the public-facing site.
+- **Analyst hiring funnel**: Kalos's existing recruiting process. Out of scope.
+- **Member acquisition / referrals**: handled by Kalos marketing. Telos can surface referral attribution as a metric in the analyst dashboard, but doesn't drive acquisition.
+- **Lab integrations beyond DEXA**: bloodwork, sleep studies, gut microbiome panels are roadmap conversations. Not in this plan because they each need their own data-model + consent thinking.
+- **Telehealth video sessions**: would be a separate Phase 8 if Kalos wants it. Telos is async-first by design (the AI continuity layer between scans, not the live-session tool).
+- **EHR / clinical export**: if Kalos partners with a primary-care provider or insurance plan in the future, exporting member data to a clinical EHR is a distinct compliance project. Not scoped here because it changes the privacy posture significantly (Phase 4 → Phase 7 work compounds).
+- **Member-to-member social features**: cohort comparisons, peer challenges, leaderboards. Could fit later but actively avoided in this plan because they conflict with Kalos's "every member's plan is individual" positioning.
+- **Hardware**: no plans for Kalos-branded scales, BLE-tagged equipment, in-clinic kiosks, etc. Phase 6 mobile reads from existing wearables; that's the hardware story.
 
-If Kalos decides any of the above belongs in Telos, each is a scoping conversation that bumps timelines proportionally — none are "small additions."
+If Kalos decides any of the above belongs in Telos, each is a scoping conversation that bumps timelines proportionally, none are "small additions."
 
 ---
 
 ## Biggest risk: voice imitation in Phase 2 messages
 
-A drafted message in an analyst's voice that the analyst forgets to edit — and that lands wrong on a member — is a trust-breaking event. Mitigations baked into the design above:
+A drafted message in an analyst's voice that the analyst forgets to edit (and that lands wrong on a member), is a trust-breaking event. Mitigations baked into the design above:
 
 - Explicit "drafted by Telos, sent by [Analyst]" attribution on every message
 - Default to "edit before send," not "send as-is"

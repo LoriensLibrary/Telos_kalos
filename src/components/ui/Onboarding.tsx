@@ -100,11 +100,11 @@ export default function Onboarding() {
             },
             {
               t: 'Why wearables matter',
-              b: 'Sleep, HRV, glucose, and recovery between scans are what determine if your plan is working in real time — long before the next scan confirms.',
+              b: 'Sleep, HRV, glucose, and recovery between scans are what determine if your plan is working in real time, long before the next scan confirms.',
             },
             {
               t: 'What Telos does',
-              b: 'Listens to your data, checks in daily, surfaces patterns to your analyst as signals (not raw text), and drafts the kind of message your analyst would have written anyway — faster.',
+              b: 'Listens to your data, checks in daily, surfaces patterns to your analyst as signals (not raw text), and drafts the kind of message your analyst would have written anyway, faster.',
             },
             {
               t: 'Your Performance Analyst',
