@@ -229,7 +229,7 @@ export default function Overview() {
               <span style={{ color: 'var(--ink-s)' }}>It never replaces them.</span>
             </h2>
             <p className="text-base mb-4" style={{ color: 'var(--ink-s)' }}>
-              Kalos's promise isn't just better data, it's better interpretation. Members come for insight
+              Kalos's promise is interpretation, not just data. Members come for insight
               generic AI cannot provide. Telos supports that promise by preparing the analyst, surfacing
               relevant between-scan patterns, and turning daily member signals into reviewable context
               before the session begins.
