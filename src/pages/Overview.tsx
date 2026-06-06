@@ -11,7 +11,7 @@ export default function Overview() {
             <span className="chip chip-ac">
               <span className="dot dot-ac" /> TELOS · v0.6
             </span>
-            <span className="chip">FOR LIVEKALOS.COM</span>
+            <span className="chip">FOR MERIDIAN HEALTH</span>
           </div>
           <h1
             style={{
@@ -21,18 +21,18 @@ export default function Overview() {
               fontWeight: 300,
             }}
           >
-            Your scan{' '}
+            Your scan is a{' '}
             <span className="serif italic" style={{ fontWeight: 400, color: 'var(--ac-b)' }}>
-              becomes a plan.
+              snapshot.
             </span>
             <br />
-            <span style={{ color: 'rgba(255,255,255,0.62)' }}>Every day in between.</span>
+            <span style={{ color: 'rgba(255,255,255,0.62)' }}>Telos holds the line in between.</span>
           </h1>
           <p
             className="mt-6 text-base mono"
             style={{ color: 'var(--ac-b)', letterSpacing: '0.08em' }}
           >
-            REAL MEMBERS · REAL DEXA DATA · REAL DELTA
+            DEXA SCANS · COACHING CONTINUITY · ANALYST IN THE LOOP
           </p>
           <p
             className="mt-6 text-lg leading-relaxed max-w-xl"

@@ -212,7 +212,7 @@ export default function Layout() {
             <span className="mx-3 mono">·</span>Architecture by Angela Reinhold
             <span className="mx-3 mono">·</span>Telos for Meridian · v0.6
           </div>
-          <div className="lbl">DEMO · MAY 13, 2026 · LIVEKALOS.COM</div>
+          <div className="lbl">DEMO · MAY 13, 2026 · MERIDIANHEALTH.CO</div>
         </div>
       </footer>
     </div>
