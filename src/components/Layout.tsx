@@ -70,7 +70,7 @@ export default function Layout() {
                   <div className="text-sm leading-none truncate" style={{ fontWeight: 500 }}>
                     <span className="serif italic">Telos</span>{' '}
                     <span style={{ color: 'var(--ink-m)' }}>·</span>{' '}
-                    <span style={{ color: 'var(--ac-b)' }}>for Kalos</span>
+                    <span style={{ color: 'var(--ac-b)' }}>for Meridian</span>
                   </div>
                   <div className="lbl mt-1 hidden sm:block" style={{ fontSize: 9 }}>
                     v0.6 · KALOS BUILD
@@ -210,7 +210,7 @@ export default function Layout() {
               Telos
             </span>
             <span className="mx-3 mono">·</span>Architecture by Angela Reinhold
-            <span className="mx-3 mono">·</span>Telos for Kalos · v0.6
+            <span className="mx-3 mono">·</span>Telos for Meridian · v0.6
           </div>
           <div className="lbl">DEMO · MAY 13, 2026 · LIVEKALOS.COM</div>
         </div>

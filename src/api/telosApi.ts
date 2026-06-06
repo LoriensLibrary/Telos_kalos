@@ -196,7 +196,7 @@ export async function getBriefForSession(sessionId: string): Promise<AnalystBrie
     id: `brief-${sessionId}`,
     memberId: s.memberInitials.toLowerCase(),
     generatedAt: new Date().toISOString(),
-    protocolCitation: s.protocol ?? 'Kalos Standard',
+    protocolCitation: s.protocol ?? 'Meridian Standard',
     summary: s.brief,
     talkingPoints: [],
     flag: s.flags?.[0],

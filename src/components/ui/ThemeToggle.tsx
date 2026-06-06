@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 
-type Theme = 'kalos' | 'cyber' | 'aurora' | 'galaxy' | 'mono' | 'sage' | 'crimson';
+type Theme = 'meridian' | 'cyber' | 'aurora' | 'galaxy' | 'mono' | 'sage' | 'crimson';
 
 const THEMES: { id: Theme; label: string; sw: [string, string] }[] = [
-  { id: 'kalos', label: 'Kalos', sw: ['#4570FF', '#8080F7'] },
+  { id: 'meridian', label: 'Meridian', sw: ['#4570FF', '#8080F7'] },
   { id: 'cyber', label: 'Cyber', sw: ['#7DD3FC', '#B49AFF'] },
   { id: 'aurora', label: 'Aurora', sw: ['#FFB87A', '#FF9988'] },
   { id: 'galaxy', label: 'Galaxy', sw: ['#D946EF', '#22D3EE'] },
@@ -14,11 +14,11 @@ const THEMES: { id: Theme; label: string; sw: [string, string] }[] = [
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window === 'undefined') return 'kalos';
+    if (typeof window === 'undefined') return 'meridian';
     const saved =
       (localStorage.getItem('telos.theme') as Theme | null) ||
       (localStorage.getItem('companion.theme') as Theme | 'verdant' | null);
-    if (saved === 'verdant' || !saved) return 'kalos';
+    if (saved === 'verdant' || !saved) return 'meridian';
     return saved as Theme;
   });
   const [open, setOpen] = useState(false);

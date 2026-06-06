@@ -98,11 +98,11 @@ describe('Telos API · integrations', () => {
     const live = apps.filter((a) => a.status === 'live');
     const roadmap = apps.filter((a) => a.status === 'available');
 
-    // Honesty check: only Kalos's actual current capabilities are 'live'
+    // Honesty check: only the actual current capabilities are 'live'
     expect(live.length).toBeGreaterThan(0);
     expect(roadmap.length).toBeGreaterThan(0);
     live.forEach((a) => {
-      expect(a.name.toLowerCase()).toMatch(/kalos|weight|food/);
+      expect(a.name.toLowerCase()).toMatch(/meridian|weight|food/);
     });
   });
 });

@@ -40,7 +40,7 @@ export const MAYA_CHAT: ChatMsg[] = [
 ];
 
 // Analyst pre-session prep, AI-drafted member messages awaiting analyst review.
-// Style: short, specific, designed for a Kalos-style coaching tone.
+// Style: short, specific, designed for a Meridian-style coaching tone.
 // Analyst approves / edits / declines before anything reaches the member.
 export interface DraftMsg {
   id: string;

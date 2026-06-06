@@ -68,7 +68,7 @@ export default function CamaProof() {
           <span className="chip chip-priv">SYNTHETIC DATA</span>
           <span className="chip chip-cy">{syntheticMember.scanCount} DEXA SCANS · {syntheticMember.monthsActive} MONTHS</span>
           <span className="text-xs" style={{ color: 'rgba(245,247,250,0.50)' }}>
-            Member · {syntheticMember.name} · M-MAYA · No Kalos data used
+            Member · {syntheticMember.name} · M-MAYA · No real member data used
           </span>
         </div>
       </div>
@@ -318,7 +318,7 @@ export default function CamaProof() {
           analyst-support insights, with every claim auditable down to the source memory.
         </p>
         <p className="text-sm" style={{ color: 'rgba(245,247,250,0.66)', lineHeight: 1.6 }}>
-          No Kalos private data was used. Data ingestion, consent, governance, and security review
+          No real member data was used. Data ingestion, consent, governance, and security review
           are prerequisites to applying the same architecture to real coaching workflows. See{' '}
           <span className="mono">docs/BUILD_PLAN.md</span> for the production rollout sequence.
         </p>

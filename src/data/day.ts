@@ -143,7 +143,7 @@ export const TODAY_SCHEDULE: Session[] = [
     type: 'DEXA REVIEW · SCAN #7 PREP',
     duration: '30m',
     status: 'now',
-    protocol: 'Visceral-fat reduction · Kalos Standard v2.3',
+    protocol: 'Visceral-fat reduction · Meridian Standard v2.3',
     flags: ['flagged', 'high-load context'],
     brief: [
       'Fat -1.2% scan 5→6. Lean +0.4 lb. Decelerating.',
@@ -162,7 +162,7 @@ export const TODAY_SCHEDULE: Session[] = [
     type: 'STRENGTH CHECK-IN',
     duration: '20m',
     status: 'next',
-    protocol: 'Hypertrophy plateau-break · Kalos Standard v1.8',
+    protocol: 'Hypertrophy plateau-break · Meridian Standard v1.8',
     brief: [
       'Lean mass plateau S4→S6 (+0.1 lb). Fat loss stalling.',
       '91% adherence. Recovery green. Programming issue, not effort.',
@@ -179,7 +179,7 @@ export const TODAY_SCHEDULE: Session[] = [
     type: 'PROGRAMMING REVIEW',
     duration: '30m',
     status: 'upcoming',
-    protocol: 'Longevity recomp · Kalos Standard v3.1',
+    protocol: 'Longevity recomp · Meridian Standard v3.1',
     brief: [
       'Best trajectory in caseload: -7.1% fat, +4.2 lb lean.',
       '96% adherence trending up. HRV climbing 54→58 ms.',
@@ -206,7 +206,7 @@ export const TODAY_SCHEDULE: Session[] = [
     type: 'INTAKE · NEW MEMBER · DEXA #1',
     duration: '30m',
     status: 'upcoming',
-    protocol: 'New member onboarding · Kalos Standard v0.9',
+    protocol: 'New member onboarding · Meridian Standard v0.9',
     flags: ['new-member'],
     brief: [
       'First DEXA today, body composition baseline.',
@@ -237,7 +237,7 @@ export const TODAY_SCHEDULE: Session[] = [
     type: 'CHECK-IN · WEEK 6',
     duration: '30m',
     status: 'upcoming',
-    protocol: 'Aesthetic recomp · Kalos Standard v2.0',
+    protocol: 'Aesthetic recomp · Meridian Standard v2.0',
     brief: [
       'Week 6 of 4-week extended to 8. Plateau at -3.4% fat.',
       'Adherence 84%. Sleep clean. HRV stable.',
@@ -253,7 +253,7 @@ export const TODAY_SCHEDULE: Session[] = [
     type: 'POST-SCAN REVIEW',
     duration: '30m',
     status: 'upcoming',
-    protocol: 'Visceral-fat reduction · Kalos Standard v2.3',
+    protocol: 'Visceral-fat reduction · Meridian Standard v2.3',
     brief: [
       'Scan #4 today. Visceral 1.62 → 1.31 lb (-19%).',
       'ALMI improving. Bone density stable.',
@@ -307,7 +307,7 @@ export const PROTOCOLS = [
     title: 'New member onboarding',
     body: 'First 30 days: adherence + sleep only. Do not optimize. Single weekly check-in. Triangle baseline post scan #2.',
     matches: 14,
-    citations: 'Kalos internal',
+    citations: 'Meridian internal',
   },
 ];
 

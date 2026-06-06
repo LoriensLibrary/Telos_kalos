@@ -23,7 +23,7 @@ export default function Platform() {
           </em>
         </h1>
         <p className="mt-4 text-base max-w-2xl" style={{ color: 'rgba(245,247,250,0.66)' }}>
-          Built on the stack Kalos already runs: TypeScript, React, Node, Python, PostgreSQL,
+          Built on a production-grade stack: TypeScript, React, Node, Python, PostgreSQL,
           SQL Server. AI-augmented dev workflow with Claude Code and Cursor.
         </p>
       </div>
@@ -33,7 +33,7 @@ export default function Platform() {
         {[
           {
             title: 'Web App',
-            sub: 'app.livekalos.com',
+            sub: 'app.meridianhealth.co',
             items: [
               'React 19 + TypeScript',
               'Responsive desktop + tablet',
@@ -141,9 +141,9 @@ export default function Platform() {
               className="text-sm leading-relaxed mb-5"
               style={{ color: 'rgba(245,247,250,0.66)' }}
             >
-              Architect of CAMA, 53,000+ memories, 238,000+ relational edges, 34 MCP tools
+              Architect of CAMA, 53,000+ memories, 278,000+ relational edges, 34 MCP tools
               plus 9 optional subsystems. 11 published papers on Zenodo. This demo was built
-              solo, end-to-end, in the same workflow Kalos hires for.
+              end-to-end with an AI-collaborative engineering workflow.
             </p>
             <div className="flex items-center gap-2 flex-wrap">
               {[
@@ -175,7 +175,7 @@ export default function Platform() {
                 className="text-sm leading-relaxed"
                 style={{ color: 'rgba(245,247,250,0.84)' }}
               >
-                The Kalos software engineer posting names three work streams: consumer
+                A body-composition platform spans three product surfaces: consumer
                 products, body-composition science, and{' '}
                 <em
                   className="serif italic"
@@ -184,7 +184,7 @@ export default function Platform() {
                   AI-powered internal tools trained on thousands of real coaching
                   conversations.
                 </em>{' '}
-                Telos is a working prototype of #3.
+                Telos is a working prototype of that third surface.
               </p>
             </div>
           </div>

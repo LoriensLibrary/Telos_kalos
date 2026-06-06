@@ -20,7 +20,7 @@ export default function Apps() {
             What plugs in today, and what's coming.
           </h2>
           <p className="text-sm" style={{ color: 'var(--ink-s)' }}>
-            Telos ships with the Kalos photo food log and weight log live. Wearable and CGM integrations
+            Telos ships with the Meridian photo food log and weight log live. Wearable and CGM integrations
             are queued for the next four quarters, Apple Health and Whoop first.
           </p>
         </div>

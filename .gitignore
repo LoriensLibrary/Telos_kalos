@@ -22,7 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-Kalos.zip
+Meridian.zip
 
 # Editor / agent local config
 .claude/

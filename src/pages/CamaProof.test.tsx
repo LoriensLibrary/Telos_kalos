@@ -45,7 +45,7 @@ describe('CAMA Proof Layer', () => {
       render(<CamaProof />);
       expect(screen.getByText(/SYNTHETIC DATA/i)).toBeInTheDocument();
       expect(screen.getByText(analystInsight.headline)).toBeInTheDocument();
-      expect(screen.getByText(/No Kalos data used/i)).toBeInTheDocument();
+      expect(screen.getByText(/No real member data used/i)).toBeInTheDocument();
     });
 
     it('renders all patterns and all memory records', () => {
