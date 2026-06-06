@@ -90,7 +90,7 @@ export default function Platform() {
       {/* STACK ROW */}
       <div className="glass p-10 mb-12">
         <div className="lbl mb-6" style={{ color: '#A0F0C8' }}>
-          MATCHES THE KALOS HIRING SPEC
+          PRODUCTION-GRADE FULL STACK
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[

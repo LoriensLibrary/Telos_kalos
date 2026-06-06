@@ -361,7 +361,7 @@ export default function DEXABody({
           {MODE_HEADER[mode]}
         </text>
         <text x={w - 8} y="14" textAnchor="end" fill="rgba(255,255,255,0.5)" fontFamily="Geist Mono, monospace" fontSize="8">
-          KALOS
+          MERIDIAN
         </text>
       </g>
     </svg>

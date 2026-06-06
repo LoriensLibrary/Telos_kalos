@@ -73,7 +73,7 @@ export default function Layout() {
                     <span style={{ color: 'var(--ac-b)' }}>for Meridian</span>
                   </div>
                   <div className="lbl mt-1 hidden sm:block" style={{ fontSize: 9 }}>
-                    v0.6 · KALOS BUILD
+                    v0.6 · MERIDIAN BUILD
                   </div>
                 </div>
               </div>

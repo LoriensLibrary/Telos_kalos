@@ -62,7 +62,7 @@ export default function MemberDetail({ client: c, onBack }: { client: typeof CLI
             <div className="text-sm mb-2"><span className="lbl mr-2">SUGGEST</span>{c.sug.change}</div>
             <div className="text-xs mb-4" style={{ color: 'var(--ink-s)' }}><span className="lbl mr-2">PATTERN</span>{c.sug.reason}</div>
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="chip">AI · KALOS CORPUS PATTERN</span>
+              <span className="chip">AI · MERIDIAN CORPUS PATTERN</span>
               <button className="btn-ac">Approve</button>
               <button className="btn-gh">Edit</button>
             </div>

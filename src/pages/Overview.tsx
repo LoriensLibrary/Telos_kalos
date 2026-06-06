@@ -69,7 +69,7 @@ export default function Overview() {
           <div className="glass glow-cy p-8">
             <div className="flex items-center justify-between mb-4">
               <div className="lbl" style={{ color: '#7DD3FC' }}>
-                THE KALOS TRIANGLE · OVER TIME
+                THE MERIDIAN TRIANGLE · OVER TIME
               </div>
               <span className="chip chip-cy">SCAN 6 → 12</span>
             </div>

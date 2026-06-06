@@ -434,7 +434,7 @@ export default function DEXAReport() {
                   marginBottom: 6,
                 }}
               >
-                KALOS · DEXA REPORT
+                MERIDIAN · DEXA REPORT
               </div>
               <div style={{ fontFamily: 'Instrument Serif, serif', fontSize: 22, lineHeight: 1.1, color: '#04040A' }}>
                 Maya Reyes

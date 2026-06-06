@@ -43,7 +43,7 @@ export default function Feedback({ audience }: Props) {
             </div>
             <span className="chip chip-cy">
               <span className="dot dot-cy pulse" />
-              ROUTED TO KALOS PRODUCT TEAM
+              ROUTED TO MERIDIAN PRODUCT TEAM
             </span>
           </div>
           <h2

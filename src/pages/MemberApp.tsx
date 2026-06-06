@@ -61,7 +61,7 @@ export default function MemberApp() {
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           <span className="chip chip-ac">
-            <span className="dot dot-ac pulse" /> KALOS FOOD LOG
+            <span className="dot dot-ac pulse" /> MERIDIAN FOOD LOG
           </span>
           <span className="chip chip-ac">WEIGHT LOG</span>
           <span className="chip chip-cy">WHOOP · ROADMAP Q2</span>

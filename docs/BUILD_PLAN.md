@@ -1,12 +1,12 @@
 # Telos · Full Build Plan
 
-A realistic engineering roadmap to take the front-end prototype in this repo and ship Telos as a production AI continuity layer for Kalos Health.
+A realistic engineering roadmap to take the front-end prototype in this repo and ship Telos as a production AI continuity layer for Meridian Health.
 
-This is the build I'd propose on day-one of the role, not a sales doc. Timelines below assume **one engineer starting at Kalos** (me). With a second engineer added at Phase 3, the total compresses meaningfully, noted at the bottom.
+This is the build to take it to production, not a sales doc. Timelines below assume **one engineer to start**. With a second engineer added at Phase 3, the total compresses meaningfully, noted at the bottom.
 
-> **What exists today:** front-end prototype in `src/`. React 19 + Vite + TypeScript on Vercel. Member/coaching data is synthetic, and there is no production backend, auth, or Kalos data integration. The deployed demo does include one Vercel serverless endpoint (`api/draft-message`) backed by a small Hono + Drizzle + Neon Postgres surface for **live Claude-generated drafts** in the AI Inbox, the rest of the page reads from static seeds. Roughly 60% of the eventual UI surface.
+> **What exists today:** front-end prototype in `src/`. React 19 + Vite + TypeScript on Vercel. Member/coaching data is synthetic, and there is no production backend, auth, or Meridian data integration. The deployed demo does include one Vercel serverless endpoint (`api/draft-message`) backed by a small Hono + Drizzle + Neon Postgres surface for **live Claude-generated drafts** in the AI Inbox, the rest of the page reads from static seeds. Roughly 60% of the eventual UI surface.
 >
-> **What this plan covers:** the other 40% of the surface, plus everything underneath it, real auth, the production Kalos-data integration, the full backend, and the Phase 2+ work that turns the live-draft demo from "one endpoint" into "the analyst's actual queue."
+> **What this plan covers:** the other 40% of the surface, plus everything underneath it, real auth, the production Meridian-data integration, the full backend, and the Phase 2+ work that turns the live-draft demo from "one endpoint" into "the analyst's actual queue."
 
 ---
 
@@ -14,13 +14,13 @@ This is the build I'd propose on day-one of the role, not a sales doc. Timelines
 
 | Layer | Choice | Why |
 |---|---|---|
-| Frontend | **React 19 + TypeScript + Vite** | Already what Kalos hires for; already the prototype |
+| Frontend | **React 19 + TypeScript + Vite** | Modern, widely-hired stack; already the prototype |
 | Mobile | **React Native (Expo)** Phase 6 | Reuse 70%+ of components; HealthKit access via Expo modules |
-| Backend | **Node.js + Hono** on Postgres | Matches Kalos's stack (Node + Postgres + SQL Server). Hono over Express for type-safe routes and edge-deployable |
+| Backend | **Node.js + Hono** on Postgres | Matches Meridian's stack (Node + Postgres + SQL Server). Hono over Express for type-safe routes and edge-deployable |
 | ORM | **Drizzle** | Type-safe, migration-first, plays well with both Postgres and SQL Server |
 | Auth | **Clerk** (initially) → **self-hosted later** | Day-1 SSO + magic links + MFA without building it. Migrate to self-hosted at Phase 7 for full data residency |
 | Hosting | **Vercel** (FE) + **Railway / Fly** (BE) | Already deploying FE to Vercel. BE on Railway for Phase 1-4, evaluate AWS at Phase 7 for HIPAA BAA |
-| AI provider | **Anthropic Claude (API)** + **Cursor / Claude Code** for dev | Their job posting explicitly names Claude Code + Cursor. Claude 4.x for prompted briefs in Phase 2, fine-tuned model in Phase 5 |
+| AI provider | **Anthropic Claude (API)** + **Cursor / Claude Code** for dev | Claude Code + Cursor drive the dev workflow. Claude 4.x for prompted briefs in Phase 2, fine-tuned model in Phase 5 |
 | Observability | **OpenTelemetry → Honeycomb** | Cheap, traceable, plays well with both Vercel + Railway |
 | CI | **GitHub Actions** | Already on GitHub |
 | Compliance posture | **HIPAA-ready from day 1** | Even pre-BAA, the architecture should make audit trivial later |
@@ -46,37 +46,37 @@ This is the build I'd propose on day-one of the role, not a sales doc. Timelines
 
 ## Phase 0.5 · Existing-app integration & cutover plan (runs in parallel with Phase 0)
 
-**Goal:** Telos doesn't double Kalos's source of truth. Members and analysts experience one system, not two.
+**Goal:** Telos doesn't double Meridian's source of truth. Members and analysts experience one system, not two.
 
-Kalos has a member area on livekalos.com today. Telos has to integrate with what exists, not replace it overnight. The right shape is a **gradual cutover** with a dual-read / single-write period, not a flag day.
+Meridian has a member area today. Telos has to integrate with what exists, not replace it overnight. The right shape is a **gradual cutover** with a dual-read / single-write period, not a flag day.
 
 **Sequence**
 
 1. **Week 1, discovery** (no code yet). Read access to staging DB, schema doc, existing API contracts. Identify which entities Telos owns vs. mirrors:
    - **Telos owns:** `dexa_scans`, `message_drafts`, `session_briefs`, `physiological_signal`, `audit_log` (Phase 4)
-   - **Kalos already owns:** `members` (auth + profile + payment), `analysts` (employment + scheduling), `appointments`
-   - **Shared:** `sessions` (Kalos's calendar = source of truth; Telos reads it, writes brief metadata to its own table)
-2. **Week 2-3, read-only mirror.** Telos reads from Kalos's existing DB via a thin adapter (`packages/kalos-adapter`). Member + analyst tables are read-only from Telos's POV. No Telos UI surfaces are member-facing yet.
-3. **Week 4-6, Telos-owned tables go live.** Members can see DEXA scans + log meals/weight in Telos. Kalos's existing member area continues to work; both surfaces show the same scan data because Telos is the new source of truth for `dexa_scans`.
+   - **Meridian already owns:** `members` (auth + profile + payment), `analysts` (employment + scheduling), `appointments`
+   - **Shared:** `sessions` (Meridian's calendar = source of truth; Telos reads it, writes brief metadata to its own table)
+2. **Week 2-3, read-only mirror.** Telos reads from Meridian's existing DB via a thin adapter (`packages/meridian-adapter`). Member + analyst tables are read-only from Telos's POV. No Telos UI surfaces are member-facing yet.
+3. **Week 4-6, Telos-owned tables go live.** Members can see DEXA scans + log meals/weight in Telos. Meridian's existing member area continues to work; both surfaces show the same scan data because Telos is the new source of truth for `dexa_scans`.
 4. **Week 7+, analyst-side surfaces ship to internal team only first** (5-10 analysts). 2-week soak before opening to all.
-5. **Week 12, sunset Kalos's old DEXA/scan UI** if Telos has full coverage. Members redirect to Telos.
+5. **Week 12, sunset Meridian's old DEXA/scan UI** if Telos has full coverage. Members redirect to Telos.
 
 **Rollback plan**
 
-Every Telos feature ships behind a per-member feature flag (LaunchDarkly or simpler home-grown). If Telos's DEXA view breaks, the member silently falls back to Kalos's existing view. The flag is per-feature, per-cohort. We never have to choose between "all in" and "all out."
+Every Telos feature ships behind a per-member feature flag (LaunchDarkly or simpler home-grown). If Telos's DEXA view breaks, the member silently falls back to Meridian's existing view. The flag is per-feature, per-cohort. We never have to choose between "all in" and "all out."
 
 **What I'd need from the existing-app team in week 1**
 
-- Read access to staging Postgres (or SQL Server, TBD which Kalos uses for member data)
+- Read access to staging Postgres (or SQL Server, TBD which Meridian uses for member data)
 - Current member auth flow walkthrough (Telos must integrate with the same session, not double-prompt for login)
 - Schema doc for `members`, `analysts`, `appointments`, even if it's just a screenshot of the ERD
 - The contact who owns the existing app's deploy process so changes coordinate
 
 **Risk**
 
-The single biggest integration risk is **doubling the source of truth on member identity.** If Telos creates its own `members` table that drifts from Kalos's, audit becomes impossible. Mitigation: Telos's `members` table is a **denormalized read cache** with FK to Kalos's canonical member ID. Writes go to Kalos's app; Telos receives change events via webhook or scheduled sync.
+The single biggest integration risk is **doubling the source of truth on member identity.** If Telos creates its own `members` table that drifts from Meridian's, audit becomes impossible. Mitigation: Telos's `members` table is a **denormalized read cache** with FK to Meridian's canonical member ID. Writes go to Meridian's app; Telos receives change events via webhook or scheduled sync.
 
-**Deliverable:** an explicit RACI document (or whatever Kalos uses) for who owns what during the dual-write period, plus the per-feature flag dashboard so the founders can see what's live to which cohort at any time.
+**Deliverable:** an explicit RACI document (or whatever Meridian uses) for who owns what during the dual-write period, plus the per-feature flag dashboard so the founders can see what's live to which cohort at any time.
 
 ---
 
@@ -101,12 +101,12 @@ erDiagram
     sessions ||--|| session_briefs : "AI-generated 24h before"
     message_drafts ||--o{ audit_log : "approve/edit/decline"
     dexa_scans ||--|| scan_results : "expanded body comp"
-    programs ||--o{ protocol_citations : "cites Kalos Standards"
+    programs ||--o{ protocol_citations : "cites Meridian Standards"
 
     members {
         uuid id PK
         text name
-        text email "FK to Kalos auth"
+        text email "FK to Meridian auth"
         uuid analyst_id FK
         text status "on-track|plateau|flagged|new"
         jsonb goals
@@ -157,7 +157,7 @@ erDiagram
 
 **What's already shipped in this prototype:** `members`, `dexa_scans`, `message_drafts` (with the live-vs-seed + token-meta + audit columns shown above) all live in Neon Postgres, queried via Drizzle through the Hono REST API at `/api/*`. Schema files: [`db/schema.ts`](./db/schema.ts).
 
-**What this Phase 1 plan adds:** `analysts`, `sessions`, `session_briefs`, `weight_logs`, `food_log_entries`, `programs`, `goals`, `protocol_citations`, `audit_log`, and proper auth-mapped FKs to Kalos's existing member identity (see Phase 0.5 above).
+**What this Phase 1 plan adds:** `analysts`, `sessions`, `session_briefs`, `weight_logs`, `food_log_entries`, `programs`, `goals`, `protocol_citations`, `audit_log`, and proper auth-mapped FKs to Meridian's existing member identity (see Phase 0.5 above).
 
 ### Endpoints + delivery
 
@@ -168,18 +168,18 @@ erDiagram
 - Wire all member-facing pages from the prototype to the real API
 - Analyst can view their roster (read-only at this phase)
 
-**Deliverable:** an actual Kalos member could use Telos for their food log, weight tracking, and DEXA history view. Analyst sees their roster.
+**Deliverable:** an actual Meridian member could use Telos for their food log, weight tracking, and DEXA history view. Analyst sees their roster.
 
 ---
 
 ## Phase 2 · Analyst AI Inbox + pre-session briefs (weeks 7–10)
 
-**This is the core of work-stream #3 in the job posting.**
+**This is the core analyst-facing AI surface.**
 
 - Database: `messages`, `message_drafts`, `session_briefs`, `experiment_logs`
 - LLM-prompted (not fine-tuned yet) message drafter
   - Triggers: adherence dip, wearable signal, time-based cadence
-  - Input: recent scan deltas + adherence + analyst notes + Kalos Standards protocol library
+  - Input: recent scan deltas + adherence + analyst notes + Meridian Standards protocol library
   - Output: drafted message in analyst's voice + reasoning citation
 - AI Inbox UI wired to the draft pipeline (already prototyped here)
 - Approve / Edit / Decline state machine writes to `messages` table
@@ -222,25 +222,25 @@ For each: OAuth flow, background sync job (every 4h), normalization layer to a u
 - Audit log: every read of a member's raw message is logged with reason + actor; alerts trigger on unusual patterns
 - Member can export or delete all data (GDPR-style right-to-erasure even before EU expansion)
 
-**Deliverable:** a security/privacy doc that a third-party audit can verify. The architectural moat Kalos can defend publicly.
+**Deliverable:** a security/privacy doc that a third-party audit can verify. The architectural moat Meridian can defend publicly.
 
 ---
 
-## Phase 5 · Fine-tuned model on Kalos's coaching corpus (weeks 17–22)
+## Phase 5 · Fine-tuned model on Meridian's coaching corpus (weeks 17–22)
 
 **This requires consent + corpus collection first, hence later in the timeline.**
 
 - Build consent flow: members opt in to anonymized contribution; analysts opt in to having their (anonymized) coaching language contribute to the model
 - Corpus collection: scrubbed member ↔ analyst exchanges, scan summaries, intervention → outcome pairs
 - Train a small fine-tuned model (or LoRA on a base model) targeting:
-  - Voice fidelity to Kalos's coaching style
+  - Voice fidelity to Meridian's coaching style
   - Better protocol-citation accuracy
   - Lower variance in tone
 - Evaluation: human-graded panel (the founders + 2-3 analysts) blind-rates outputs from fine-tuned vs base
 - A/B test in production: 20% of drafts come from fine-tuned, measure accept-rate, edit-distance, send-rate
 - Continuous learning loop: every approved draft (with diff to original LLM output) becomes a training pair
 
-**Deliverable:** the "AI-powered tools trained on thousands of real coaching conversations" promise from the job posting, actually shipped.
+**Deliverable:** AI-powered tools trained on thousands of real coaching conversations, actually shipped.
 
 **Risk:** under 1,000 training pairs the fine-tune adds noise. Need ~3,000+ approved drafts in production before this is worth doing. Don't fine-tune early just to claim we did.
 
@@ -257,13 +257,13 @@ For each: OAuth flow, background sync job (every 4h), normalization layer to a u
 - BLE pairing for Whoop / Oura / Lingo (where supported) so members don't need vendor apps open
 - App Store submission, review cycle (~2 weeks)
 
-**Deliverable:** "Get the app" on livekalos.com goes to the App Store. Members no longer need the browser version.
+**Deliverable:** "Get the app" on the marketing site goes to the App Store. Members no longer need the browser version.
 
 ---
 
 ## Phase 7 · Compliance + scale (weeks 31–40)
 
-**Goal:** Kalos can sign enterprise contracts (employer wellness, clinical partnerships).
+**Goal:** Meridian can sign enterprise contracts (employer wellness, clinical partnerships).
 
 - HIPAA BAA-ready hosting (AWS with BAA, or Google Cloud equivalent), migrate API + DB
 - SOC 2 Type I audit (Vanta or Drata to automate evidence collection)
@@ -273,7 +273,7 @@ For each: OAuth flow, background sync job (every 4h), normalization layer to a u
 - Disaster recovery: cross-region DB replica, tested restore runbook
 - Penetration test (third-party)
 
-**Deliverable:** Kalos can answer "what about HIPAA" / "what about SOC 2" with documentation, not promises.
+**Deliverable:** Meridian can answer "what about HIPAA" / "what about SOC 2" with documentation, not promises.
 
 ---
 
@@ -308,7 +308,7 @@ Real numbers people privately wonder about. All ranges; actuals depend on member
 **Variables that would meaningfully shift these**
 
 - Going Opus instead of Haiku for drafts → ~5–10× the AI line item
-- Going SQL Server instead of Postgres (matches Kalos's existing stack) → similar baseline cost but different vendor mix; switch happens in Phase 0 if leadership wants
+- Going SQL Server instead of Postgres (matches Meridian's existing stack) → similar baseline cost but different vendor mix; switch happens in Phase 0 if leadership wants
 - Going self-hosted earlier than Phase 7 → reduces Clerk + Vercel monthly but adds eng-time + on-call overhead
 - Skipping mobile (Phase 6) → no app-store fees, but caps Apple Health depth
 
@@ -320,7 +320,7 @@ The numbers above assume reasonable cost discipline. **Aggressive optimization c
 
 | Team | Total to Phase 5 ship | Total to Phase 7 ship |
 |---|---|---|
-| **1 engineer (me, solo)** | ~22 weeks (~5.5 months) | ~40 weeks (~9.5 months) |
+| **1 engineer (solo)** | ~22 weeks (~5.5 months) | ~40 weeks (~9.5 months) |
 | **2 engineers** (Phase 3 onward) | ~16 weeks (~4 months) | ~30 weeks (~7 months) |
 | **3 engineers + me** (Phase 5 onward) | ~13 weeks (~3 months) | ~24 weeks (~5.5 months) |
 
@@ -335,7 +335,7 @@ Before writing code, four conversations shape the final phase ordering:
 1. **With the founders**: confirm Phase 2 (AI Inbox + briefs) is actually the highest-leverage starting point, or if there's a more urgent operational need
 2. **With 2-3 analysts**: shadow a day. What takes them the most time today? What would they want drafted vs. what would feel like overreach?
 3. **1–2 long-tenured members**: what would actually feel valuable between scans vs. annoying?
-4. **With whoever owns Kalos's current data infrastructure**: what schema does the existing app use, what's the migration path, what's the risk of doubling the source of truth
+4. **With whoever owns Meridian's current data infrastructure**: what schema does the existing app use, what's the migration path, what's the risk of doubling the source of truth
 
 These conversations may reorder Phase 1 and 2 significantly. The plan above is the starting prior; Week 1's job is updating it.
 
@@ -345,17 +345,17 @@ These conversations may reorder Phase 1 and 2 significantly. The plan above is t
 
 Explicit scope boundaries so reviewers know what's intentionally out vs. accidentally missing:
 
-- **Compensation, billing, payment**: Kalos already has these systems. Telos doesn't replace them; member payment status is read from Kalos's app via the integration adapter (Phase 0.5).
-- **Marketing site**: livekalos.com stays separate. Telos is the in-product experience (member app + analyst Performance Studio), not the public-facing site.
-- **Analyst hiring funnel**: Kalos's existing recruiting process. Out of scope.
-- **Member acquisition / referrals**: handled by Kalos marketing. Telos can surface referral attribution as a metric in the analyst dashboard, but doesn't drive acquisition.
+- **Compensation, billing, payment**: Meridian already has these systems. Telos doesn't replace them; member payment status is read from Meridian's app via the integration adapter (Phase 0.5).
+- **Marketing site**: the public marketing site stays separate. Telos is the in-product experience (member app + analyst Performance Studio), not the public-facing site.
+- **Analyst hiring funnel**: Meridian's existing recruiting process. Out of scope.
+- **Member acquisition / referrals**: handled by Meridian marketing. Telos can surface referral attribution as a metric in the analyst dashboard, but doesn't drive acquisition.
 - **Lab integrations beyond DEXA**: bloodwork, sleep studies, gut microbiome panels are roadmap conversations. Not in this plan because they each need their own data-model + consent thinking.
-- **Telehealth video sessions**: would be a separate Phase 8 if Kalos wants it. Telos is async-first by design (the AI continuity layer between scans, not the live-session tool).
-- **EHR / clinical export**: if Kalos partners with a primary-care provider or insurance plan in the future, exporting member data to a clinical EHR is a distinct compliance project. Not scoped here because it changes the privacy posture significantly (Phase 4 → Phase 7 work compounds).
-- **Member-to-member social features**: cohort comparisons, peer challenges, leaderboards. Could fit later but actively avoided in this plan because they conflict with Kalos's "every member's plan is individual" positioning.
-- **Hardware**: no plans for Kalos-branded scales, BLE-tagged equipment, in-clinic kiosks, etc. Phase 6 mobile reads from existing wearables; that's the hardware story.
+- **Telehealth video sessions**: would be a separate Phase 8 if Meridian wants it. Telos is async-first by design (the AI continuity layer between scans, not the live-session tool).
+- **EHR / clinical export**: if Meridian partners with a primary-care provider or insurance plan in the future, exporting member data to a clinical EHR is a distinct compliance project. Not scoped here because it changes the privacy posture significantly (Phase 4 → Phase 7 work compounds).
+- **Member-to-member social features**: cohort comparisons, peer challenges, leaderboards. Could fit later but actively avoided in this plan because they conflict with Meridian's "every member's plan is individual" positioning.
+- **Hardware**: no plans for Meridian-branded scales, BLE-tagged equipment, in-clinic kiosks, etc. Phase 6 mobile reads from existing wearables; that's the hardware story.
 
-If Kalos decides any of the above belongs in Telos, each is a scoping conversation that bumps timelines proportionally, none are "small additions."
+If Meridian decides any of the above belongs in Telos, each is a scoping conversation that bumps timelines proportionally, none are "small additions."
 
 ---
 
@@ -367,7 +367,7 @@ A drafted message in an analyst's voice that the analyst forgets to edit (and th
 - Default to "edit before send," not "send as-is"
 - Member-side disclosure that some messages are AI-prepared
 
-**Open decision for Week 1:** Do members ever see the word "Telos" in their app, or is Telos invisible infrastructure under the Kalos brand? Both are defensible. The choice shapes messaging language across every phase.
+**Open decision for Week 1:** Do members ever see the word "Telos" in their app, or is Telos invisible infrastructure under the Meridian brand? Both are defensible. The choice shapes messaging language across every phase.
 
 ---
 
