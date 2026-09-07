@@ -2,7 +2,7 @@
  * Synthetic CAMA seed for the Proof Layer.
  *
  * This data is fabricated, modeled after public coaching workflows.
- * No Kalos member data is used. The synthetic member ("Maya") is the
+ * No real member data is used. The synthetic member ("Maya") is the
  * same persona used elsewhere in the demo.
  *
  * The point of this file is to make one claim auditable end-to-end:

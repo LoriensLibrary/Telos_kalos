@@ -1,4 +1,4 @@
-// Analyst matching, mirrors how Kalos actually does it:
+// Analyst matching, mirrors how Meridian actually does it:
 // slot-based assignment by location/time + soft-match by goals/style.
 
 export interface Question {

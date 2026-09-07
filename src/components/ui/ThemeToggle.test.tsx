@@ -9,10 +9,10 @@ describe('ThemeToggle', () => {
     document.documentElement.removeAttribute('data-theme');
   });
 
-  it('defaults to Kalos theme on first mount', () => {
+  it('defaults to Meridian theme on first mount', () => {
     render(<ThemeToggle />);
-    expect(document.documentElement.getAttribute('data-theme')).toBe('kalos');
-    expect(localStorage.getItem('telos.theme')).toBe('kalos');
+    expect(document.documentElement.getAttribute('data-theme')).toBe('meridian');
+    expect(localStorage.getItem('telos.theme')).toBe('meridian');
   });
 
   it('migrates the legacy companion.theme key to telos.theme', () => {
@@ -23,17 +23,17 @@ describe('ThemeToggle', () => {
     expect(localStorage.getItem('companion.theme')).toBeNull();
   });
 
-  it("migrates the deprecated 'verdant' value to kalos", () => {
+  it("migrates the deprecated 'verdant' value to meridian", () => {
     localStorage.setItem('companion.theme', 'verdant');
     render(<ThemeToggle />);
-    expect(document.documentElement.getAttribute('data-theme')).toBe('kalos');
+    expect(document.documentElement.getAttribute('data-theme')).toBe('meridian');
   });
 
   it('opens the dropdown and lets the user pick a different theme', async () => {
     const user = userEvent.setup();
     render(<ThemeToggle />);
 
-    const trigger = screen.getByRole('button', { name: /kalos/i });
+    const trigger = screen.getByRole('button', { name: /meridian/i });
     await user.click(trigger);
 
     const galaxy = screen.getByRole('option', { name: /galaxy/i });

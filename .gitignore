@@ -22,7 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-Kalos.zip
+# Local project snapshots. Never track these: a renamed pattern once
+# un-ignored the file it was protecting and swept a 33.8 MB archive
+# (node_modules, dist, a nested .git) into a PR.
+*.zip
 
 # Editor / agent local config
 .claude/

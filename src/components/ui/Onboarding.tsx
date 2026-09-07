@@ -18,7 +18,7 @@ export default function Onboarding() {
         <div className="glass glow p-10">
           <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>NEW MEMBER · WELCOME</div>
           <h2 className="serif text-4xl mb-4" style={{ fontWeight: 400 }}>
-            Welcome to Kalos.
+            Welcome to Meridian.
           </h2>
           <p className="text-base mb-6" style={{ color: 'var(--ink-s)' }}>
             You're about to get the clearest picture of your body anyone has ever shown you. Then a Performance Analyst

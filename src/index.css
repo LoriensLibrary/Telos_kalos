@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 /* ============================ THEME TOKENS ============================ */
-/* KALOS BRAND THEME, pulled directly from livekalos.com:
+/* MERIDIAN BRAND THEME (royal blue / indigo family, Manrope):
    bg #04040a · primary #4570ff · indigo family · Manrope.
    Verdant kept as alias for back-compat. */
 :root,
-:root[data-theme="kalos"],
+:root[data-theme="meridian"],
 :root[data-theme="verdant"] {
   --bg: #04040A;
   --bg-1: #0A0A14;

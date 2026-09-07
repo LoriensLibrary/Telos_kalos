@@ -434,7 +434,7 @@ export default function DEXAReport() {
                   marginBottom: 6,
                 }}
               >
-                KALOS · DEXA REPORT
+                MERIDIAN · DEXA REPORT
               </div>
               <div style={{ fontFamily: 'Instrument Serif, serif', fontSize: 22, lineHeight: 1.1, color: '#04040A' }}>
                 Maya Reyes
@@ -480,7 +480,7 @@ export default function DEXAReport() {
           </p>
           <p className="text-sm mb-3" style={{ color: 'var(--ink-s)' }}>
             Radiation dose: ~0.001 mSv, roughly 1/1000th of an annual background dose. Safe to repeat every
-            4–8 weeks, the Kalos cadence.
+            4–8 weeks, the Meridian cadence.
           </p>
           <div className="lbl mt-4 mb-2">SCAN SEQUENCE</div>
           <ol className="space-y-2 text-xs" style={{ color: 'var(--ink-s)' }}>

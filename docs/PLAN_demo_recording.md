@@ -1,4 +1,4 @@
-# Demo-Recording Storyboard: Telos for Kalos
+# Demo-Recording Storyboard: Telos for Meridian
 
 **Goal:** A 45–60 second silent screen recording that proves the prototype is real to any reviewer who reads the README without opening the live demo.
 

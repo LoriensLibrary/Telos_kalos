@@ -11,7 +11,7 @@ export default function Overview() {
             <span className="chip chip-ac">
               <span className="dot dot-ac" /> TELOS · v0.6
             </span>
-            <span className="chip">FOR LIVEKALOS.COM</span>
+            <span className="chip">FOR MERIDIAN HEALTH</span>
           </div>
           <h1
             style={{
@@ -21,25 +21,25 @@ export default function Overview() {
               fontWeight: 300,
             }}
           >
-            Your scan{' '}
+            Your scan is a{' '}
             <span className="serif italic" style={{ fontWeight: 400, color: 'var(--ac-b)' }}>
-              becomes a plan.
+              snapshot.
             </span>
             <br />
-            <span style={{ color: 'rgba(255,255,255,0.62)' }}>Every day in between.</span>
+            <span style={{ color: 'rgba(255,255,255,0.62)' }}>Telos holds the line in between.</span>
           </h1>
           <p
             className="mt-6 text-base mono"
             style={{ color: 'var(--ac-b)', letterSpacing: '0.08em' }}
           >
-            REAL MEMBERS · REAL DEXA DATA · REAL DELTA
+            DEXA SCANS · COACHING CONTINUITY · ANALYST IN THE LOOP
           </p>
           <p
             className="mt-6 text-lg leading-relaxed max-w-xl"
             style={{ color: 'rgba(255,255,255,0.72)' }}
           >
             A continuity layer between DEXA scans. Performance Analysts get AI-prepared briefs and
-            reviewable draft messages, designed to draw on Kalos's coaching corpus once consent and
+            reviewable draft messages, designed to draw on Meridian's coaching corpus once consent and
             governance land. Members track between visits.
           </p>
           <div className="flex items-center gap-3 mt-8">
@@ -69,7 +69,7 @@ export default function Overview() {
           <div className="glass glow-cy p-8">
             <div className="flex items-center justify-between mb-4">
               <div className="lbl" style={{ color: '#7DD3FC' }}>
-                THE KALOS TRIANGLE · OVER TIME
+                THE MERIDIAN TRIANGLE · OVER TIME
               </div>
               <span className="chip chip-cy">SCAN 6 → 12</span>
             </div>
@@ -140,9 +140,9 @@ export default function Overview() {
           {
             num: '03',
             title: 'Pattern Engine',
-            sub: 'Built for Kalos data',
+            sub: 'Built for Meridian data',
             body:
-              "Designed to learn from Kalos's real coaching arcs and DEXA outcomes once consent and governance land. Pattern leverage for every analyst, never replacement.",
+              "Designed to learn from Meridian's real coaching arcs and DEXA outcomes once consent and governance land. Pattern leverage for every analyst, never replacement.",
             color: '#B49AFF',
             ring: 'rgba(180,154,255,0.22)',
             to: '/data',
@@ -182,28 +182,28 @@ export default function Overview() {
         ))}
       </div>
 
-      {/* TESTIMONIALS, verbatim from livekalos.com */}
+      {/* TESTIMONIALS, synthetic */}
       <div className="mb-12">
         <div className="lbl mb-3" style={{ color: 'var(--ac-b)' }}>DON'T TAKE OUR WORD FOR IT</div>
         <h2 className="serif text-3xl mb-6" style={{ fontWeight: 400 }}>
-          Real members. Real DEXA data. <em className="italic" style={{ color: 'var(--ac-b)' }}>Real delta.</em>
+          Steady scans. Measurable change. <em className="italic" style={{ color: 'var(--ac-b)' }}>Real momentum.</em>
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {[
             {
-              q: "I feel good, I feel strong. I've gone down a couple of sizes, and even just sitting at my desk, I'm so much more comfortable than I used to be.",
-              n: 'Maicie, 25',
-              p: 'Wealth Management',
+              q: "Six scans in, my visceral fat is down and I finally understand why. Seeing the trend instead of one number changed how I train.",
+              n: 'Devin, 29',
+              p: 'Software Engineer',
             },
             {
-              q: "Energy is consistent, I don't need caffeine to get through 24-hour shifts anymore, and I just keep making progress.",
-              n: 'Joshua, 32',
-              p: 'Nurse',
+              q: "I stopped guessing. The briefs my analyst sends between scans keep me on track the weeks I'd normally drift.",
+              n: 'Priya, 38',
+              p: 'ICU Nurse',
             },
             {
-              q: "Working out is my favorite hobby right now, and my A1C was 5.7 going into all this, now it's 4.7.",
-              n: 'Jennifer, 43',
-              p: 'Lab Technician',
+              q: "Lean mass up, resting heart rate down, and every change tied back to something I actually did. That's the part that stuck.",
+              n: 'Marcus, 45',
+              p: 'Operations Manager',
             },
           ].map((t, i) => (
             <div key={i} className="glass p-7">
@@ -229,7 +229,7 @@ export default function Overview() {
               <span style={{ color: 'var(--ink-s)' }}>It never replaces them.</span>
             </h2>
             <p className="text-base mb-4" style={{ color: 'var(--ink-s)' }}>
-              Kalos's promise isn't just better data, it's better interpretation. Members come for insight
+              Meridian's promise isn't just better data, it's better interpretation. Members come for insight
               generic AI cannot provide. Telos supports that promise by preparing the analyst, surfacing
               relevant between-scan patterns, and turning daily member signals into reviewable context
               before the session begins.

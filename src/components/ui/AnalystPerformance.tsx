@@ -222,7 +222,7 @@ export default function AnalystPerformance() {
               ))}
             </div>
             <div className="lbl mt-4" style={{ fontSize: 9 }}>
-              DEMO · ACTUAL DOLLAR VALUES POPULATE FROM KALOS PAYROLL INTEGRATION
+              DEMO · ACTUAL DOLLAR VALUES POPULATE FROM MERIDIAN PAYROLL INTEGRATION
             </div>
           </div>
         </div>

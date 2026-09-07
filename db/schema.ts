@@ -1,5 +1,5 @@
 /**
- * Drizzle schema for Telos · for Kalos.
+ * Drizzle schema for Telos · for Meridian.
  *
  * Three tables back the live demo today:
  *   - members       , analyst's roster (replaces src/data/clients.ts)

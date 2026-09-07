@@ -153,7 +153,7 @@ export default function DataArch() {
           },
           {
             t: 'Auditable model',
-            b: 'Every Telos suggestion is traceable to the Kalos coaching corpus. Source-quoted, never hallucinated.',
+            b: 'Every Telos suggestion is traceable to the Meridian coaching corpus. Source-quoted, never hallucinated.',
           },
         ].map((p, i) => (
           <div key={i} className="glass p-7">

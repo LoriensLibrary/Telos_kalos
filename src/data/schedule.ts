@@ -86,7 +86,7 @@ export interface ConnectedApp {
 
 export const CONNECTED_APPS: ConnectedApp[] = [
   {
-    name: 'Kalos Photo Food Log',
+    name: 'Meridian Photo Food Log',
     status: 'live',
     category: 'Nutrition',
     metrics: ['Protein target', 'Photo accountability', 'Macro estimates'],
@@ -94,7 +94,7 @@ export const CONNECTED_APPS: ConnectedApp[] = [
     desc: 'Snap-a-photo meal log built into Telos. AI estimates protein + macros.',
   },
   {
-    name: 'Kalos Weight Log',
+    name: 'Meridian Weight Log',
     status: 'live',
     category: 'Body comp',
     metrics: ['Daily weight', 'Trend', 'DEXA delta'],

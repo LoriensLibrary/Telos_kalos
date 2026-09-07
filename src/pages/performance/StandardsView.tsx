@@ -4,7 +4,7 @@ export default function StandardsView() {
   return (
     <div>
       <div className="mb-6">
-        <div className="lbl mb-3" style={{ color: 'var(--purple)' }}>KALOS STANDARDS · PROTOCOL LIBRARY</div>
+        <div className="lbl mb-3" style={{ color: 'var(--purple)' }}>MERIDIAN STANDARDS · PROTOCOL LIBRARY</div>
         <h2 style={{ fontSize: 'clamp(1.6rem,2.5vw,2rem)', fontWeight: 300, lineHeight: 1.05 }}>
           The house playbook.
         </h2>

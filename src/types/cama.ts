@@ -6,7 +6,7 @@
  * that produced it. No insight is opaque; every claim has receipts.
  *
  * This file defines the public contract. The data in src/data/cama.ts is
- * synthetic, modeled after public coaching workflows. No Kalos member data
+ * synthetic, modeled after public coaching workflows. No real member data
  * is used anywhere in this prototype.
  */
 
